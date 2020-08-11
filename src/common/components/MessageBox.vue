@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <renderless-component-example>
     <div id="bg" v-if="isShowBg"></div>
     <div class="messageBox" v-if="isShowBg">
       <div class="messageTitle">
@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </renderless-component-example>
 </template>
 
 <script>
@@ -24,21 +24,27 @@ export default {
     return {
       isShowBg: false,
       messageLists: [],
+      lang: localStorage.getItem('Language'),
       messageTabIndex: '',
     }
   },
   mounted() {
-    this.getMessage()
+    this.getMessage(this.lang)
   },
   methods: {
-    getMessage() {
+    getMessage(lang) {
       let this_ = this
-      this.$http.post('http://srv.shine-iot.com:8060/event/evts/day').then(function (response) {
-        this_.messageLists = response.data.data.map((item) => {
-          item.eventTime = getTimeToString(item.eventTime)
-          return item
-        })
+      var currentData = qs.stringify({
+        lang: lang,
       })
+      this.$http
+        .post('http://srv.shine-iot.com:8060/event/evts/day', currentData)
+        .then(function (response) {
+          this_.messageLists = response.data.data.map((item) => {
+            item.eventTime = getTimeToString(item.eventTime)
+            return item
+          })
+        })
     },
     messageDesc(index) {
       this.messageTabIndex = index

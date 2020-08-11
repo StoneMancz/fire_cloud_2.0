@@ -52,33 +52,23 @@ export default {
       eventLevelValue: '',
       currentPage: 1,
       areaId: '',
+      lang: localStorage.getItem('Language'),
       total: 0, // 事件列表length
       equipmentTypeData: [],
       eventLevelValueData: [],
       eventDevcieValue3: '',
       eventTimes: '',
       eventAreaEvtsList: [], //事件列表
+      eventAreaEvtsUrl: '',
     }
   },
-  mounted() {
-    //查询事件等级
-    this.eventLevelFn()
-    //设备类型
-    this.equipmentType()
-    //初始化事件列表
-    this.eventAreaEvts(
-      this.areaID,
-      this.eventDevcieValue3,
-      this.eventLevelValue,
-      '',
-      '',
-      this.currentPage
-    )
-  },
+  mounted() {},
   methods: {
     eventTypeChange() {
       if (!this.eventTimes) {
         this.eventAreaEvts(
+          this.eventAreaEvtsUrl,
+          this.lang,
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
@@ -88,6 +78,8 @@ export default {
         )
       } else {
         this.eventAreaEvts(
+          this.eventAreaEvtsUrl,
+          this.lang,
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
@@ -116,6 +108,8 @@ export default {
       this.currentPage = val
       if (!this.eventTimes) {
         this.eventAreaEvts(
+          this.eventAreaEvtsUrl,
+          this.lang,
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
@@ -125,6 +119,8 @@ export default {
         )
       } else {
         this.eventAreaEvts(
+          this.eventAreaEvtsUrl,
+          this.lang,
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
@@ -140,6 +136,8 @@ export default {
     pickerEventChange() {
       if (!this.eventTimes) {
         this.eventAreaEvts(
+          this.eventAreaEvtsUrl,
+          this.lang,
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
@@ -149,6 +147,8 @@ export default {
         )
       } else {
         this.eventAreaEvts(
+          this.eventAreaEvtsUrl,
+          this.lang,
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
@@ -161,6 +161,8 @@ export default {
     equipmentTypeChange3() {
       if (!this.eventTimes) {
         this.eventAreaEvts(
+          this.eventAreaEvtsUrl,
+          this.lang,
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
@@ -170,6 +172,8 @@ export default {
         )
       } else {
         this.eventAreaEvts(
+          this.eventAreaEvtsUrl,
+          this.lang,
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
@@ -179,9 +183,12 @@ export default {
         )
       }
     },
-    eventAreaEvts(areaId, deviceType, eventLevel, startTime, endTime, pageNo) {
+    eventAreaEvts(url, lang, areaId, deviceType, eventLevel, startTime, endTime, pageNo) {
       let this_ = this
+      this.eventAreaEvtsUrl = url
+      this.lang = lang
       var currentData = qs.stringify({
+        lang: lang,
         areaId: areaId,
         deviceType: deviceType,
         eventLevel: eventLevel,
@@ -189,26 +196,26 @@ export default {
         endTime: endTime,
         pageNo: pageNo,
       })
-      this.$http
-        .post('http://srv.shine-iot.com:8060/event/area/evts', currentData)
-        .then(function (response) {
-          let eventList = response.data.data.records
-          let eventListNew = eventList.map((item) => {
-            let obj = {
-              eventId: item.eventId,
-              eventName: deviceStatus(item.eventType),
-              eventTime: getTimeToString(item.eventTimeLong),
-              deviceName: DeviceType(item.deviceTypeCode),
-              deviceAddr: item.deviceAddr,
-              deviceDetailedAddr:
-                item.areaLocCity + item.areaLocDist + item.areaName + item.deviceAddr,
-            }
-            return obj
-          })
-
-          this_.total = response.data.data.total
-          this_.eventAreaEvtsList = eventListNew
+      this.$http.post(url, currentData).then(function (response) {
+        console.log('初始化事件列表')
+        console.log(response)
+        let eventList = response.data.data.records
+        let eventListNew = eventList.map((item) => {
+          let obj = {
+            eventId: item.eventId,
+            eventName: item.eventTypeName,
+            eventTime: getTimeToString(item.eventTimeLong),
+            deviceName: item.dcTypeName,
+            deviceAddr: item.deviceAddr,
+            deviceDetailedAddr:
+              item.areaLocCity + item.areaLocDist + item.areaName + item.deviceAddr,
+          }
+          return obj
         })
+
+        this_.total = response.data.data.total
+        this_.eventAreaEvtsList = eventListNew
+      })
     },
   },
 }

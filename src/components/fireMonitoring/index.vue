@@ -40,8 +40,8 @@
                 <div>{{item.installNumber}}</div>
                 <div>{{item.dcShortName}}</div>
                 <div>{{item.deviceSN}}</div>
-                <div style="color:rgba(0,143,19,1);" v-if="item.runStatusName=='正常'">{{item.runStatusName}}</div>
-                <div style="color:red;" v-else-if="item.runStatusName=='报警'">{{item.runStatusName}}</div>
+                <div style="color:rgba(0,143,19,1);" v-if="item.runStatusName=='正常' || item.runStatusName=='Normal'">{{item.runStatusName}}</div>
+                <div style="color:red;" v-else-if="item.runStatusName=='报警' || item.runStatusName=='Alarming'">{{item.runStatusName}}</div>
                 <div v-else>{{item.runStatusName}}</div>
                 <div>{{item.areaName}}</div>
                 <div>{{item.deviceAddr}}</div>
@@ -73,6 +73,7 @@ export default {
       deviceStatus: '',
       show2: true,
       areaId: '',
+      lang: localStorage.getItem('Language'),
       currentPage: '',
       total: 0,
       installInfoList: [],
@@ -105,6 +106,7 @@ export default {
         runStatus: this.deviceStatus,
         deviceSN: this.installNumber,
         pageNo: this.currentPage,
+        lang: this.lang,
       })
       this.$http
         .post('http://srv.shine-iot.com:8060/fdev/mnt/devs', currentData)
@@ -115,6 +117,11 @@ export default {
     },
     fatherClickFn(data) {
       this.areaId = data.id
+      this.getDevsData()
+    },
+    //切换中英文
+    switchLanguage(lang) {
+      this.lang = lang
       this.getDevsData()
     },
     handleCurrentChange(val) {

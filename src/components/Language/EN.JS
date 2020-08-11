@@ -47,6 +47,8 @@ module.exports = {
         fireMonitoring: "Monitoring",
         fireFacilities: "Facilities",
         alarmController: "Controller",
-        communicationDevice: "Communication"
+        communicationDevice: "Communication",
+        statistics: 'Statistics',
+        eventList: 'EventList'
     }
 }

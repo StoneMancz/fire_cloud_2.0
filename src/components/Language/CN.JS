@@ -47,6 +47,8 @@ module.exports = {
         fireMonitoring: "火灾监控",
         fireFacilities: "消防设施",
         alarmController: "报警控制器",
-        communicationDevice: "通讯装置"
+        communicationDevice: "通讯装置",
+        statistics: '数据统计图例',
+        eventList: '事件列表'
     }
 }

@@ -43,63 +43,81 @@ export default {
       deviceType: '', //设备类型
       equipmentTypeData: [],
       areaID: '',
+      lang: localStorage.getItem('Language'),
       trendValue1: [],
+      alarmTrendUrl: '',
+      devicesNumberUrl: '',
+      deviceStatusUrl: '',
     }
   },
   methods: {
     equipmentTypeChange() {
-      this.alarmTrend(this.areaID, this.ecahrtsValue1, this.startTime, this.endTime)
+      this.alarmTrend(
+        this.alarmTrendUrl,
+        this.areaID,
+        this.ecahrtsValue1,
+        this.startTime,
+        this.endTime
+      )
     },
     equipmentTypeChange2() {
-      console.log(this.ecahrtsValue2)
-      this.deviceStatusFn(this.areaID, this.ecahrtsValue2)
+      this.deviceStatusFn(this.deviceStatusUrl, this.lang, this.areaID, this.ecahrtsValue2)
     },
     pickerChange() {
       this.startTime = this.trendValue1[0].getTime()
       this.endTime = this.trendValue1[1].getTime()
-      this.alarmTrend(this.areaID, this.ecahrtsValue1, this.startTime, this.endTime)
+      this.alarmTrend(
+        this.alarmTrendUrl,
+        this.areaID,
+        this.ecahrtsValue1,
+        this.startTime,
+        this.endTime
+      )
     },
     //设备状态分布图
-    deviceStatusFn(areaId, deviceType) {
+    deviceStatusFn(url, lang, areaId, deviceType) {
+      this.deviceStatusUrl = url
+      this.lang = lang
       this.areaID = areaId
       this.deviceType = deviceType
       let this_ = this
       var currentData = qs.stringify({
+        lang: lang,
         areaId: this.areaID,
         deviceType: this.deviceType,
       })
-      this.$http
-        .post('http://srv.shine-iot.com:8060/device/stus/cnt', currentData)
-        .then(function (response) {
-          console.log(response)
-          let responseData = response.data
-          let deviceStatusData = responseData.map(function (item, i) {
-            let obj = {
-              value: item.num,
-              name: item.name,
-            }
-            return obj
-          })
-          let deviceStatusName = deviceStatusData.map((item) => item.name)
-          let colorArr = deviceStatusName.map((item1) => {
-            if (item1 == '报警') {
-              return '#FF0000'
-            } else if (item1 == '告警') {
-              return '#C71585'
-            } else if (item1 == '预警') {
-              return '#800080'
-            } else if (item1 == '故障') {
-              return '#FFA500'
-            } else if (item1 == '低电量') {
-              return '#ffff00'
-            } else if (item1 == '离线') {
-              return '#808080'
-            } else if (item1 == '正常') {
-              return '#008000'
-            }
-          })
-          this_.EchartsImg2(deviceStatusName, deviceStatusData, colorArr)
+      this.$http.post(url, currentData).then(function (response) {
+        let responseData = response.data
+        let deviceStatusData = responseData.data.map(function (item, i) {
+          let obj = {
+            value: item.num,
+            name: item.name,
+            type: item.type,
+          }
+          return obj
         })
+        let deviceStatusColor = deviceStatusData.map((item) => item.type)
+        let deviceStatusName = deviceStatusData.map((item) => item.name)
+        let colorArr = deviceStatusColor.map((item1) => {
+          console.log(item1)
+          if (Number(item1) == 3) {
+            return '#FF0000'
+          } else if (Number(item1) == 83) {
+            return '#C71585'
+          } else if (Number(item1) == 82) {
+            return '#800080'
+          } else if (Number(item1) == 8) {
+            return '#FFA500'
+          } else if (Number(item1) == 9) {
+            return '#ffff00'
+          } else if (Number(item1) === 2) {
+            return '#808080'
+          } else if (Number(item1) === 1) {
+            return '#008000'
+          }
+        })
+        this_.EchartsImg2(deviceStatusName, deviceStatusData, colorArr)
+      })
     },
     //查询设备类型
     equipmentType() {
@@ -111,8 +129,8 @@ export default {
           this_.equipmentTypeData = response.data.data
         })
     },
-    // 事件列表接口调用
-    alarmTrend(areaID, deviceType, startTime, endTime) {
+    alarmTrend(url, areaID, deviceType, startTime, endTime) {
+      this.alarmTrendUrl = url
       let this_ = this
       var currentData = qs.stringify({
         areaId: areaID,
@@ -120,19 +138,15 @@ export default {
         startTime: startTime,
         endTime: endTime,
       })
-      this.$http
-        .post('http://srv.shine-iot.com:8060/device/alarm/cnt', currentData)
-        .then(function (response) {
-          console.log('设备的报警趋势')
-          console.log(response)
-          let chartData = response.data.map((item) => {
-            item.msgDate = this_.formatDate(item.msgDate)
-            return item
-          })
-          let alarmCntTime = chartData.map((item) => item.msgDate)
-          let alarmCntNum = chartData.map((item) => item.msgCnt)
-          this_.EchartsImg(alarmCntTime, alarmCntNum)
+      this.$http.post(url, currentData).then(function (response) {
+        let chartData = response.data.data.map((item) => {
+          item.msgDate = this_.formatDate(item.msgDate)
+          return item
         })
+        let alarmCntTime = chartData.map((item) => item.msgDate)
+        let alarmCntNum = chartData.map((item) => item.msgCnt)
+        this_.EchartsImg(alarmCntTime, alarmCntNum)
+      })
     },
     //将时间戳转换成日期
     formatDate(d) {
@@ -165,45 +179,45 @@ export default {
       return year + '-' + month + '-' + date + ' ' + hour + ':' + minute
     },
     //设备数量分布图
-    devicesNumber(areaId) {
+    devicesNumber(url, areaId, lang) {
+      this.devicesNumberUrl = url
       this.areaID = areaId
+      this.lang = lang
       let this_ = this
-      var currentData = qs.stringify({ areaId: areaId })
-      this.$http
-        .post('http://srv.shine-iot.com:8060/device/type/cnt', currentData)
-        .then(function (response) {
-          let chartData = response.data
-          let deviceTypeCntName = chartData.map((item) => DeviceType(item.deviceTypeCode))
-          let deviceTypeCntNum = chartData.map((item) => item.deviceCnt)
-          let deviceTypeColor = chartData.map((item) => {
-            if (item.deviceTypeCode == 1) {
-              return '#ffa07a'
-            } else if (item.deviceTypeCode == 8) {
-              return '#008080'
-            } else if (item.deviceTypeCode == 12) {
-              return '#a0522d'
-            } else if (item.deviceTypeCode == 3) {
-              return '#ee82ee'
-            } else if (item.deviceTypeCode == 6) {
-              return '#fafad2'
-            } else if (item.deviceTypeCode == 4) {
-              return '#b0c4de'
-            } else if (item.deviceTypeCode == 7) {
-              return '#008080'
-            } else if (item.deviceTypeCode == 16) {
-              return '#1e90ff'
-            } else if (item.deviceTypeCode == 17) {
-              return '#87cefa'
-            } else if (item.deviceTypeCode == 14) {
-              return '#7b68ee'
-            } else if (item.deviceTypeCode == 31) {
-              return '#e0ffff'
-            } else if (item.deviceTypeCode == 30) {
-              return '#ffb6c1'
-            }
-          })
-          this_.EchartsImg3(deviceTypeCntName, deviceTypeCntNum, deviceTypeColor)
+      var currentData = qs.stringify({ areaId: areaId, lang: lang })
+      this.$http.post(url, currentData).then(function (response) {
+        let chartData = response.data.data
+        let deviceTypeCntName = chartData.map((item) => item.dcTypeName)
+        let deviceTypeCntNum = chartData.map((item) => item.deviceCnt)
+        let deviceTypeColor = chartData.map((item) => {
+          if (item.deviceTypeCode == 1) {
+            return '#ffa07a'
+          } else if (item.deviceTypeCode == 8) {
+            return '#008080'
+          } else if (item.deviceTypeCode == 12) {
+            return '#a0522d'
+          } else if (item.deviceTypeCode == 3) {
+            return '#ee82ee'
+          } else if (item.deviceTypeCode == 6) {
+            return '#fafad2'
+          } else if (item.deviceTypeCode == 4) {
+            return '#b0c4de'
+          } else if (item.deviceTypeCode == 7) {
+            return '#008080'
+          } else if (item.deviceTypeCode == 16) {
+            return '#1e90ff'
+          } else if (item.deviceTypeCode == 17) {
+            return '#87cefa'
+          } else if (item.deviceTypeCode == 14) {
+            return '#7b68ee'
+          } else if (item.deviceTypeCode == 31) {
+            return '#e0ffff'
+          } else if (item.deviceTypeCode == 30) {
+            return '#ffb6c1'
+          }
         })
+        this_.EchartsImg3(deviceTypeCntName, deviceTypeCntNum, deviceTypeColor)
+      })
     },
     EchartsImg(deviceAlarmCntTime, deviceAlarmCntNum) {
       // 基于准备好的dom，初始化echarts实例

@@ -60,32 +60,20 @@ export default {
     return {
       areaID: '',
       map: '',
+      lang: localStorage.getItem('Language'),
       alarmTrendData: [],
       center: { lng: 116.404, lat: 39.915 },
       show: false,
-      value: '',
       show2: true,
-      show5: false,
-      options: [],
       markers: [],
-      value: '',
-      options: [],
-      options2: [],
-      tableData: [],
-      deviceAlarmCntNum: [],
-      deviceAlarmCntTime: [],
-      mapTypeList: [],
-      startTime: '',
-      endTime: '',
-      pageSize: 10,
       currentPage: 1,
     }
   },
   mounted() {
     //获取地图底部数据
-    this.$refs.mapChild.kcntFunction(this.areaID)
+    this.$refs.mapChild.kcntFunction(this.areaID, this.lang)
     //获取图形化数据
-    this.$refs.rightChild.initEcharData()
+    this.$refs.rightChild.initEcharData(this.lang, this.areaID)
   },
   methods: {
     handler({ BMap, map }) {
@@ -101,24 +89,28 @@ export default {
     fatherClickFn(data) {
       this.areaID = data.id
       //显示右侧数据
-      this.$refs.rightChild.initEcharData(data.id)
+      this.$refs.rightChild.initEcharData(this.lang, data.id)
       //点击区域在地图上展示区域下面得设备
       this.$refs.mapChild.areDeviceMap(data)
       //获取地图底部数据
-      this.$refs.mapChild.kcntFunction(this.areaID)
+      this.$refs.mapChild.kcntFunction(this.areaID, this.lang)
     },
-    showEven() {
-      this.show2 = true
-      this.show5 = false
+    //获取底部数据
+    getMapBottomData(lang) {
+      this.lang = lang
+      this.$refs.mapChild.kcntFunction(this.areaID, this.lang)
     },
-    deviceAlarmTrends() {
-      this.$http.post('')
+    //英文地图
+    changeEnMap(lang) {
+      if (lang == 'zh-CN') {
+        this.$refs.mapChild.initMap()
+      } else {
+        this.$refs.mapChild.initEnMap()
+      }
     },
-    infoWindowClose(marker) {
-      marker.showFlag = false
-    },
-    infoWindowOpen(marker) {
-      marker.showFlag = true
+    //获取右侧数据
+    getRightData(lang) {
+      this.$refs.rightChild.initEcharData(lang, this.areaID)
     },
     handleCurrentChange(val) {
       this.currentPage = val

@@ -180,8 +180,8 @@ export default {
           })
         })
     },
-    kcntFunction(areaId) {
-      var paramData = qs.stringify({ areaId: areaId })
+    kcntFunction(areaId, lang) {
+      var paramData = qs.stringify({ areaId: areaId, lang: lang })
       let this_ = this
       this.$http
         .post('http://srv.shine-iot.com:8060/device/org/kcnt', paramData)
@@ -189,13 +189,75 @@ export default {
           this_.mapTypeList = response.data
         })
     },
+    initEnMap() {
+      //加载数据
+      let that = this
+      MapLoader().then(
+        (AMap) => {
+          this.map = new AMap.Map('mapContent', {
+            center: [121.203894, 31.083081],
+            zoom: 12,
+            mapStyle: 'amap://styles/a5752c030da62782b5dbf2ebc3081c36',
+            lang: 'zh_en', //可选值：en，zh_en, zh_cn
+          })
+          this.$http.post('http://srv.shine-iot.com:8060/org/logps').then((data) => {
+            data.data.data.forEach((obj, index) => {
+              const lnglat = [obj.areaLong, obj.areaLat]
+              that.map.add(
+                new AMap.Marker({
+                  position: lnglat,
+                  icon: 'http://srv.shine-iot.com:8060/img/map/water/green.png',
+                  offset: new AMap.Pixel(-15, -15),
+                }).on('click', function () {
+                  var currentData = qs.stringify({ areaId: obj.areaID })
+                  that.$http
+                    .post('http://srv.shine-iot.com:8060/org/area/dcnt', currentData)
+                    .then(function (response) {
+                      var infoWindow
+                      //构建信息窗体中显示的内容
+                      var info = []
+                      info.push('<div>')
+                      info.push(
+                        '<div style="padding:0px 0px 0px 4px;color:white;font-size:14px"><b>信息</b>'
+                      )
+                      info.push('<span>名称 :' + response.data.areaName + '</span>')
+                      info.push('<span>地址:' + response.data.areaLocDetail + '</span>')
+                      info.push(
+                        '<span>联系人:' +
+                          response.data.areaContact +
+                          '</span><span style="margin-left:30px">联系电话：' +
+                          response.data.areaContactPhone +
+                          '</span>'
+                      )
+                      info.push(
+                        '<span>设备种类：' +
+                          DeviceType(response.data.deviceKinds) +
+                          '</span><span style="margin-left:10px">设备数量：' +
+                          response.data.deviceCount +
+                          '</span></div></div>'
+                      )
+                      infoWindow = new AMap.InfoWindow({
+                        content: info.join('<br/>'), //使用默认信息窗体框样式，显示信息内容
+                      })
+                      infoWindow.open(that.map, lnglat)
+                    })
+                })
+              )
+            })
+          })
+        },
+        (e) => {
+          console.log('地图加载失败', e)
+        }
+      )
+    },
   },
   mounted() {
     //加载地图
     setTimeout(() => {
       this.initMap()
     }, 2000)
-    this.initMap()
+    this.kcntFunction('', 'zh-CN')
   },
 }
 </script>

@@ -2,8 +2,8 @@
   <div class="boxRightContent">
     <div class="titleRight">
       <div class="firstChild">
-        <div :class="(1==tabIndex)?'activity':'normal'" @click="tabChange(1)">数据统计图例</div>
-        <div :class="(2==tabIndex)?'activity':'normal'" @click="tabChange(2)">事件列表</div>
+        <div :class="(1==tabIndex)?'activity':'normal'" @click="tabChange(1)">{{$t('Index.statistics')}}</div>
+        <div :class="(2==tabIndex)?'activity':'normal'" @click="tabChange(2)">{{$t('Index.eventList')}}</div>
       </div>
       <img src="../../../src/static/img/rightDelete.png">
     </div>
@@ -27,33 +27,114 @@ export default {
     return {
       activeName: 'echarts',
       tabIndex: 1,
+      lang: localStorage.getItem('Language'),
       areaID: '',
     }
   },
   mounted() {
-    this.initEcharData(this.areaID)
+    if (this.$route.path == '/index') {
+      this.initEcharData(this.lang, this.areaID)
+    } else if (this.$route.path == '/fireMonitoring') {
+      this.fireMonitorInitData(this.lang, this.areaID)
+    }
   },
   methods: {
-    initEcharData(areaID) {
+    initEcharData(lang, areaID) {
       this.areaID = areaID
+      this.lang = lang
       //查询设备报警趋势
-      this.$refs.graphical.alarmTrend(this.areaID, '', '', '')
+      this.$refs.graphical.alarmTrend(
+        'http://srv.shine-iot.com:8060/device/alarm/cnt',
+        this.areaID,
+        '',
+        '',
+        ''
+      )
       //查询设备数量分布图
-      this.$refs.graphical.devicesNumber(areaID)
+      this.$refs.graphical.devicesNumber(
+        'http://srv.shine-iot.com:8060/device/type/cnt',
+        areaID,
+        lang
+      )
       //设备状态分布图
-      this.$refs.graphical.deviceStatusFn(areaID, '')
+      this.$refs.graphical.deviceStatusFn(
+        'http://srv.shine-iot.com:8060/device/stus/cnt',
+        lang,
+        areaID,
+        ''
+      )
       //设备类型
       this.$refs.graphical.equipmentType()
       //初始化事件列表
-      this.$refs.events.eventAreaEvts(areaID,'','','','',1)
+      this.$refs.events.eventAreaEvts(
+        'http://srv.shine-iot.com:8060/event/area/evts',
+        lang,
+        areaID,
+        '',
+        '',
+        '',
+        '',
+        1
+      )
+      //查询事件等级
+      this.$refs.events.eventLevelFn()
+      //设备类型
+      this.$refs.events.equipmentType()
+    },
+    //火灾监控初始化图例
+    fireMonitorInitData(lang, areaID) {
+      this.areaID = areaID
+      this.lang = lang
+      //查询设备报警趋势
+      this.$refs.graphical.alarmTrend(
+        'http://srv.shine-iot.com:8060/fdev/mnt/alarm/cnt',
+        this.areaID,
+        '',
+        '',
+        ''
+      )
+      //查询设备数量分布图
+      this.$refs.graphical.devicesNumber(
+        'http://srv.shine-iot.com:8060/fdev/mnt/type/cnt',
+        areaID,
+        lang
+      )
+      //设备状态分布图
+      this.$refs.graphical.deviceStatusFn(
+        'http://srv.shine-iot.com:8060/fdev/mnt/stus/cnt',
+        lang,
+        areaID,
+        ''
+      )
+
+      //设备类型
+      this.$refs.graphical.equipmentType()
+      //初始化事件列表
+      this.$refs.events.eventAreaEvts(
+        'http://srv.shine-iot.com:8060/fdev/mnt/area/evts',
+        lang,
+        areaID,
+        '',
+        '',
+        '',
+        '',
+        1
+      )
+      //查询事件等级
+      this.$refs.events.eventLevelFn()
+      //设备类型
+      this.$refs.events.equipmentType()
     },
     tabChange(num) {
       this.tabIndex = num
       if (this.tabIndex == 2) {
         //事件等级
-        //this.$refs.events.eventLevelFn()
       } else {
-        this.initEcharData(this.areaID)
+        if (this.$route.path == '/index') {
+          this.initEcharData(this.lang, this.areaID)
+        } else if (this.$route.path == '/fireMonitoring') {
+          this.fireMonitorInitData(this.lang, this.areaID)
+        }
       }
     },
   },

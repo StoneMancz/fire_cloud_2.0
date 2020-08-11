@@ -29,13 +29,12 @@ import Alarm from '../../common/components/Alarm'
 export default {
   components: {
     MessageBox,
-    Alarm
+    Alarm,
   },
   data() {
     return {
       userId: localStorage.getItem('userId'),
       languageValue: localStorage.getItem('Language') || 'CN',
-      token: localStorage.getItem('token'),
       tabIndex: 0,
       logoImg: '',
       pageData: [],
@@ -45,8 +44,40 @@ export default {
     changeLanguage() {
       this.$i18n.locale == 'zh' ? (this.$i18n.locale = 'en') : (this.$i18n.locale = 'zh') //设置中英文模式
       this.languageValue = this.$i18n.locale
-      localStorage.setItem('Language', this.$i18n.locale) //将用户设置存储到localStorage以便用户下次打开时使用此设置
       this.changeLanguageValue()
+      if (this.$i18n.locale == 'zh') {
+        localStorage.setItem('Language', 'zh-CN') //将用户设置存储到localStorage以便用户下次打开时使用此设置
+        //消息盒子的中英文切换
+        this.$refs.messageBoxChild.getMessage('zh-CN')
+        //实时监控
+        if (this.$route.path == '/index') {
+          //获取地图底部的数据
+          this.$parent.getMapBottomData('zh-CN')
+          //切换英文的地图
+          this.$parent.changeEnMap('zh-CN')
+          //切换成英文的事件
+          this.$parent.getRightData('zh-CN')
+        } else if (this.$route.path == '/fireMonitoring') {
+          this.switchEn_Ch('zh-CN')
+        }
+      } else {
+        localStorage.setItem('Language', 'en-US') //将用户设置存储到localStorage以便用户下次打开时使用此设置
+        //消息盒子的中英文切换
+        this.$refs.messageBoxChild.getMessage('en-US')
+        if (this.$route.path == '/index') {
+          //获取地图底部的数据
+          this.$parent.getMapBottomData('en-US')
+          //切换英文的地图
+          this.$parent.changeEnMap('en-US')
+          //切换成英文的事件
+          this.$parent.getRightData('en-US')
+        } else if (this.$route.path == '/fireMonitoring') {
+          this.switchEn_Ch('en-US')
+        }
+      }
+    },
+    switchEn_Ch(lang) {
+      this.$parent.switchLanguage(lang)
     },
     getLogo() {
       // let this_ = this
@@ -78,12 +109,16 @@ export default {
     switchTab(index) {
       this.tabIndex = index
       if (this.tabIndex == 0) {
+        localStorage.setItem('tabIndex', 0)
         this.$router.push({ path: 'index' })
       } else if (this.tabIndex == 1) {
+        localStorage.setItem('tabIndex', 1)
         this.$router.push({ path: 'fireMonitoring' })
       } else if (this.tabIndex == 2) {
+        localStorage.setItem('tabIndex', 2)
         this.$router.push({ path: 'ElectricalMonitoring' })
       } else if (this.tabIndex == 3) {
+        localStorage.setItem('tabIndex', 3)
         this.$router.push({ path: 'controllerList' })
       }
     },
@@ -93,6 +128,7 @@ export default {
   },
   mounted() {
     this.changeLanguageValue()
+    this.tabIndex = localStorage.getItem('tabIndex')
     //this.getLogo()
   },
 }
