@@ -1,0 +1,256 @@
+<template>
+  <el-drawer custom-class="eventDetails" :visible.sync="deviceDrawers" :with-header="false" size="41%">
+    <div class="titleBk">设备详情</div>
+    <div class="detailsBk">
+      <div class="detail_titel">基本信息</div>
+      <div class="detailsContent">
+        <div class="detailsItem">
+          <div>设备名称：<span>{{deviceInfo.dcTypeName}}</span></div>
+          <div>设备编码：<span>{{deviceInfo.deviceSN}}</span></div>
+        </div>
+        <div class="detailsItem">
+          <div>运行状态：<span>{{deviceInfo.runStatusName}}</span></div>
+          <div>二维码</div>
+        </div>
+        <div class="detailsItem">
+          <div>电池电量：<span>{{deviceInfo.batteryName}}</span></div>
+          <div>登记时间：<span>{{deviceInfo.entryTime}}</span></div>
+        </div>
+        <div class="detailsItem">
+          <div>通讯方式：<span>{{deviceInfo.protocolTypeName}}</span></div>
+          <div>通讯模块编码：<span>{{deviceInfo.protocolTypeName}}</span></div>
+        </div>
+        <div class="detailsItem">
+          <div>设备类型：<span>{{deviceInfo.dcTypeName}}</span></div>
+          <div>生产厂家：<span>{{deviceInfo.providerName}}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="detailsBk">
+      <div class="detail_titel">安装信息</div>
+      <div class="detailsContent">
+        <div class="detailsItem">
+          <div>单位：<span>{{installation.orgName}}</span></div>
+          <div>区域：<span>{{installation.areaName}}</span></div>
+        </div>
+        <div class="detailsItem" style="width:100%">
+          <div style="width:100%">详细地址：<span>{{installation.deviceAddr}}</span></div>
+        </div>
+        <div class="detailsItem">
+          <div>联系人<span>{{installation.areaContact}}</span></div>
+          <div>联系电话：<span>{{installation.areaContactPhone}}</span></div>
+        </div>
+        <div class="detailsItem">
+          <div>安装场所：<span>{{installation.placeName}}</span></div>
+          <div>安装时间：<span>{{installation.deviceFixDate}}</span></div>
+        </div>
+        <div class="detailsItem">
+          <div>分区编号：<span>{{installation.areaNo}}</span></div>
+          <div>安装编号：<span>{{installation.installNumber}}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="detailsBk" v-if="deviceInfo.deviceTypeCode==16 || deviceInfo.deviceTypeCode==17">
+      <div class="detail_titel">其他信息</div>
+      <div class="detailsContent">
+        <div class="detailsItem">
+          <div>当前值：<span>{{buildInfoModel.curVal}}{{buildInfoModel.rangUnitName}}</span></div>
+        </div>
+        <div class="detailsItem">
+          <div>报警上限值：<span>{{buildInfoModel.upAlarm}}{{buildInfoModel.rangUnitName}}</span></div>
+          <div>报警下限值：<span>{{buildInfoModel.lowAlarm}}{{buildInfoModel.rangUnitName}}</span></div>
+        </div>
+        <div class="detailsItem">
+          <div>预警上限值：<span>{{buildInfoModel.upWarn}}{{buildInfoModel.rangUnitName}}</span></div>
+          <div>预警下限值：<span>{{buildInfoModel.lowWarn}}{{buildInfoModel.rangUnitName}}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detailsBk" v-if="deviceInfo.deviceTypeCode==7">
+      <div class="detail_titel">其他信息</div>
+      <div class="detailsContent">
+        <div class="detailsItem">
+          <div>当前状态：<span>{{switchData.deftStatusName}}</span></div>
+          <div>默认状态：<span>{{switchData.runStatusName}}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detailsBk" v-if="deviceInfo.deviceTypeCode==30">
+      <div class="detail_titel">更多</div>
+      <div class="detailsContent">
+        <div class="detailsItem">
+          <div>通道详情</div>
+          <div>维修</div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="detailsBk" v-if="deviceInfo.deviceTypeCode==30">
+      <div class="detail_titel">更多</div>
+      <div class="detailsContent">
+        <div class="detailsItem">
+          <div>通道详情</div>
+          <div>维修</div>
+        </div>
+      </div>
+    </div> -->
+  </el-drawer>
+</template>
+
+<script>
+import { getTimeToString } from '../../components/rule/getTime'
+export default {
+  data() {
+    return {
+      deviceDrawers: false,
+      deviceInfo: {},
+      installation: {},
+      buildInfoModel: {},
+      switchData: {},
+    }
+  },
+  methods: {
+    openEquipmentDetails(deviceId) {
+      this.deviceDrawers = true
+      let this_ = this
+      this.$http
+        .get('http://srv.shine-iot.com:8060/device/base/detail/' + deviceId)
+        .then(function (response) {
+          console.log('设备详情')
+          console.log(response)
+          let deviceDetailsData = response.data.data
+          let deviceInfo = {
+            deviceTypeCode: deviceDetailsData.deviceTypeCode,
+            dcTypeName: deviceDetailsData.dcTypeName,
+            deviceSN: deviceDetailsData.deviceSN,
+            runStatusName: deviceDetailsData.runStatusName,
+            batteryName: deviceDetailsData.batteryName,
+            entryTime: getTimeToString(deviceDetailsData.entryTime),
+            protocolTypeName: deviceDetailsData.protocolTypeName,
+            signalModuleSN: deviceDetailsData.signalModuleSN,
+            dcTypeName: deviceDetailsData.dcTypeName,
+            providerName: deviceDetailsData.providerName,
+          }
+          let installation = {
+            orgName: deviceDetailsData.orgName,
+            areaName: deviceDetailsData.areaName,
+            deviceAddr:
+              deviceDetailsData.areaLocCity +
+              deviceDetailsData.areaLocDist +
+              deviceDetailsData.areaName +
+              deviceDetailsData.deviceAddr,
+            areaContact: deviceDetailsData.areaContact,
+            areaContactPhone: deviceDetailsData.areaContactPhone,
+            placeName: deviceDetailsData.placeName,
+            deviceFixDate: deviceDetailsData.deviceFixDate,
+            areaNo: deviceDetailsData.areaNo,
+            installNumber: deviceDetailsData.installNumber,
+          }
+
+          if (deviceInfo.deviceTypeCode == 16 || deviceInfo.deviceTypeCode == 17) {
+            let buildInfoModel = {
+              curVal: deviceDetailsData.buildInfoModel.curVal,
+              lowAlarm: deviceDetailsData.buildInfoModel.lowAlarm,
+              lowWarn: deviceDetailsData.buildInfoModel.lowWarn,
+              rangUnitName: deviceDetailsData.buildInfoModel.rangUnitName,
+              upAlarm: deviceDetailsData.buildInfoModel.upAlarm,
+              upWarn: deviceDetailsData.buildInfoModel.upWarn,
+            }
+            this_.buildInfoModel = buildInfoModel
+          } else if (deviceInfo.deviceTypeCode == 7) {
+            let switchData = {
+              deftStatusName: deviceDetailsData.deftStatusName,
+              runStatusName: deviceDetailsData.runStatusName,
+            }
+            this_.switchData = switchData
+          }
+
+          this_.installation = installation
+          this_.deviceInfo = deviceInfo
+        })
+    },
+  },
+}
+</script>
+
+<style lang="stylus" scoped>
+.eventDetails {
+  background: linear-gradient(-30deg, rgba(0, 8, 41, 1) 0%, rgba(0, 14, 71, 1) 98%);
+
+  .titleBk {
+    font-size: 20px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    margin-left: 40px;
+    margin-top: 39px;
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .detailsBk {
+    display: flex;
+    flex-direction: column;
+    width: 720px;
+    margin-left: 40px;
+    margin-top: 20px;
+    padding-left: 28px;
+    background: rgba(255, 255, 255, 0.06);
+
+    .detail_titel {
+      font-size: 18px;
+      font-family: PingFang SC;
+      font-weight: 400;
+      margin-top: 15px;
+      color: rgba(229, 229, 229, 1);
+    }
+
+    .detailsContent {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 10px;
+
+      .otherDetail {
+        font-size: 16px;
+        cursor: pointer;
+        font-family: PingFang SC;
+        font-weight: 400;
+        text-decoration: underline;
+        margin-right: 59px;
+        color: rgba(54, 92, 245, 1);
+      }
+
+      .detailsItem {
+        display: flex;
+        font-size: 16px;
+        font-family: PingFang SC;
+        font-weight: 400;
+        margin-top: 20px;
+        color: rgba(229, 229, 229, 1);
+        margin-right: 89px;
+
+        div {
+          width: 300px;
+
+          .eventLevel {
+            margin-left: 19px;
+            font-size: 16px;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: rgba(230, 0, 0, 1);
+          }
+
+          .eventdeal {
+            margin-left: 53px;
+            font-size: 16px;
+            font-family: PingFang SC;
+            font-weight: 400;
+            cursor: pointer;
+            text-decoration: underline;
+            color: rgba(54, 92, 245, 1);
+          }
+        }
+      }
+    }
+  }
+}
+</style>

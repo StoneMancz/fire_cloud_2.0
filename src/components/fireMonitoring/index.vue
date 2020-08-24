@@ -14,16 +14,13 @@
                 </el-select>
               </div>
               <div>
-                <el-select v-model="deviceStatus" placeholder="设备状态" style @change="deviceStatusChange">
+                <el-select v-model="deviceStatus" placeholder="设备状态" @change="deviceStatusChange">
                   <el-option label="设备状态" value></el-option>
                   <el-option v-for="item in deviceStatusList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
               <div>
-                <el-select v-model="installNumber" placeholder="安装编号" style @change="installNumberChange">
-                  <el-option label="安装编号" value></el-option>
-                  <el-option v-for="item in installNumberList" :key="item.type" :label="item.name" :value="item.type"></el-option>
-                </el-select>
+                <input class="installNumbers" placeholder="请输入设备编号" @change="getDevsData" v-model="installNumber">
               </div>
             </div>
             <div class="installInfo">
@@ -36,16 +33,18 @@
                 <span>地址</span>
                 <span>详情</span>
               </div>
-              <div class="tebleColumn" v-for="(item,index) in installInfoList" @click="installInfoDetails(item.eventId)" :key="index">
+              <div class="tebleColumn" v-for="(item,index) in installInfoList" :key="index">
                 <div>{{item.installNumber}}</div>
                 <div>{{item.dcShortName}}</div>
                 <div>{{item.deviceSN}}</div>
                 <div style="color:rgba(0,143,19,1);" v-if="item.runStatusName=='正常' || item.runStatusName=='Normal'">{{item.runStatusName}}</div>
                 <div style="color:red;" v-else-if="item.runStatusName=='报警' || item.runStatusName=='Alarming'">{{item.runStatusName}}</div>
+                <div v-else-if="item.runStatusName=='离线'" style="color:#41414B;">{{item.runStatusName}}</div>
+                <div v-else-if="item.runStatusName=='低电量'" style="color:#F7D501;">{{item.runStatusName}}</div>
                 <div v-else>{{item.runStatusName}}</div>
                 <div>{{item.areaName}}</div>
                 <div>{{item.deviceAddr}}</div>
-                <div style="color:rgba(112,212,254,1);">详情</div>
+                <div style="color:rgba(112,212,254,1);" @click="seeDeviceDetail(item.deviceId)">详情</div>
               </div>
               <el-pagination class="pagination2" :current-page.sync="currentPage" layout="prev, pager, next" :total="total" style="text-align: center;" @current-change="handleCurrentChange"></el-pagination>
             </div>
@@ -56,10 +55,12 @@
         </div>
       </div>
     </div>
+    <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
   </renderless-component-example>
 </template>
 <script>
 import RightCommon from '../../common/components/RightCommon'
+import DeviceDetailsCom from '../../common/components/DeviceDetails'
 import qs from 'qs'
 import Headers from '../../common/components/Header'
 import LeftCommon from '../../common/components/LeftCommon'
@@ -88,6 +89,7 @@ export default {
     Headers,
     DetailsCommon,
     RightCommon,
+    DeviceDetailsCom,
   },
   mounted() {
     //查询设备列表
@@ -115,6 +117,9 @@ export default {
           this_.total = response.data.data.total
         })
     },
+    seeDeviceDetail(deviceId) {
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
+    },
     fatherClickFn(data) {
       this.areaId = data.id
       this.getDevsData()
@@ -141,8 +146,6 @@ export default {
     deiceTypes() {
       let this_ = this
       this.$http.get('http://srv.shine-iot.com:8060/fdev/mnt/types').then(function (response) {
-        console.log('设备类型')
-        console.log(response)
         this_.equipmentTyleList = response.data.data
       })
     },
@@ -198,6 +201,14 @@ export default {
           div {
             width: 220px;
             margin-right: 20px;
+
+            .installNumbers {
+              width: 210px;
+              color: white;
+              height: 40px;
+              background: rgba(0, 13, 65, 1);
+              border-radius: 4px;
+            }
           }
         }
 

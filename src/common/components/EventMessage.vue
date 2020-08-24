@@ -89,14 +89,14 @@ export default {
         )
       }
     },
-    equipmentType() {
+    equipmentType(url, lang) {
       let this_ = this
-      var currentData = qs.stringify({ areaId: this_.areaID })
-      this.$http
-        .post('http://srv.shine-iot.com:8060/device/tpcodes', currentData)
-        .then(function (response) {
-          this_.equipmentTypeData = response.data.data
-        })
+      var currentData = qs.stringify({ areaId: this_.areaId, lang: lang })
+      this.$http.get(url, currentData).then(function (response) {
+        console.log('设备类型数据')
+        console.log(response)
+        this_.equipmentTypeData = response.data.data
+      })
     },
     eventLevelFn() {
       let this_ = this
@@ -197,8 +197,6 @@ export default {
         pageNo: pageNo,
       })
       this.$http.post(url, currentData).then(function (response) {
-        console.log('初始化事件列表')
-        console.log(response)
         let eventList = response.data.data.records
         let eventListNew = eventList.map((item) => {
           let obj = {

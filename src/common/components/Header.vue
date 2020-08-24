@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="logo">
-      <img src="">
+      <img src="../../../src/static/img/logo.png" style="width:140px;height:50px;margin-left:-20px">
     </div>
     <div class="nav">
       <div v-for="(item,index) in pageData" :key="index" @click="switchTab(index)" :class="(index==tabIndex)?'activity':'normal'">
@@ -119,7 +119,13 @@ export default {
         this.$router.push({ path: 'ElectricalMonitoring' })
       } else if (this.tabIndex == 3) {
         localStorage.setItem('tabIndex', 3)
+        this.$router.push({ path: 'water' })
+      } else if (this.tabIndex == 4) {
+        localStorage.setItem('tabIndex', 4)
         this.$router.push({ path: 'controllerList' })
+      } else if (this.tabIndex == 5) {
+        localStorage.setItem('tabIndex', 5)
+        this.$router.push({ path: 'newsletter' })
       }
     },
     messageBox() {
@@ -128,8 +134,11 @@ export default {
   },
   mounted() {
     this.changeLanguageValue()
-    this.tabIndex = localStorage.getItem('tabIndex')
-    //this.getLogo()
+    if (this.$route.path == '/index') {
+      this.tabIndex = 0
+    } else {
+      this.tabIndex = localStorage.getItem('tabIndex')
+    }
   },
 }
 </script>
@@ -147,7 +156,6 @@ export default {
     width: 160px;
     height: 60px;
     margin-left: 40px;
-    background: rgba(255, 255, 255, 1);
   }
 
   .nav {

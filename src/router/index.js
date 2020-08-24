@@ -5,9 +5,9 @@ import index from '@/components/index/index.vue'
 import fireMonitoring from '@/components/fireMonitoring/index.vue'
 import ElectricalMonitoring from '@/components/ElectricalMonitoring/ElectricalMonitoring.vue'
 import controllerList from '@/components/controller/controllerList.vue'
-import device from '@/components/device/device.vue'
-import deviceMonitoring from '@/components/deviceMonitoring/deviceMonitoring.vue'
+import Newsletter from '@/components/device/device.vue'
 import login from '@/components/login/login.vue'
+import Water from '../components/water/index.vue'
 
 Vue.use(Router)
 
@@ -63,19 +63,18 @@ export default new Router({
         component: controllerList
     },
     {
-        path: '/device',
-        name: 'device',
+        path: '/newsletter',
+        name: 'newsletter',
         meta: {
             requireAuth: true
         },
-        component: device
-    },
-    {
-        path: '/deviceMonitoring',
-        name: 'deviceMonitoring',
+        component: Newsletter
+    }, {
+        path: '/water',
+        name: 'water',
         meta: {
             requireAuth: true
         },
-        component: deviceMonitoring
+        component: Water
     }]
 })

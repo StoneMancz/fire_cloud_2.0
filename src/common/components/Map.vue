@@ -13,16 +13,19 @@
         </div>
       </div>
     </div>
+    <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
   </renderless-component-example>
 </template>
 
 <script>
 import MapLoader from '../../assets/js/AMap'
+import DeviceDetailsCom from '../../common/components/DeviceDetails'
 import qs from 'qs'
 import { deviceStatus, DeviceType, LevCodeName } from '../../components/rule/typeName'
 export default {
-  components() {
-    MapLoader
+  components: {
+    MapLoader,
+    DeviceDetailsCom,
   },
   data() {
     return {
@@ -62,23 +65,31 @@ export default {
                       var info = []
                       info.push('<div>')
                       info.push(
-                        '<div style="padding:0px 0px 0px 4px;color:white;font-size:14px"><b>信息</b>'
+                        '<div style="padding:0px 0px 0px 4px;color:white;font-size:16px;"><b>单位信息</b>'
                       )
-                      info.push('<span>名称 :' + response.data.areaName + '</span>')
-                      info.push('<span>地址:' + response.data.areaLocDetail + '</span>')
                       info.push(
-                        '<span>联系人:' +
+                        '<div style=margin-top:10px><span style=font-size:14px;color:rgba(153,153,153,1);>名称：</span><span style=font-size:14px;>' +
+                          response.data.areaName +
+                          '</span></div>'
+                      )
+                      info.push(
+                        '<div style=margin-top:-20px;width:110%;><span style=font-size:14px;color:rgba(153,153,153,1);>地址：</span><span style=font-size:14px;>' +
+                          response.data.areaLocDetail +
+                          '</span></div>'
+                      )
+                      info.push(
+                        '<div style=width:100%;display:flex;justify-content:space-between;margin-top:-20px;><span style=font-size:14px;color:rgba(153,153,153,1);>联系人：</span><span style=font-size:14px;>' +
                           response.data.areaContact +
-                          '</span><span style="margin-left:30px">联系电话：' +
+                          '</span><span style="font-size:14px;color:rgba(153,153,153,1);">联系电话：</span><span>' +
                           response.data.areaContactPhone +
-                          '</span>'
+                          '</span></div>'
                       )
                       info.push(
-                        '<span>设备种类：' +
+                        '<div style=width:100%;display:flex;justify-content:space-between;margin-top:-20px;><span style=font-size:14px;color:rgba(153,153,153,1);>类型：</span><span style=font-size:14px;>' +
                           DeviceType(response.data.deviceKinds) +
-                          '</span><span style="margin-left:10px">设备数量：' +
+                          '</span><span style=font-size:14px;color:rgba(153,153,153,1);>设备数量：</span><span style=font-size:14px;>' +
                           response.data.deviceCount +
-                          '</span></div></div>'
+                          '</span></div>'
                       )
                       infoWindow = new AMap.InfoWindow({
                         content: info.join('<br/>'), //使用默认信息窗体框样式，显示信息内容
@@ -120,23 +131,27 @@ export default {
                   var infoWindow
                   //构建信息窗体中显示的内容
                   var info = []
-                  info.push('<div>')
+                  info.push('<div style=width:399px>')
                   info.push(
-                    '<div style="padding:0px 0px 0px 4px;color:black;font-size:14px;color:white"><b>设备信息</b>'
+                    '<div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>'
                   )
                   info.push(
-                    '<span>设备编号 :' +
+                    '<div style=width:100%;display:flex;justify-content:space-between;font-size:14px;><span style=color:rgba(153,153,153,1);>设备编号：</span><span>' +
                       obj.deviceSN +
-                      '</span><span style="margin-left:10px">设备类型 :' +
+                      '</span><span style=color:rgba(153,153,153,1);>设备类型：</span><span>' +
                       obj.dcTypeName +
-                      '</span>'
+                      '</span></div>'
                   )
                   info.push(
-                    '<span>设备状态 :' +
+                    '<div style=width:100%;display:flex;font-size:14px;margin-top:-20px><div style=width:195px;><span style=color:rgba(153,153,153,1);>设备状态：</span><span>' +
                       deviceStatus(obj.runStatus) +
-                      '</span><span style="margin-left:20px;color:rgba(54,92,245,1);">设备详情</span>'
+                      '</span></div><a href="javascript: void(0)">设备详情</a></div>'
                   )
-                  info.push('地址 :' + obj.deviceAddr + '</div></div>')
+                  info.push(
+                    '<div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>' +
+                      obj.deviceAddr +
+                      '</div></div></div>'
+                  )
                   infoWindow = new AMap.InfoWindow({
                     content: info.join('<br/>'), //使用默认信息窗体框样式，显示信息内容
                   })
@@ -179,6 +194,9 @@ export default {
             }
           })
         })
+    },
+    seeDeviceDatil(deviceId) {
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
     },
     kcntFunction(areaId, lang) {
       var paramData = qs.stringify({ areaId: areaId, lang: lang })

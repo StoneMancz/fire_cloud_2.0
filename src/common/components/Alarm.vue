@@ -70,7 +70,7 @@
 <script>
 import { getTimeToString } from '../../components/rule/getTime'
 export default {
-  components() {},
+  components: {},
   data() {
     return {
       isShowBg: false,
@@ -99,7 +99,7 @@ export default {
         } else if (msgobj.msgType == 2) {
           msgobj.deviceTypeCode = DeviceType(msgobj.deviceTypeCode)
           msgobj.eventType = LevCodeName(msgobj.eventType)
-          msgobj.eventTimeLong =getTimeToString(msgobj.eventTimeLong)
+          msgobj.eventTimeLong = getTimeToString(msgobj.eventTimeLong)
           this.warningList.unshift(msgobj)
           if (this.warningList.length > 4) {
             this.warningList.length = 4
@@ -206,7 +206,8 @@ export default {
         .cavetContent {
           display: flex;
           width: 300px;
-          color:white;
+          color: white;
+
           div {
             width: 71px;
             text-align: right;

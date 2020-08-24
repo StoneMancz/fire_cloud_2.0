@@ -4,8 +4,8 @@
       <div class="polylineSelect">
         <div class="echartsTilte">状态趋势图</div>
         <div class="echartsChild">
-          <el-select v-model="ecahrtsValue1" placeholder="设备类型" style="width:120px" @change="equipmentTypeChange">
-            <el-option label="全部" value></el-option>
+          <el-select v-model="echartEquipmentType" placeholder="设备类型" style="width:120px" @change="equipmentTypeChange">
+            <el-option label="全部" value=""></el-option>
             <el-option v-for="item in equipmentTypeData" :key="item.type" :label="item.name" :value="item.type"></el-option>
           </el-select>
           <el-date-picker v-model="trendValue1" @change="pickerChange" style="background: #000D42;margin-left:10px;width:150px" type="datetimerange"></el-date-picker>
@@ -18,7 +18,7 @@
         <div class="echartsTilte">状态统计图</div>
         <div style="margin-left:200px;" class="echartsChild">
           <el-select v-model="ecahrtsValue2" placeholder="设备类型" @change="equipmentTypeChange2">
-            <el-option label="全部" value></el-option>
+            <el-option label="全部" value=""></el-option>
             <el-option v-for="item in equipmentTypeData" :key="item.type" :label="item.name" :value="item.type"></el-option>
           </el-select>
         </div>
@@ -38,7 +38,7 @@ import { deviceStatus, DeviceType, LevCodeName } from '../../components/rule/typ
 export default {
   data() {
     return {
-      ecahrtsValue1: '', // 第一图例设备类型
+      echartEquipmentType: '', // 第一图例设备类型
       ecahrtsValue2: '', //第二图例设备类型
       deviceType: '', //设备类型
       equipmentTypeData: [],
@@ -52,10 +52,11 @@ export default {
   },
   methods: {
     equipmentTypeChange() {
+      this.$store.commit('setechartEquipmentType', this.echartEquipmentType)
       this.alarmTrend(
         this.alarmTrendUrl,
         this.areaID,
-        this.ecahrtsValue1,
+        this.echartEquipmentType,
         this.startTime,
         this.endTime
       )
@@ -69,7 +70,7 @@ export default {
       this.alarmTrend(
         this.alarmTrendUrl,
         this.areaID,
-        this.ecahrtsValue1,
+        this.echartEquipmentType,
         this.startTime,
         this.endTime
       )
@@ -99,7 +100,6 @@ export default {
         let deviceStatusColor = deviceStatusData.map((item) => item.type)
         let deviceStatusName = deviceStatusData.map((item) => item.name)
         let colorArr = deviceStatusColor.map((item1) => {
-          console.log(item1)
           if (Number(item1) == 3) {
             return '#FF0000'
           } else if (Number(item1) == 83) {
@@ -120,14 +120,12 @@ export default {
       })
     },
     //查询设备类型
-    equipmentType() {
+    equipmentType(url, lang) {
       let this_ = this
-      var currentData = qs.stringify({ areaId: this_.areaId })
-      this.$http
-        .post('http://srv.shine-iot.com:8060/device/tpcodes', currentData)
-        .then(function (response) {
-          this_.equipmentTypeData = response.data.data
-        })
+      var currentData = qs.stringify({ areaId: this_.areaId, lang: lang })
+      this.$http.get(url, currentData).then(function (response) {
+        this_.equipmentTypeData = response.data.data
+      })
     },
     alarmTrend(url, areaID, deviceType, startTime, endTime) {
       this.alarmTrendUrl = url

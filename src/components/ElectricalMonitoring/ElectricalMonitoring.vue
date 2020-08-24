@@ -1,186 +1,299 @@
+
 <template>
-  <div id="ElectricalMonitoring">
-    <div class="electricTable">
-      <div class="table" v-for="item in dataList">
-        <div class="tables" style="margin:10px;background:#00061f">
-          <div style="padding: 15px;height:100%;border: 1px solid #152d4b;background: #000828; ">
-            <div style="display: flex;">
-              <span style="flex:2" class="diviceName">名称：{{item.dveiceName}}</span>
-              <span style="flex:1" class="diviceNum">编码：{{item.diviceNum}}</span>
-            </div>
-            <div style="display: flex;margin-top:15px">
-              <span style="flex:2" class="diviceArea">区域：{{item.diviceArea}}</span>
-              <span style="flex:1" class="type">状态：{{item.dveiceType}}</span>
-            </div>
-            <div style="display: flex;margin-top:15px">
-              <span style="flex:9" class="address">地址：{{item.dveiceAddress}}</span>
-              <span style="flex:1;background:#001773" class="btn">复位</span>
-            </div>
-            <div class="dataList">
-              <div class="tableHeader">
-                <div>回路</div>
-                <div>设备</div>
-                <div>当前值</div>
-                <div>状态</div>
-                <div>操作</div>
+  <renderless-component-example>
+    <Headers></Headers>
+    <div class="centent">
+      <LeftCommon></LeftCommon>
+      <div class="right">
+        <div class="boxWrap">
+          <div class="ElectricaData">
+            <div class="electricTable" v-for="(item,index) in recordsData" :key="index">
+              <div class="electricTile">
+                <div class="deviceName">
+                  <div>
+                    <span>设备编码：{{item.deviceSN}}</span>
+                  </div>
+                  <div style="width:133px">
+                    <span>设备名称：{{item.dcTypeName}}</span>
+                  </div>
+                </div>
+                <div class="deviceStatus">
+                  <div>
+                    <span>设备状态：{{item.runStatusName}}</span>
+                  </div>
+                  <div style="width:133px"><span>设备区域：{{item.areaName}}</span></div>
+                </div>
+                <div class="deviceStatus">
+                  <div>
+                    <span>地址：{{item.deviceAddr}} </span>
+                  </div>
+                  <div class="button">复位</div>
+                </div>
               </div>
-              <div style="height:100%;overflow: auto;">
-                <div class="tableCentent" v-for="item2 in item.data" style="border-bottom:1px solid #001773">
-                  <div>{{item2.name1}}</div>
-                  <div>{{item2.name2}}</div>
-                  <div>{{item2.name3}}</div>
-                  <div>{{item2.name4}}</div>
-                  <div style="color:#529dc4;text-decoration:underline;">{{item2.name5}}</div>
+              <div class="tableData">
+                <div class="tableHeader">
+                  <span>回路</span>
+                  <span>设备名称</span>
+                  <span>当前值</span>
+                  <span>状态</span>
+                  <span>操作</span>
+                </div>
+                <div class="tebleColumnSwrap">
+                  <div class="tebleColumn" v-for="(item1,index1) in item.electList" :key="index1">
+                    <div>{{item1.addrNum}}</div>
+                    <div>{{item1.typeName}}</div>
+                    <div>{{item1.checkVal}}{{item1.unitName}}</div>
+                    <div>{{item1.statusName}}</div>
+                    <div @click="openHistory(item1.electId,item1.typeName)">历史记录</div>
+                  </div>
                 </div>
               </div>
             </div>
+            <el-pagination class="pagination2" :current-page.sync="currentPage" layout="prev, pager, next" :total="total" style="text-align: center;"></el-pagination>
+          </div>
+          <div class="rightCentent" v-show="show2">
+            <RightCommon ref="rightChild"></RightCommon>
           </div>
         </div>
       </div>
-      <el-pagination class="pagination" layout="prev, pager, next" :total="50" style="text-align: center;"></el-pagination>
     </div>
-  </div>
+    <HistoryRecord ref="history"></HistoryRecord>
+  </renderless-component-example>
 </template>
 <script>
+import qs from 'qs'
+import Headers from '../../common/components/Header'
+import LeftCommon from '../../common/components/LeftCommon'
+import RightCommon from '../../common/components/RightCommon'
+import HistoryRecord from './components/HistoryRecord'
 export default {
   data() {
     return {
-      dataList: [
-        {
-          dveiceName: '某某某',
-          diviceNum: '12345678',
-          diviceArea: '区域：某某某某某某',
-          dveiceType: '正常',
-          dveiceAddress: '地址：某某某某某某某某某某某',
-          data: [
-            {
-              name1: '1',
-              name2: '故障电弧',
-              name3: '0DH',
-              name4: '正常',
-              name5: '历史记录',
-            },
-          ],
-        },
-      ],
+      show2: true,
+      pageNo: 1,
+      areaId: '',
+      total: 0, // 事件列表length
+      deviceSN: '',
+      loopStatus: '',
+      lang: 'zh-CN',
+      recordsData: [],
     }
   },
-  mounted() {},
-  methods: {},
+  components: {
+    Headers,
+    RightCommon,
+    LeftCommon,
+    HistoryRecord,
+  },
+  mounted() {
+    this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
+  },
+  methods: {
+    initElecticaData(pageNo, areaId, deviceSN, loopStatus, lang) {
+      let this_ = this
+      var currentData = qs.stringify({
+        pageNo: pageNo,
+        areaId: areaId,
+        deviceSN: deviceSN,
+        loopStatus: loopStatus,
+        lang: lang,
+      })
+      this.$http
+        .post('http://srv.shine-iot.com:8060/elect/devs', currentData)
+        .then(function (response) {
+          this_.recordsData = response.data.data.records
+          console.log('电器火灾的数据')
+          console.log(response.data.data.records)
+          this_.total = response.data.data.total
+          this_.pageNo = response.data.data.current
+        })
+    },
+    openHistory(electId, typeName) {
+      this.$refs.history.histval(electId, '', '')
+      this.$refs.history.openHistory(typeName)
+    },
+  },
 }
 </script>
-<style scoped>
-#ElectricalMonitoring {
-  color: #fff;
-  height: 100%;
-  display: flex;
-  overflow: hidden;
-  background: #000d42;
-}
-.electricTable {
-  flex: 6;
-  margin-right: 10px;
-  padding: 15px;
-  position: relative;
-  background: #00061f;
-}
-.leftTable .table {
-  width: 50%;
-  height: 43%;
-  float: left;
-  margin-top: 25px;
-}
-.tables {
-  height: 100%;
-  font-size: 0.08rem;
-}
-
-.tables > div {
-  overflow: hidden;
-  border-radius: 5px;
-}
-.btn {
-  text-align: center;
-}
-.tableHeader {
+<style lang="stylus" scoped>
+.centent {
   display: flex;
   width: 100%;
-  margin-top: 30px;
-  background: #06103d;
-}
-.tableCentent {
-  display: flex;
-  width: 100%;
-}
-.tableHeader div,
-.tableCentent div {
-  flex: 1;
-  text-align: center;
-  line-height: 40px;
-}
-/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-::-webkit-scrollbar {
-  width: 4px; /*滚动条宽度*/
-  height: 5px; /*滚动条高度*/
-}
+  height: calc(100vh - 60px);
 
-/*定义滚动条轨道 内阴影+圆角*/
-::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  border-radius: 1px; /*滚动条的背景区域的圆角*/
-  background-color: transparent; /*滚动条的背景颜色*/
-}
+  .right {
+    flex: 9;
+    margin-left: 30px;
+    width: 90%;
+    padding: 10px;
+    padding-left: 0px;
 
-/*定义滑块 内阴影+圆角*/
-::-webkit-scrollbar-thumb {
-  border-radius: 1px; /*滚动条的圆角*/
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #8fa4bd; /*滚动条的背景颜色*/
-}
-.pagination {
-  float: left;
-  width: 100%;
-  margin-top: 20px;
-}
+    .boxWrap {
+      display: flex;
+      height: 100%;
+      width: 100%;
 
-.select > div:last-child {
-  float: right;
-  margin-right: 0;
-  line-height: 40px;
-  margin-right: 20px;
-  background: #000d42;
-  text-align: center;
-  color: #c0c4cc;
-  font-size: 15px;
-  cursor: pointer;
-}
-.table2 {
-  width: 100%;
-  margin: 40px auto;
-  background: #00061f;
-}
-.tebleHeader {
-  background: #000d42;
-}
-.tebleColumn,
-.tebleHeader {
-  display: flex;
-}
-.tebleColumn div,
-.tebleHeader div {
-  flex: 1;
-  height: 45px;
-  line-height: 40px;
-  border-bottom: 1px solid #0f152c;
-}
+      .ElectricaData {
+        flex: 6;
+        position: relative;
+        margin-right: 30px;
+        margin-bottom: 30px;
+        padding-left: 42px;
+        background: #00061f;
+        border: 1px solid rgba(112, 212, 254, 1);
 
-.selects {
-  width: 55%;
-  position: absolute;
-  right: 0;
-  z-index: 2;
-}
-.dataList {
-  height: 43%;
+        .electricTable {
+          float: left;
+          width: 460px;
+          height: 360px;
+          margin-right: 20px;
+          margin-top: 10px;
+          background: rgba(0, 13, 66, 0.25);
+          border: 1px solid rgba(112, 212, 254, 0.25);
+          border-radius: 4px;
+
+          .electricTile {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding-left: 19px;
+            padding-right: 20px;
+            padding-top: 20px;
+
+            .deviceName {
+              display: flex;
+              width: 100%;
+              justify-content: space-between;
+
+              div {
+                span {
+                  font-size: 14px;
+                  font-family: PingFang SC;
+                  font-weight: 300;
+                  color: rgba(204, 204, 204, 1);
+                }
+              }
+            }
+
+            .deviceStatus {
+              display: flex;
+              width: 100%;
+              margin-top: 14px;
+              justify-content: space-between;
+
+              div {
+                span {
+                  font-size: 14px;
+                  font-family: PingFang SC;
+                  font-weight: 300;
+                  color: rgba(204, 204, 204, 1);
+                }
+              }
+
+              .button {
+                width: 40px;
+                height: 20px;
+                text-align: center;
+                font-size: 12px;
+                color: rgba(204, 204, 204, 1);
+                background: rgba(0, 23, 115, 1);
+                border-radius: 2px;
+              }
+            }
+          }
+
+          .tableData {
+            width: 100%;
+            padding-left: 19px;
+            padding-top: 20px;
+            padding-right: 20px;
+
+            .tableHeader {
+              display: flex;
+              height: 40px;
+              text-align: center;
+              background: rgba(0, 13, 66, 0.4);
+              border-radius: 4px;
+              align-items: center;
+
+              span {
+                flex: 1;
+                height: 16px;
+                font-size: 16px;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color: rgba(204, 204, 204, 1);
+              }
+            }
+
+            .tebleColumnSwrap {
+              height: 160px;
+              width: 100%;
+              overflow-y: scroll;
+
+              .tebleColumn {
+                display: flex;
+                height: 26px;
+                cursor: pointer;
+                align-items: flex-start;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                margin-top: 14px;
+                text-align: center;
+
+                div {
+                  flex: 1;
+                  font-size: 14px;
+                  font-family: PingFang SC;
+                  font-weight: 300;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  color: rgba(229, 229, 229, 1);
+                }
+              }
+            }
+
+            /* 滚动条样式 */
+            .tebleColumnSwrap::-webkit-scrollbar {
+              width: 10px;
+              height: 180px;
+              background: rgba(0, 13, 66, 1);
+              border-radius: 2px;
+            }
+
+            .tebleColumnSwrap::-webkit-scrollbar-thumb {
+              /* 滚动条里面小方块 */
+              border-radius: 2px;
+              width: 11px;
+              height: 50px;
+              -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+              background: rgba(0, 0, 0, 0.2);
+            }
+
+            .tebleColumnSwrap::-webkit-scrollbar-track {
+              /* 滚动条里面轨道 */
+              -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+              background: rgba(0, 13, 66, 1);
+              border-radius: 4px;
+            }
+          }
+        }
+
+        .pagination2 {
+          position: absolute;
+          bottom: 1%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      .rightCentent {
+        position: relative;
+        width: 640px;
+        margin-bottom: 30px;
+        background: rgba(0, 6, 31, 1);
+      }
+    }
+  }
 }
 </style>

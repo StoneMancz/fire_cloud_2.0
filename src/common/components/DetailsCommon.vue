@@ -12,31 +12,53 @@
             </div>
             <div class="detailsItem">
               <div>发生时间：<span>{{eventDetails.eventTime}}</span></div>
-              <div>操作：<span class="eventdeal" @click="eventHandling">事件处理</span></div>
             </div>
-            <div style="margin-top:20px">描述：<span>{{eventDetails.eventDesc}}</span></div>
           </div>
         </div>
         <div class="detailsBk">
           <div class="detail_titel">设备信息</div>
           <div class="detailsContent">
             <div class="detailsItem">
-              <div>设备名称：<span>{{equipmentDetails.deviceName}}</span></div>
+              <div>设备类型：<span>{{equipmentDetails.deviceName}}</span></div>
               <div>设备编号：<span>{{equipmentDetails.deviceSN}}</span></div>
             </div>
             <div class="detailsItem">
-              <div>所属区域：<span>{{equipmentDetails.arae}}</span></div>
-              <div>操作：<span class="eventdeal" @click="deviceDetails">设备详情</span></div>
+              <div>运行状态：{{equipmentDetails.runStatusName}}</div>
+              <div style="color:#365CF5;cursor:pointer;" @click="viewQrCode(equipmentDetails.deviceQRCode)">
+                <div class="footer_flex clearfix">
+                  <div>
+                    查看二維碼
+                    <div class="flex-footera" id="qrcode1"></div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div style="margin-top:20px">详细地址：<span>{{equipmentDetails.deviceAddr}}</span></div>
+            <div class="detailsItem">
+              <div>电池电量：{{equipmentDetails.batteryName}}</div>
+              <div>登记时间：{{equipmentDetails.entryTime}}</div>
+            </div>
+            <div style="margin-top:20px;color:white">通讯模块编码：<span>{{equipmentDetails.signalModuleSN}}</span></div>
           </div>
         </div>
         <div class="detailsBk">
           <div class="detail_titel">安装信息</div>
           <div class="detailsContent">
             <div class="detailsItem">
-              <div>单位：<span>{{contact.areaContact}}</span></div>
-              <div>区域：<span>{{contact.areaContactPhone}}</span></div>
+              <div>单位：<span>{{installation.orgName}}</span></div>
+              <div>区域：<span>{{installation.areaName}}</span></div>
+            </div>
+            <div style="margin-top:20px;color:white">详细地址：<span>{{installation.deviceAddr}}</span></div>
+            <div class="detailsItem">
+              <div>联系人：<span>{{installation.areaContact}}</span></div>
+              <div>联系方式：<span>{{installation.areaContactPhone}}</span></div>
+            </div>
+            <div class="detailsItem">
+              <div>安装场所：<span>{{installation.placeName}}</span></div>
+              <div>安装时间：<span>{{installation.deviceFixDate}}</span></div>
+            </div>
+            <div class="detailsItem">
+              <div>分区编号：<span>{{installation.areaNO}}</span></div>
+              <div>安装编号：<span>{{installation.installNumber}}</span></div>
             </div>
           </div>
         </div>
@@ -44,11 +66,8 @@
           <div class="detail_titel">更多</div>
           <div class="detailsContent">
             <div style="margin-top:30px">
-              <span class="otherDetail">设备详情</span>
-              <span class="otherDetail">事件详情</span>
-              <span class="otherDetail">历史记录</span>
-              <span class="otherDetail">设备联动</span>
-              <span class="otherDetail">维修操作</span>
+              <span class="otherDetail" @click="SeeDeviceDetail(equipmentDetails.deviceId)">设备详情</span>
+              <span class="otherDetail" @click="eventHandling">事件处理</span>
             </div>
           </div>
         </div>
@@ -94,53 +113,16 @@
           <button class="cancel" @click="cancel">取消</button>
         </div>
       </div>
-
-      <div v-else-if="showEvenDetails==3">
-        <div class="titleBk">设备详情</div>
-        <div class="detailsBk">
-          <div class="detail_titel">基本信息</div>
-          <div class="detailsContent">
-            <div class="detailsItem">
-              <div>设备名称：<span>{{deviceDetailsData.deviceTypeCode}}</span></div>
-              <div>运行状态：<span class="eventLevel">{{deviceDetailsData.runStatus}}</span></div>
-            </div>
-            <div class="detailsItem">
-              <div>设备编号：<span>{{deviceDetailsData.deviceSN}}</span></div>
-              <div>电池电量：<span>{{deviceDetailsData.batteryLevel}}</span></div>
-            </div>
-            <div class="detailsItem">
-              <div>设备类型：<span>{{deviceDetailsData.deviceTypeCode}}</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="detailsBk">
-          <div class="detail_titel">安装信息</div>
-          <div class="detailsContent">
-            <div class="detailsItem">
-              <div>所属区域：<span>{{deviceDetailsData.areaName}}</span></div>
-              <div>安装编号：<span>{{deviceDetailsData.installNumber}}</span></div>
-            </div>
-            <div class="detailsItem">
-              <div>详细地址：<span>{{deviceDetailsData.deviceAddr}}</span></div>
-            </div>
-            <div class="detailsItem">
-              <div>联系人<span>{{deviceDetailsData.areaContact}}</span></div>
-              <div>联系电话：<span>{{deviceDetailsData.areaContactPhone}}</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="detailsBk">
-          <div class="detail_titel">其他信息</div>
-          <div class="detailsContent"></div>
-        </div>
-      </div>
     </el-drawer>
+    <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
   </div>
 </template>
 
 <script>
 import qs from 'qs'
+import QRCode from 'qrcodejs2'
 import { deviceStatus, DeviceType, LevCodeName } from '../../components/rule/typeName'
+import DeviceDetailsCom from '../../common/components/DeviceDetails'
 export default {
   data() {
     return {
@@ -149,6 +131,8 @@ export default {
       drawers: false,
       eventDetails: {},
       equipmentDetails: {},
+      installation: {},
+      facilities: {},
       contact: {},
       radio: '1',
       startTime: '',
@@ -163,6 +147,9 @@ export default {
       deviceDetailsData: {},
     }
   },
+  components: {
+    DeviceDetailsCom,
+  },
   methods: {
     drawersFn(eventId) {
       this.drawers = true
@@ -171,31 +158,53 @@ export default {
       this.$http
         .get('http://srv.shine-iot.com:8060/event/devo/' + eventId)
         .then(function (response) {
+          console.log('查看设备详情得接口')
+          console.log(response)
           let eventData = response.data.data
           let eventDetails = {
             eventId: eventData.eventId,
-            eventName: deviceStatus(eventData.eventType),
-            eventLevel: LevCodeName(eventData.eventLevel),
+            eventName: eventData.eventTypeName,
+            eventLevel: eventData.eventLevelName,
             eventTime: this_.formatDate(eventData.eventTime),
             eventDesc: eventData.eventDesc,
           }
           let equipmentDetails = {
             deviceId: eventData.deviceId,
-            deviceName: DeviceType(eventData.deviceTypeCode),
+            deviceName: eventData.dcTypeName,
             deviceSN: eventData.deviceSN,
-            arae: eventData.areaName,
-            deviceAddr: eventData.deviceAddr,
+            runStatusName: eventData.runStatusName,
+            batteryName: eventData.batteryName,
+            entryTime: this_.formatDate(eventData.entryTime),
+            signalModuleSN: eventData.signalModuleSN,
           }
 
-          let contact = {
+          let installation = {
+            orgName: eventData.orgName,
+            areaName: eventData.areaName,
+            deviceAddr: eventData.deviceAddr,
             areaContact: eventData.areaContact,
             areaContactPhone: eventData.areaContactPhone,
+            placeName: eventData.placeName,
+            deviceFixDate: this_.formatDate(eventData.deviceFixDate),
+            areaNO: eventData.areaNO,
+            installNumber: eventData.installNumber,
           }
-          this_.contact = contact
+
+          let facilities = {
+            deviceTypeCode: eventData.deviceTypeCode,
+          }
+          this_.facilities = facilities
+          this_.installation = installation
           this_.equipmentDetails = equipmentDetails
           this_.eventDetails = eventDetails
+          this_.qrcode(eventData.deviceQRCode)
         })
     },
+    SeeDeviceDetail(deviceId) {
+      this.drawers = false
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
+    },
+    viewQrCode() {},
     formatDate(d) {
       var now = new Date(d)
       var year = now.getFullYear()
@@ -298,18 +307,14 @@ export default {
     cancel() {
       this.showEvenDetails = 1
     },
-    deviceDetails() {
-      let this_ = this
-      this.$http
-        .get('http://srv.shine-iot.com:8060/device/base/detail/' + this.equipmentDetails.deviceId)
-        .then(function (response) {
-          this_.deviceDetailsData = response.data.data
-          this_.deviceDetailsData.deviceTypeCode = DeviceType(
-            this_.deviceDetailsData.deviceTypeCode
-          )
-          this_.deviceDetailsData.runStatus = deviceStatus(this_.deviceDetailsData.runStatus)
-        })
-      this.showEvenDetails = 3
+    qrcode(text) {
+      console.log(text)
+      let that = this
+      let qrcode = new QRCode('qrcode1', {
+        width: 110,
+        height: 110,
+        text: text,
+      })
     },
   },
   mounted() {
@@ -336,7 +341,7 @@ export default {
     flex-direction: column;
     width: 720px;
     margin-left: 40px;
-    margin-top: 30px;
+    margin-top: 20px;
     padding-left: 28px;
     background: rgba(255, 255, 255, 0.06);
 
@@ -344,14 +349,14 @@ export default {
       font-size: 18px;
       font-family: PingFang SC;
       font-weight: 400;
-      margin-top: 29px;
+      margin-top: 15px;
       color: rgba(229, 229, 229, 1);
     }
 
     .detailsContent {
       display: flex;
       flex-direction: column;
-      padding-bottom: 30px;
+      padding-bottom: 10px;
 
       .otherDetail {
         font-size: 16px;
@@ -391,6 +396,36 @@ export default {
             cursor: pointer;
             text-decoration: underline;
             color: rgba(54, 92, 245, 1);
+          }
+
+          /* 弹出 */
+          .footer_flex div {
+            width: 100px;
+            background-color: #bbb;
+            float: left;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+          }
+
+          .footer_flex div:hover {
+            // background-color: #ff8400;
+          }
+
+          /* button */
+          .footer_flex div:hover .flex-footera {
+            display: block;
+          }
+
+          .footer_flex div .flex-footera {
+            width: 146px;
+            height: 124px;
+            position: absolute;
+            top: 40px;
+            text-align: center;
+            padding-top: 15px;
+            display: none;
           }
         }
       }

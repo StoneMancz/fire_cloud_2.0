@@ -30,7 +30,7 @@ module.exports = {
         AlarmController: '报警控制器监控页'
     },
     DtuGateway: {
-        DtuGateway: '通选装置'
+        DtuGateway: '通讯装置'
     },
     deviceStatus: {
         unknown: "未知",

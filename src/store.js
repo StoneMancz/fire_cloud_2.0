@@ -5,6 +5,7 @@ let store = new Vuex.Store({
   state: {
     token: '',
     userId: '',
+    echartEquipmentType: '',
     api: 'https://www.easy-mock.com/mock/5ceb8c01139fb578b06086e6/iot'
   },
   mutations: {
@@ -13,6 +14,9 @@ let store = new Vuex.Store({
     },
     setuserId(state, userId) {
       state.userId = userId
+    },
+    setechartEquipmentType(state, echartEquipmentType) {
+      state.echartEquipmentType = echartEquipmentType
     }
   },
   actions: {

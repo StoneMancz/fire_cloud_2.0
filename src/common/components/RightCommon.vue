@@ -17,6 +17,7 @@
 import qs from 'qs'
 import Indexgraphical from '../../common/components/Indexgraphical'
 import EventMessage from '../../common/components/EventMessage'
+import { mapState, mapGetters } from 'vuex'
 import { deviceStatus, DeviceType, LevCodeName } from '../../components/rule/typeName'
 export default {
   components: {
@@ -27,6 +28,8 @@ export default {
     return {
       activeName: 'echarts',
       tabIndex: 1,
+      echartEquipmentType: '',
+      trendValue1: [],
       lang: localStorage.getItem('Language'),
       areaID: '',
     }
@@ -36,17 +39,30 @@ export default {
       this.initEcharData(this.lang, this.areaID)
     } else if (this.$route.path == '/fireMonitoring') {
       this.fireMonitorInitData(this.lang, this.areaID)
+    } else if (this.$route.path == '/ElectricalMonitoring') {
+      this.initElectEchar(this.lang, this.areaID)
+    } else if (this.$route.path == '/controllerList') {
+      this.initControllEchar(this.lang, this.areaID)
+    } else if (this.$route.path == '/newsletter') {
+      this.initNewsletter(this.lang, this.areaID)
+    } else if (this.$route.path == '/water') {
+      this.initWaterEcharts(this.lang, this.areaID)
     }
   },
   methods: {
     initEcharData(lang, areaID) {
+      console.log('设备类型')
+      console.log('==============')
+      console.log('state')
+      console.log(this.$store.state.echartEquipmentType)
+      this.echartEquipmentType = this.$store.state.echartEquipmentType
       this.areaID = areaID
       this.lang = lang
       //查询设备报警趋势
       this.$refs.graphical.alarmTrend(
         'http://srv.shine-iot.com:8060/device/alarm/cnt',
         this.areaID,
-        '',
+        this.echartEquipmentType,
         '',
         ''
       )
@@ -64,7 +80,7 @@ export default {
         ''
       )
       //设备类型
-      this.$refs.graphical.equipmentType()
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
       //初始化事件列表
       this.$refs.events.eventAreaEvts(
         'http://srv.shine-iot.com:8060/event/area/evts',
@@ -79,7 +95,7 @@ export default {
       //查询事件等级
       this.$refs.events.eventLevelFn()
       //设备类型
-      this.$refs.events.equipmentType()
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
     },
     //火灾监控初始化图例
     fireMonitorInitData(lang, areaID) {
@@ -106,9 +122,8 @@ export default {
         areaID,
         ''
       )
-
       //设备类型
-      this.$refs.graphical.equipmentType()
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/fdev/mnt/types', lang)
       //初始化事件列表
       this.$refs.events.eventAreaEvts(
         'http://srv.shine-iot.com:8060/fdev/mnt/area/evts',
@@ -123,7 +138,185 @@ export default {
       //查询事件等级
       this.$refs.events.eventLevelFn()
       //设备类型
-      this.$refs.events.equipmentType()
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/fdev/mnt/types', lang)
+    },
+    //电器火灾的图例
+    initElectEchar(lang, areaID) {
+      this.areaID = areaID
+      this.lang = lang
+      //查询设备报警趋势
+      this.$refs.graphical.alarmTrend(
+        'http://srv.shine-iot.com:8060/elect/alarm/cnt',
+        this.areaID,
+        '',
+        '',
+        ''
+      )
+      //查询设备数量分布图
+      this.$refs.graphical.devicesNumber(
+        'http://srv.shine-iot.com:8060/elect/channel/type/cnt',
+        areaID,
+        lang
+      )
+      //设备状态分布图
+      this.$refs.graphical.deviceStatusFn(
+        'http://srv.shine-iot.com:8060/elect/channel/stus/cnt',
+        lang,
+        areaID,
+        ''
+      )
+
+      //设备类型
+      this.$refs.graphical.equipmentType(
+        'http://srv.shine-iot.com:8060/elect/channel/tycodes',
+        lang
+      )
+      //初始化事件列表
+      this.$refs.events.eventAreaEvts(
+        'http://srv.shine-iot.com:8060/elect/area/evts',
+        lang,
+        areaID,
+        '',
+        '',
+        '',
+        '',
+        1
+      )
+      //查询事件等级
+      this.$refs.events.eventLevelFn()
+      //设备类型
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/elect/channel/tycodes', lang)
+    },
+    //报警控制器的初始化图例
+    initControllEchar(lang, areaID) {
+      this.areaID = areaID
+      this.lang = lang
+      //查询设备报警趋势
+      this.$refs.graphical.alarmTrend(
+        'http://srv.shine-iot.com:8060/fctrl/alarm/cnt',
+        this.areaID,
+        '',
+        '',
+        ''
+      )
+      //查询设备数量分布图
+      this.$refs.graphical.devicesNumber(
+        'http://srv.shine-iot.com:8060/fctrl/type/cnt',
+        areaID,
+        lang
+      )
+      //设备状态分布图
+      this.$refs.graphical.deviceStatusFn(
+        'http://srv.shine-iot.com:8060/device/stus/cnt',
+        lang,
+        areaID,
+        ''
+      )
+
+      //设备类型
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/fctrl/tpcodes', lang)
+      //初始化事件列表
+      this.$refs.events.eventAreaEvts(
+        'http://srv.shine-iot.com:8060/event/area/evts',
+        lang,
+        areaID,
+        '',
+        '',
+        '',
+        '',
+        1
+      )
+      //查询事件等级
+      this.$refs.events.eventLevelFn()
+      //设备类型
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/fctrl/tpcodes', lang)
+    },
+    initNewsletter(lang, areaID) {
+      this.areaID = areaID
+      this.lang = lang
+      //查询设备报警趋势
+      this.$refs.graphical.alarmTrend(
+        'http://srv.shine-iot.com:8060/gwdtu/offline/cnt',
+        this.areaID,
+        '',
+        '',
+        ''
+      )
+      //查询设备数量分布图
+      this.$refs.graphical.devicesNumber(
+        'http://srv.shine-iot.com:8060/gwdtu/type/cnt',
+        areaID,
+        lang
+      )
+      //设备状态分布图
+      this.$refs.graphical.deviceStatusFn(
+        'http://srv.shine-iot.com:8060/gwdtu/stus/cnt',
+        lang,
+        areaID,
+        ''
+      )
+
+      //设备类型
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/gwdtu/tpcodes', lang)
+      //初始化事件列表
+      this.$refs.events.eventAreaEvts(
+        'http://srv.shine-iot.com:8060/gwdtu/area/evts',
+        lang,
+        areaID,
+        '',
+        '',
+        '',
+        '',
+        1
+      )
+      //查询事件等级
+      this.$refs.events.eventLevelFn()
+      //设备类型
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/gwdtu/tpcodes', lang)
+    },
+    //消防用水统计图
+    initWaterEcharts(lang, areaID) {
+      this.areaID = areaID
+      this.lang = lang
+      //查询设备报警趋势
+      this.$refs.graphical.alarmTrend(
+        'http://srv.shine-iot.com:8060/facilities/alarm/cnt',
+        this.areaID,
+        '',
+        '',
+        ''
+      )
+      //查询设备数量分布图
+      this.$refs.graphical.devicesNumber(
+        'http://srv.shine-iot.com:8060/facilities/type/cnt',
+        areaID,
+        lang
+      )
+      //设备状态分布图
+      this.$refs.graphical.deviceStatusFn(
+        'http://srv.shine-iot.com:8060/facilities/stus/cnt',
+        lang,
+        areaID,
+        ''
+      )
+
+      //设备类型
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
+      //初始化事件列表
+      this.$refs.events.eventAreaEvts(
+        'http://srv.shine-iot.com:8060/facilities/area/evts',
+        lang,
+        areaID,
+        '',
+        '',
+        '',
+        '',
+        1
+      )
+      //查询事件等级
+      this.$refs.events.eventLevelFn()
+      //设备类型
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
     },
     tabChange(num) {
       this.tabIndex = num
@@ -134,6 +327,14 @@ export default {
           this.initEcharData(this.lang, this.areaID)
         } else if (this.$route.path == '/fireMonitoring') {
           this.fireMonitorInitData(this.lang, this.areaID)
+        } else if (this.$route.path == '/ElectricalMonitoring') {
+          this.initElectEchar(this.lang, this.areaID)
+        } else if (this.$route.path == '/controllerList') {
+          this.initControllEchar(this.lang, this.areaID)
+        } else if (this.$route.path == '/newsletter') {
+          this.initNewsletter(this.lang, this.areaID)
+        } else if (this.$route.path == '/water') {
+          this.initWaterEcharts(this.lang, this.areaID)
         }
       }
     },

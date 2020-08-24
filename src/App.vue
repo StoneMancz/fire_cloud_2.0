@@ -31,16 +31,17 @@ html {
 
 .el-date-editor .el-range-input {
   color: white;
-  background-color: #000d42 !important;
+  background-color: #001773 !important;
 }
 
 .el-input__inner {
   color: rgba(255, 255, 255, 1);
-  background: #000d42 !important;
+  background: #001773 !important;
   border: none;
 }
 
 .amap-info-content {
+  overflow: hidden;
   background: linear-gradient(-30deg, rgba(0, 8, 41, 1) 0%, rgba(0, 14, 71, 1) 98%);
   border: 1px solid rgba(112, 212, 254, 0.3);
   box-shadow: 0px 0px 45px 15px rgba(0, 6, 31, 0.3);
