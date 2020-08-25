@@ -51,9 +51,6 @@ export default {
   },
   methods: {
     initEcharData(lang, areaID) {
-      console.log('设备类型')
-      console.log('==============')
-      console.log('state')
       console.log(this.$store.state.echartEquipmentType)
       this.echartEquipmentType = this.$store.state.echartEquipmentType
       this.areaID = areaID

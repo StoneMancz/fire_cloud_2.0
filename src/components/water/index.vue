@@ -14,13 +14,13 @@
                 </el-select>
               </div>
               <div>
-                <el-select v-model="deviceStatus" placeholder="设备状态" @change="deviceStatusChange">
-                  <el-option label="设备状态" value></el-option>
+                <el-select v-model="deviceStatus" placeholder="当前状态" @change="deviceStatusChange">
+                  <el-option label="当前状态" value></el-option>
                   <el-option v-for="item in deviceStatusList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
               <div>
-                <input class="installNumbers" placeholder="请输入设备编号" v-model="installNumber">
+                <input class="installNumbers" placeholder="请输入设备编号" v-model="deviceSN" @change="getWaterData">
               </div>
             </div>
             <div class="waterConten">
@@ -40,45 +40,6 @@
                   <div>地址:{{item1.deviceAddr}}</div>
                 </div>
               </div>
-              <!-- <div class="showWaterTanks">
-                <div class="watertitle">
-                  <span>正常</span>
-                  <span>米</span>
-                </div>
-                <HydraulicFn></HydraulicFn>
-                <div class="Graphics">
-                  <div>名称:某某某某某</div>
-                  <div>编码:123456789101112</div>
-                  <div>区域:某某某某</div>
-                  <div>地址:某某某区某某路某某大道</div>
-                </div>
-              </div> -->
-              <!-- <div class="showWaterTanks">
-                <div class="watertitle">
-                  <span>正常</span>
-                  <span>米</span>
-                </div>
-                <Thermometer></Thermometer>
-                <div class="Graphics" style="margin-top:-25px">
-                  <div>名称:某某某某某</div>
-                  <div>编码:123456789101112</div>
-                  <div>区域:某某某某</div>
-                  <div>地址:某某某区某某路某某大道</div>
-                </div>
-              </div> -->
-              <!-- <div class="showWaterTanks">
-                <div class="watertitle">
-                  <span>正常</span>
-                  <span>米</span>
-                </div>
-                <Switchs></Switchs>
-                <div class="Graphics">
-                  <div>名称:某某某某某</div>
-                  <div>编码:123456789101112</div>
-                  <div>区域:某某某某</div>
-                  <div>地址:某某某区某某路某某大道</div>
-                </div>
-              </div> -->
             </div>
           </div>
           <div class="rightCentent" v-show="show2">
@@ -107,13 +68,13 @@ export default {
       equipmentValue: '',
       deviceStatus: '',
       show2: true,
-      areaId: '',
+      areaId:'',
       lang: localStorage.getItem('Language'),
       currentPage: '',
       total: 0,
       deviceStatusList: [],
       equipmentTyleList: [],
-      installNumber: '',
+      deviceSN: '',
       waterList: [],
     }
   },
@@ -128,24 +89,61 @@ export default {
     Switchs,
   },
   mounted() {
+    //用水的列表
     this.facilitiesList()
+    //当前状态
+    this.statusList()
+    //设备类型列表
+    this.equipmentListFn()
   },
   methods: {
     fatherClickFn(data) {
       this.areaId = data.id
+      this.equipmentListFn();
+      this.facilitiesList();
     },
     //切换中英文
     switchLanguage(lang) {
       this.lang = lang
     },
-    equipmentValueChange() {},
-    deviceStatusChange() {},
+    statusList(){
+      let this_ = this
+      var currentData = qs.stringify({
+        lang: this_.lang,
+      })
+      this.$http.get('http://srv.shine-iot.com:8060/facilities/stus',currentData).then(function (response) {
+        this_.deviceStatusList=response.data.data;
+      })
+    },
+    equipmentListFn(){
+      let this_ = this
+      var currentData = qs.stringify({
+        lang: this.lang,
+        areaId:this.areaId
+      })
+      this.$http.get('http://srv.shine-iot.com:8060/facilities/tpcodes',currentData).then(function (response) {
+        this_.equipmentTyleList=response.data.data;
+      })
+    },
+    getWaterData(){
+      this.facilitiesList()
+    },
+    equipmentValueChange() {
+      this.facilitiesList()
+    },
+    deviceStatusChange() {
+      this.facilitiesList()
+    },
     facilitiesList() {
       let this_ = this
-      this.$http.post('http://srv.shine-iot.com:8060/facilities/devs').then(function (response) {
-        console.log('用水设备列表')
-        console.log('=====')
-        console.log(response)
+      var currentData = qs.stringify({
+        lang: this_.lang,
+        areaId:this_.areaId,
+        deviceType:this_.equipmentValue,
+        runStatus:this_.deviceStatus,
+        deviceSN:this.deviceSN
+      })
+      this.$http.post('http://srv.shine-iot.com:8060/facilities/devs',currentData).then(function (response) {
         this_.waterList = response.data.data
       })
     },
