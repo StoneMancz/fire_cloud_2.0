@@ -4,81 +4,79 @@
 <script>
 export default {
   data() {
-    return {};
+    return {}
   },
   methods: {
-    initTherMometer() {
-    console.log("===执行===");
-    console.log("===执行===");
-    console.log("===执行===");
+    initTherMometer(item) {
       // 基于准备好的dom，初始化echarts实例
-      var mywdjChart = this.$echarts.init(document.getElementById("wdjnow"));
+      var mywdjChart = this.$echarts.init(document.getElementById('wdjnow'))
       //页面加载时的初始温度，需要先设定
-      var TP_value = 70.0;
-      var kd = [];
-      var TP_txt ="";
-      var Gradient = [];
+      var TP_value = parseInt(item.curVal)
+      console.log(TP_value)
+      var kd = []
+      var TP_txt = ''
+      var Gradient = []
       //中间线的渐变色和文本内容
       if (TP_value > 20) {
-        TP_txt = "温度偏高";
+        TP_txt = '温度偏高'
         Gradient.push(
           {
             offset: 0,
-            color: "#93FE94",
+            color: '#93FE94',
           },
           {
             offset: 0.5,
-            color: "#E4D225",
+            color: '#E4D225',
           },
           {
             offset: 1,
-            color: "#E01F28",
+            color: '#E01F28',
           }
-        );
+        )
       } else if (TP_value > -20) {
-        TP_txt = "温度正常";
+        TP_txt = '温度正常'
         Gradient.push(
           {
             offset: 0,
-            color: "#93FE94",
+            color: '#93FE94',
           },
           {
             offset: 1,
-            color: "#E4D225",
+            color: '#E4D225',
           }
-        );
+        )
       } else {
-        TP_txt = "温度偏低";
+        TP_txt = '温度偏低'
         Gradient.push({
           offset: 1,
-          color: "#93FE94",
-        });
+          color: '#93FE94',
+        })
       }
       // 刻度使用柱状图模拟，短设置3，长的设置5；构造一个数据
       for (var i = 0, len = 130; i <= len; i++) {
         if (i > 100 || i < 30) {
-          kd.push("0");
+          kd.push('0')
         } else {
           if (i % 10 === 0) {
-            kd.push("3");
+            kd.push('3')
           } else if (i % 5 === 0) {
-            kd.push("2");
+            kd.push('2')
           } else {
-            kd.push("1");
+            kd.push('1')
           }
         }
       }
       // 因为柱状初始化为0，温度存在负值，所以，原本的0-100，改为0-130，0-30用于表示负值
       function getData(value) {
-        return [value + 30];
+        return [value + 30]
       }
-      var data = getData(TP_value);
-      var mercuryColor = "#fd4d49";
-      var borderColor = "#4577ba";
-    // 使用刚指定的配置项和数据显示图表。
+      var data = getData(TP_value)
+      var mercuryColor = '#fd4d49'
+      var borderColor = '#4577ba'
+      // 使用刚指定的配置项和数据显示图表。
       mywdjChart.setOption({
         title: {
-          text: "温度计",
+          text: '温度计',
           show: false,
         },
         yAxis: [
@@ -115,12 +113,12 @@ export default {
         ],
         series: [
           {
-            name: "条",
-            type: "bar",
+            name: '条',
+            type: 'bar',
             // 对应上面XAxis的第一个对象配置
             xAxisIndex: 0,
             data: data,
-            barWidth: 22,
+            barWidth: 12,
             itemStyle: {
               normal: {
                 color: new this.$echarts.graphic.LinearGradient(0, 1, 0, 0, Gradient),
@@ -130,41 +128,41 @@ export default {
             label: {
               normal: {
                 show: true,
-                position: "top",
+                position: 'top',
                 formatter: function (param) {
                   // 因为柱状初始化为0，温度存在负值，所以，原本的0-100，改为0-130，0-30用于表示负值
-                  return param.value - 30 + "°C";
+                  return param.value - 30 + '°C'
                 },
                 textStyle: {
-                  color: "#ccc",
-                  fontSize: "10",
+                  color: 'white',
+                  fontSize: '10',
                 },
               },
             },
             z: 2,
           },
           {
-            name: "白框",
-            type: "bar",
+            name: '白框',
+            type: 'bar',
             xAxisIndex: 1,
-            barGap: "-100%",
+            barGap: '-100%',
             data: [129],
-            barWidth: 30,
+            barWidth: 20,
             itemStyle: {
               normal: {
-                color: "#ffffff",
+                color: '#000D42',
                 barBorderRadius: 50,
               },
             },
             z: 1,
           },
           {
-            name: "外框",
-            type: "bar",
+            name: '外框',
+            type: 'bar',
             xAxisIndex: 2,
-            barGap: "-100%",
+            barGap: '-100%',
             data: [130],
-            barWidth: 38,
+            barWidth: 28,
             itemStyle: {
               normal: {
                 color: borderColor,
@@ -174,42 +172,42 @@ export default {
             z: 0,
           },
           {
-            name: "圆",
-            type: "scatter",
+            name: '圆',
+            type: 'scatter',
             hoverAnimation: false,
             data: [0],
             xAxisIndex: 0,
-            symbolSize: 45,
+            symbolSize: 35,
             itemStyle: {
               normal: {
-                color: "#93FE94",
+                color: '#93FE94',
                 opacity: 1,
               },
             },
             z: 2,
           },
           {
-            name: "白圆",
-            type: "scatter",
+            name: '白圆',
+            type: 'scatter',
             hoverAnimation: false,
             data: [0],
             xAxisIndex: 1,
-            symbolSize: 50,
+            symbolSize: 40,
             itemStyle: {
               normal: {
-                color: "#ffffff",
+                color: '#000D42',
                 opacity: 1,
               },
             },
             z: 1,
           },
           {
-            name: "外圆",
-            type: "scatter",
+            name: '外圆',
+            type: 'scatter',
             hoverAnimation: false,
             data: [0],
             xAxisIndex: 2,
-            symbolSize: 58,
+            symbolSize: 48,
             itemStyle: {
               normal: {
                 color: borderColor,
@@ -219,32 +217,32 @@ export default {
             z: 0,
           },
           {
-            name: "刻度",
-            type: "bar",
+            name: '刻度',
+            type: 'bar',
             yAxisIndex: 1,
             xAxisIndex: 3,
             label: {
               normal: {
                 show: true,
-                position: "right",
-                distance: 5,
-                color: "#525252",
+                position: 'right',
+                distance: 15,
+                color: '#ffffff',
                 fontSize: 10,
                 formatter: function (params) {
                   // 因为柱状初始化为0，温度存在负值，所以，原本的0-100，改为0-130，0-30用于表示负值
                   if (params.dataIndex > 100 || params.dataIndex < 30) {
-                    return "";
+                    return ''
                   } else {
                     if (params.dataIndex % 10 === 0) {
-                      return params.dataIndex - 30;
+                      return params.dataIndex - 30
                     } else {
-                      return "";
+                      return ''
                     }
                   }
                 },
               },
             },
-            barGap: "-100%",
+            barGap: '-100%',
             data: kd,
             barWidth: 1,
             itemStyle: {
@@ -256,18 +254,20 @@ export default {
             z: 0,
           },
         ],
-      });
+      })
     },
   },
-  mounted(){
-    this.initTherMometer()
-  }
-};
+  props: ['item'],
+  mounted() {
+    console.log(this.item)
+    this.initTherMometer(this.item[0])
+  },
+}
 </script>
 <style lang="stylus" scoped>
 .thermometer {
-  margin-top:-30px;
-  width: 300px;
-  height: 240px;
+  width: 100%;
+  height: 300px;
+  margin-top: -60px;
 }
 </style>
