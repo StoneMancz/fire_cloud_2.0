@@ -1,6 +1,6 @@
 <template>
   <renderless-component-example>
-    <div id="mapContent"></div>
+    <div id="mapContent" @click="handleClick"></div>
     <div class="equipmentStatistics">
       <div class="typeRows">
         <div v-for="(item,index) in mapTypeList" class="typeRowItem">
@@ -35,6 +35,11 @@ export default {
     }
   },
   methods: {
+    handleClick(e){
+        if (e.target.nodeName.toLowerCase() === 'button') {
+            this.seeDeviceDatil(e.target.value)
+        }
+    },
     //地图接口调用
     initMap() {
       //加载数据
@@ -130,30 +135,30 @@ export default {
                 }).on('click', function () {
                   var infoWindow
                   //构建信息窗体中显示的内容
-                  var info = []
-                  info.push('<div style=width:399px>')
-                  info.push(
-                    '<div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>'
-                  )
-                  info.push(
-                    '<div style=width:100%;display:flex;justify-content:space-between;font-size:14px;><span style=color:rgba(153,153,153,1);>设备编号：</span><span>' +
-                      obj.deviceSN +
-                      '</span><span style=color:rgba(153,153,153,1);>设备类型：</span><span>' +
-                      obj.dcTypeName +
-                      '</span></div>'
-                  )
-                  info.push(
-                    '<div style=width:100%;display:flex;font-size:14px;margin-top:-20px><div style=width:195px;><span style=color:rgba(153,153,153,1);>设备状态：</span><span>' +
-                      deviceStatus(obj.runStatus) +
-                      '</span></div><a href="javascript: void(0)">设备详情</a></div>'
-                  )
-                  info.push(
-                    '<div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>' +
-                      obj.deviceAddr +
-                      '</div></div></div>'
-                  )
+                  let content=`
+                    <div style=width:399px>
+                      <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
+                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;>
+                          <span style=color:rgba(153,153,153,1);>设备编号：</span>
+                          <span>${obj.deviceSN}</span>
+                          <span style=color:rgba(153,153,153,1);>设备类型：</span>
+                          <span>${obj.dcTypeName}</span>
+                        </div>
+                        </br>
+                        <div style=width:100%;display:flex;font-size:14px;margin-top:-20px><div style=width:195px;>
+                          <span style=color:rgba(153,153,153,1);>设备状态：</span>
+                          <span>${deviceStatus(obj.runStatus)}</span>
+                        </div>
+                         </br>
+                        <button value='${obj.deviceId}'>设备详情</button>
+                      </div>
+                      </br>
+                      <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${obj.deviceAddr}</div>
+                      </br>
+                    </div>
+                  </div>`
                   infoWindow = new AMap.InfoWindow({
-                    content: info.join('<br/>'), //使用默认信息窗体框样式，显示信息内容
+                    content:content, //使用默认信息窗体框样式，显示信息内容
                   })
                   infoWindow.open(that.map, lnglat)
                 })
@@ -276,7 +281,7 @@ export default {
       this.initMap()
     }, 2000)
     this.kcntFunction('', 'zh-CN')
-  },
+  }
 }
 </script>
 <style lang="stylus" scoped>
