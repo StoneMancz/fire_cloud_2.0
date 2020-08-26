@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="logo">
-      <img src="../../../src/static/img/logo.png" style="width:140px;height:50px;margin-left:-20px">
+      <img :src="logoImg" style="width:140px;height:50px;margin-left:-20px">
     </div>
     <div class="nav">
       <div v-for="(item,index) in pageData" :key="index" @click="switchTab(index)" :class="(index==tabIndex)?'activity':'normal'">
@@ -79,13 +79,6 @@ export default {
     switchEn_Ch(lang) {
       this.$parent.switchLanguage(lang)
     },
-    getLogo() {
-      // let this_ = this
-      // this.$http.get('http://srv.shine-iot.com:8060/img/org/logo').then(function (response) {
-      //   console.log('获取单位的logo')
-      //   this_.logoImg=response.data
-      // })
-    },
     changeLanguageValue() {
       let initData = [
         this.$t('home.home'),
@@ -133,6 +126,7 @@ export default {
     },
   },
   mounted() {
+    this.logoImg="http://srv.shine-iot.com:8060/img/org/logo?userId="+this.userId
     this.changeLanguageValue()
     if (this.$route.path == '/index') {
       this.tabIndex = 0
