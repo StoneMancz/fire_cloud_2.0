@@ -123,6 +123,8 @@ export default {
     fatherClickFn(data) {
       this.areaId = data.id
       this.getDevsData()
+      //显示右侧数据
+      this.$refs.rightChild.fireMonitorInitData(this.lang, data.id)
     },
     //切换中英文
     switchLanguage(lang) {

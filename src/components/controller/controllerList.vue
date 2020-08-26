@@ -91,6 +91,11 @@ export default {
   },
   methods: {
     handleClick(tab, event) {},
+    fatherClickFn(data) {
+      this.areaId = data.id
+      //显示右侧数据
+      this.$refs.rightChild.initControllEchar(this.lang, data.id)
+    },
     abnormalNode(areaId, pageNo, lang) {
       let this_ = this
       var currentData = qs.stringify({
@@ -101,8 +106,6 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/fctrl/faultnds', currentData)
         .then(function (response) {
-          console.log('异常节点数据')
-          console.log(response)
         })
     },
     controllerList(areaId, pageNo, lang) {
@@ -115,8 +118,6 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/fctrl/devs', currentData)
         .then(function (response) {
-          console.log('控制器的列表')
-          console.log(response)
           this_.tableData1 = response.data.data.records
         })
     },

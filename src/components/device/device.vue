@@ -108,6 +108,8 @@ export default {
     fatherClickFn(data) {
       this.areaId = data.id
       this.getDevsData()
+      //显示右侧数据
+      this.$refs.rightChild.initNewsletter(this.lang, data.id)
     },
     //切换中英文
     switchLanguage(lang) {
@@ -131,8 +133,6 @@ export default {
     deiceTypes() {
       let this_ = this
       this.$http.get('http://srv.shine-iot.com:8060/fdev/mnt/types').then(function (response) {
-        console.log('设备类型')
-        console.log(response)
         this_.equipmentTyleList = response.data.data
       })
     },

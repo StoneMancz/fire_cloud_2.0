@@ -101,6 +101,8 @@ export default {
       this.areaId = data.id
       this.equipmentListFn();
       this.facilitiesList();
+      //显示右侧数据
+      this.$refs.rightChild.initWaterEcharts(this.lang, data.id)
     },
     //切换中英文
     switchLanguage(lang) {

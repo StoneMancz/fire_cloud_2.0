@@ -102,11 +102,15 @@ export default {
         .post('http://srv.shine-iot.com:8060/elect/devs', currentData)
         .then(function (response) {
           this_.recordsData = response.data.data.records
-          console.log('电器火灾的数据')
-          console.log(response.data.data.records)
           this_.total = response.data.data.total
           this_.pageNo = response.data.data.current
         })
+    },
+    fatherClickFn(data) {
+      this.areaId = data.id
+      //显示右侧数据
+      this.$refs.rightChild.initElectEchar(this.lang, data.id)
+      this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
     },
     openHistory(electId, typeName) {
       this.$refs.history.histval(electId, '', '')
