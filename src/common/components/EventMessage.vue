@@ -93,8 +93,6 @@ export default {
       let this_ = this
       var currentData = qs.stringify({ areaId: this_.areaId, lang: lang })
       this.$http.get(url, currentData).then(function (response) {
-        console.log('设备类型数据')
-        console.log(response)
         this_.equipmentTypeData = response.data.data
       })
     },

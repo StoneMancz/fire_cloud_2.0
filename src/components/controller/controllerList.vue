@@ -10,21 +10,25 @@
               <el-tab-pane label="异常节点" name="first">
                 <div class="table">
                   <div class="tebleHeader" style="background:rgba(0,14,71,1);">
-                    <div>安装编号</div>
-                    <div>设备名称</div>
-                    <div>设备编码</div>
-                    <div>当前状态</div>
-                    <div>所属区域</div>
+                    <div>机号</div>
+                    <div>回路号</div>
+                    <div>节点号</div>
+                    <div>节点类型</div>
+                    <div>节点状态</div>
+                    <div>分区</div>
                     <div>地址</div>
-                    <div>详情</div>
+                    <div>时间</div>
+                    <div>操作</div>
                   </div>
                   <div class="tebleColumn" v-for="item in tableData" :key="item.id">
-                    <div>{{item.deviveId}}</div>
-                    <div>{{item.name}}</div>
-                    <div>{{item.deviceNum}}</div>
-                    <div>{{item.ctrlCmdName}}</div>
+                    <div>{{item.mcNo}}</div>
+                    <div>{{item.loopNo}}</div>
+                    <div>{{item.nodeNo}}</div>
+                    <div>{{item.nodeTypeName}}</div>
+                    <div>{{item.nodeStatName}}</div>
                     <div>{{item.area}}</div>
-                    <div>{{item.address}}</div>
+                    <div>{{item.deviceAddr}}</div>
+                    <div></div>
                     <div>
                       <span class="detalis">详情</span>
                     </div>
@@ -106,6 +110,7 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/fctrl/faultnds', currentData)
         .then(function (response) {
+          this_.tableData = response.data.data.records
         })
     },
     controllerList(areaId, pageNo, lang) {
@@ -160,6 +165,8 @@ export default {
 
           .tebleColumn, .tebleHeader {
             display: flex;
+            justify-content: center;
+            text-align: center;
             border-bottom: 1px solid #0f152c;
 
             div {

@@ -28,7 +28,7 @@
                 <div class="footer_flex clearfix">
                   <div>
                     查看二維碼
-                    <div class="flex-footera" id="qrcode1"></div>
+                    <div class="flex-footera" id="qrcode1" style=""></div>
                   </div>
                 </div>
               </div>
@@ -158,8 +158,6 @@ export default {
       this.$http
         .get('http://srv.shine-iot.com:8060/event/devo/' + eventId)
         .then(function (response) {
-          console.log('查看设备详情得接口')
-          console.log(response)
           let eventData = response.data.data
           let eventDetails = {
             eventId: eventData.eventId,
@@ -308,8 +306,8 @@ export default {
       this.showEvenDetails = 1
     },
     qrcode(text) {
-      console.log(text)
       let that = this
+      document.getElementById('qrcode1').innerHTML = ''
       let qrcode = new QRCode('qrcode1', {
         width: 110,
         height: 110,
@@ -401,7 +399,6 @@ export default {
           /* 弹出 */
           .footer_flex div {
             width: 100px;
-            background-color: #bbb;
             float: left;
             text-align: center;
             cursor: pointer;
@@ -415,17 +412,20 @@ export default {
 
           /* button */
           .footer_flex div:hover .flex-footera {
-            display: block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
           }
 
           .footer_flex div .flex-footera {
-            width: 146px;
-            height: 124px;
             position: absolute;
+            width: 180px;
+            height: 180px;
             top: 40px;
             text-align: center;
             padding-top: 15px;
             display: none;
+            background: url('../../static/img/erweima.png') 1px top no-repeat;
           }
         }
       }
