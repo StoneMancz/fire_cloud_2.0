@@ -91,6 +91,10 @@ export default {
       this.pageData = initData
     },
     loginout() {
+      this.$store.commit('settoken', '')
+      localStorage.setItem('accessToken', '')
+      this.$store.commit('setuserId', '')
+      localStorage.setItem('userId', '')
       logout().then((res) => {
         this.$router.push({ name: 'login' })
         this.$message({
@@ -126,7 +130,7 @@ export default {
     },
   },
   mounted() {
-    this.logoImg="http://srv.shine-iot.com:8060/img/org/logo?userId="+this.userId
+    this.logoImg = 'http://srv.shine-iot.com:8060/img/org/logo?userId=' + this.userId
     this.changeLanguageValue()
     if (this.$route.path == '/index') {
       this.tabIndex = 0

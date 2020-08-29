@@ -140,9 +140,11 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/device/area/devgps', currentData)
         .then((data) => {
+          console.log('查看区域下的设备')
+          console.log(data)
           data.data.data.forEach((obj, index) => {
             const lnglat = [obj.deviceGpsLong, obj.deviceGpsLati]
-            if (obj.runStatus === 1) {
+            if (obj.runStatus === 1 || obj.runStatus === 29) {
               that.map.add(
                 new AMap.Marker({
                   position: lnglat,
@@ -183,7 +185,12 @@ export default {
                   infoWindow.open(that.map, lnglat)
                 })
               )
-            } else if (obj.runStatus === 3) {
+            } else if (
+              obj.runStatus === 3 ||
+              obj.runStatus === 69 ||
+              obj.runStatus === 67 ||
+              obj.runStatus === 28
+            ) {
               that.map.add(
                 new AMap.Marker({
                   position: lnglat,
@@ -192,26 +199,116 @@ export default {
                 }).on('click', function () {
                   var infoWindow
                   //构建信息窗体中显示的内容
-                  var info = []
-                  info.push('<div>')
-                  info.push(
-                    '<div style="padding:0px 0px 0px 4px;color:black;font-size:14px;color:white"><b>设备信息</b>'
-                  )
-                  info.push(
-                    '<span>设备编号 :' +
-                      obj.deviceSN +
-                      '</span><span style="margin-left:10px;">设备类型' +
-                      obj.dcTypeName +
-                      '</span>'
-                  )
-                  info.push(
-                    '<span>设备状态 :' +
-                      deviceStatus(obj.runStatus) +
-                      '</span><span style="margin-left:20px;color:rgba(54,92,245,1);">设备详情 :</span>'
-                  )
-                  info.push('地址 :' + obj.deviceAddr + '</div></div>')
+                  let content = `
+                    <div style=width:399px>
+                      <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
+                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;>
+                          <span style=color:rgba(153,153,153,1);>设备编号：</span>
+                          <span>${obj.deviceSN}</span>
+                          <span style=color:rgba(153,153,153,1);>设备类型：</span>
+                          <span>${obj.dcTypeName}</span>
+                        </div>
+                        </br>
+                        <div style=width:100%;display:flex;font-size:14px;margin-top:-20px><div style=width:195px;>
+                          <span style=color:rgba(153,153,153,1);>设备状态：</span>
+                          <span>${deviceStatus(obj.runStatus)}</span>
+                        </div>
+                         </br>
+                        <button value='${
+                          obj.deviceId
+                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline>设备详情</button>
+                      </div>
+                      </br>
+                      <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
+                        obj.deviceAddr
+                      }</div>
+                      </br>
+                    </div>
+                  </div>`
                   infoWindow = new AMap.InfoWindow({
-                    content: info.join('<br/>'), //使用默认信息窗体框样式，显示信息内容
+                    content: content, //使用默认信息窗体框样式，显示信息内容
+                  })
+                  infoWindow.open(that.map, lnglat)
+                })
+              )
+            } else if (obj.runStatus === 2 || obj.runStatus === 8) {
+              that.map.add(
+                new AMap.Marker({
+                  position: lnglat,
+                  icon: 'http://srv.shine-iot.com:8060/img/map/water/orange.png',
+                  offset: new AMap.Pixel(-15, -15),
+                }).on('click', function () {
+                  var infoWindow
+                  //构建信息窗体中显示的内容
+                  let content = `
+                    <div style=width:399px>
+                      <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
+                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;>
+                          <span style=color:rgba(153,153,153,1);>设备编号：</span>
+                          <span>${obj.deviceSN}</span>
+                          <span style=color:rgba(153,153,153,1);>设备类型：</span>
+                          <span>${obj.dcTypeName}</span>
+                        </div>
+                        </br>
+                        <div style=width:100%;display:flex;font-size:14px;margin-top:-20px><div style=width:195px;>
+                          <span style=color:rgba(153,153,153,1);>设备状态：</span>
+                          <span>${deviceStatus(obj.runStatus)}</span>
+                        </div>
+                         </br>
+                        <button value='${
+                          obj.deviceId
+                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline>设备详情</button>
+                      </div>
+                      </br>
+                      <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
+                        obj.deviceAddr
+                      }</div>
+                      </br>
+                    </div>
+                  </div>`
+                  infoWindow = new AMap.InfoWindow({
+                    content: content, //使用默认信息窗体框样式，显示信息内容
+                  })
+                  infoWindow.open(that.map, lnglat)
+                })
+              )
+            } else {
+              that.map.add(
+                new AMap.Marker({
+                  position: lnglat,
+                  icon: 'http://srv.shine-iot.com:8060/img/map/water/green.png',
+                  offset: new AMap.Pixel(-15, -15),
+                }).on('click', function () {
+                  var infoWindow
+                  //构建信息窗体中显示的内容
+                  let content = `
+                    <div style=width:399px>
+                      <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
+                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;>
+                          <span style=color:rgba(153,153,153,1);>设备编号：</span>
+                          <span>${obj.deviceSN}</span>
+                          <span style=color:rgba(153,153,153,1);>设备类型：</span>
+                          <span>${obj.dcTypeName}</span>
+                        </div>
+                        </br>
+                        <div style=width:100%;display:flex;font-size:14px;margin-top:-20px><div style=width:195px;>
+                          <span style=color:rgba(153,153,153,1);>设备状态：</span>
+                          <span>${deviceStatus(obj.runStatus)}</span>
+                        </div>
+                         </br>
+                        <button value='${
+                          obj.deviceId
+                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline>设备详情</button>
+                      </div>
+                      </br>
+                      <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
+                        obj.deviceAddr
+                      }</div>
+                      </br>
+                    </div>
+                  </div>`
+                  infoWindow = new AMap.InfoWindow({
+                    content: content, //使用默认信息窗体框样式，显示信息内容
                   })
                   infoWindow.open(that.map, lnglat)
                 })

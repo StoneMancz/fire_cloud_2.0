@@ -24,10 +24,10 @@
             </div>
             <div class="detailsItem">
               <div>运行状态：{{equipmentDetails.runStatusName}}</div>
-              <div style="color:#365CF5;cursor:pointer;" @click="viewQrCode(equipmentDetails.deviceQRCode)">
+              <div style="color:#365CF5;cursor:pointer;">
                 <div class="footer_flex clearfix">
                   <div>
-                    查看二維碼
+                    查看二维码
                     <div class="flex-footera" id="qrcode1" style=""></div>
                   </div>
                 </div>

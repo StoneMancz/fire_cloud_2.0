@@ -122,8 +122,12 @@ export default {
     //查询设备类型
     equipmentType(url, lang) {
       let this_ = this
+      console.log('请求URL')
+      console.log(url)
       var currentData = qs.stringify({ areaId: this_.areaId, lang: lang })
       this.$http.get(url, currentData).then(function (response) {
+        console.log('设备类型')
+        console.log(response)
         this_.equipmentTypeData = response.data.data
       })
     },
@@ -174,7 +178,7 @@ export default {
       if (month < 10) {
         month = '0' + month
       }
-      return year + '-' + month + '-' + date + ' ' + hour + ':' + minute
+      return month + '-' + date
     },
     //设备数量分布图
     devicesNumber(url, areaId, lang) {
@@ -230,7 +234,7 @@ export default {
         },
         color: ['red'],
         tooltip: {
-          formatter: '{c0}',
+          trigger: 'axis',
         },
         grid: {
           left: '10px',

@@ -158,6 +158,17 @@ export default {
   mounted() {
     console.log(name)
   },
+  created: function () {
+    var _this = this
+    document.onkeydown = function (e) {
+      //按下回车提交
+      let key = window.event.keyCode
+      //事件中keycode=13为回车事件
+      if (key == 13) {
+        _this.router()
+      }
+    }
+  },
   methods: {
     router() {
       let json = {

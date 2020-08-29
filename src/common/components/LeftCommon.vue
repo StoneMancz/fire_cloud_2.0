@@ -15,9 +15,9 @@
       <div class="qrcodeClass">
         <div id="qrcode"></div>
         <div class="arerDesc">
-          <div><span>{{$t('Index.principal')}}</span><span>{{areaContact}}</span></div>
-          <div><span>{{$t('Index.Contact')}}</span><span>{{areaContactPhone}}</span></div>
-          <div><span>{{$t('Index.AddressInfo')}}</span><span>{{areaLocDetail}}</span></div>
+          <div><span>{{$t('Index.principal')}}：</span><span>{{areaContact}}</span></div>
+          <div><span>{{$t('Index.Contact')}}：</span><span>{{areaContactPhone}}</span></div>
+          <div><span>{{$t('Index.AddressInfo')}}：</span><span>{{areaLocDetail}}</span></div>
         </div>
       </div>
     </div>

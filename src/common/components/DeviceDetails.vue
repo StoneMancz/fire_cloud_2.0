@@ -10,7 +10,14 @@
         </div>
         <div class="detailsItem">
           <div>运行状态：<span>{{deviceInfo.runStatusName}}</span></div>
-          <div>二维码</div>
+          <div style="color:#365CF5;cursor:pointer;">
+            <div class="footer_flex clearfix">
+              <div>
+                查看二维码
+                <div class="flex-footera" id="qrcode2" style=""></div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="detailsItem">
           <div>电池电量：<span>{{deviceInfo.batteryName}}</span></div>
@@ -100,6 +107,7 @@
 
 <script>
 import { getTimeToString } from '../../components/rule/getTime'
+import QRCode from 'qrcodejs2'
 export default {
   data() {
     return {
@@ -165,10 +173,19 @@ export default {
             }
             this_.switchData = switchData
           }
-
+          this_.qrcode(response.data.data.deviceQRCode)
           this_.installation = installation
           this_.deviceInfo = deviceInfo
         })
+    },
+    qrcode(text) {
+      let that = this
+      document.getElementById('qrcode2').innerHTML = ''
+      let qrcode = new QRCode('qrcode2', {
+        width: 110,
+        height: 110,
+        text: text,
+      })
     },
   },
 }
@@ -248,6 +265,38 @@ export default {
             text-decoration: underline;
             color: rgba(54, 92, 245, 1);
           }
+        }
+
+        /* 弹出 */
+        .footer_flex div {
+          width: 100px;
+          float: left;
+          text-align: center;
+          cursor: pointer;
+          position: relative;
+          z-index: 10;
+        }
+
+        .footer_flex div:hover {
+          // background-color: #ff8400;
+        }
+
+        /* button */
+        .footer_flex div:hover .flex-footera {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .footer_flex div .flex-footera {
+          position: absolute;
+          width: 180px;
+          height: 180px;
+          top: 40px;
+          text-align: center;
+          padding-top: 15px;
+          display: none;
+          background: url('../../static/img/erweima.png') 1px top no-repeat;
         }
       }
     }
