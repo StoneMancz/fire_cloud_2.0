@@ -326,6 +326,8 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/device/org/kcnt', paramData)
         .then(function (response) {
+          console.log('输出放回数据')
+          console.log(response)
           this_.mapTypeList = response.data
         })
     },

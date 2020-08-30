@@ -180,6 +180,8 @@ export default {
       } else if (this.password == '' || this.password == null) {
         this.$message.error('请输入密码')
       } else {
+        this.$store.commit('settoken', '')
+        localStorage.setItem('accessToken', '')
         loginApi(qs.stringify(json)).then((res) => {
           if (res.code == 1000) {
             this.$store.commit('settoken', res.data.token)

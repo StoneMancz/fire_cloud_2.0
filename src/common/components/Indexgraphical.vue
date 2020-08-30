@@ -2,7 +2,7 @@
   <renderless-component-example>
     <div class="Polyline">
       <div class="polylineSelect">
-        <div class="echartsTilte">状态趋势图</div>
+        <div class="echartsTilte">{{$t('Index.stateTrend')}}</div>
         <div class="echartsChild">
           <el-select v-model="echartEquipmentType" placeholder="设备类型" style="width:120px" @change="equipmentTypeChange">
             <el-option label="全部" value=""></el-option>
@@ -15,7 +15,7 @@
     </div>
     <div class="PieChart">
       <div class="PieChartSelect">
-        <div class="echartsTilte">状态统计图</div>
+        <div class="echartsTilte">{{$t('Index.stateStatistics')}}</div>
         <div style="margin-left:200px;" class="echartsChild">
           <el-select v-model="ecahrtsValue2" placeholder="设备类型" @change="equipmentTypeChange2">
             <el-option label="全部" value=""></el-option>
@@ -26,7 +26,7 @@
       <div id="myChart2" :style="{width: '100%', height: '90%'}"></div>
     </div>
     <div class="histogram">
-      <div class="echartsTilte">数量统计图</div>
+      <div class="echartsTilte">{{$t('Index.statisticsChart')}}</div>
       <div id="myChart3" :style="{width: '100%', height: '90%'}"></div>
     </div>
   </renderless-component-example>
@@ -122,12 +122,8 @@ export default {
     //查询设备类型
     equipmentType(url, lang) {
       let this_ = this
-      console.log('请求URL')
-      console.log(url)
       var currentData = qs.stringify({ areaId: this_.areaId, lang: lang })
       this.$http.get(url, currentData).then(function (response) {
-        console.log('设备类型')
-        console.log(response)
         this_.equipmentTypeData = response.data.data
       })
     },

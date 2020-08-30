@@ -19,10 +19,10 @@
     </div>
     <div class="eventList">
       <div class="tableHeader">
-        <span>事件名称</span>
-        <span>时间</span>
-        <span>设备名称</span>
-        <span>地址</span>
+        <span>{{$t('Index.eventName')}}</span>
+        <span>{{$t('Index.time')}}</span>
+        <span>{{$t('Index.equipmentName')}}</span>
+        <span>{{$t('Index.address')}}</span>
       </div>
       <div class="tebleColumn" v-for="(item,index) in eventAreaEvtsList" @click="eventDetails(item.eventId)" :key="index">
         <div>{{item.eventName}}</div>

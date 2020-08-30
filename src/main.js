@@ -57,6 +57,28 @@ axios.interceptors.request.use(
         return Promise.reject(err);
     });
 
+
+/* 响应拦截器 */
+
+axios.interceptors.response.use(function (response) { // ①10010 token过期（30天） ②10011 token无效
+
+    if (response.data.code === 2100) {
+
+        store.commit("settoken", '')
+        localStorage.setItem('accessToken', '')
+        router.replace({
+            path: '/login' // 到登录页重新获取token
+        })
+    }
+
+    return response
+
+}, function (error) {
+
+    return Promise.reject(error)
+
+})
+
 const i18n = new VueI18n({
     locale: localStorage.getItem('Language') || 'zh', //从localStorage里获取用户中英文选择，没有则默认中文
     messages: {

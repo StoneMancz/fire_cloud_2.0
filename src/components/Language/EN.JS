@@ -49,6 +49,35 @@ module.exports = {
         alarmController: "Controller",
         communicationDevice: "Communication",
         statistics: 'Statistics',
-        eventList: 'EventList'
+        eventList: 'EventList',
+        stateTrend: 'StateTrend',
+        stateStatistics: 'StateStatistics',
+        statisticsChart: 'StatisticsChart',
+        eventName: 'EventName',
+        time: 'Time',
+        equipmentName: 'EquipmentName',
+        address: 'Address'
+    },
+    FireMonitoring: {
+        InstallationNumber: 'Installation',
+        EquipmentName: 'Name',
+        EquipmentNumber: 'EquipmentNumber',
+        State: 'State',
+        Area: 'Area',
+        Address: 'Address',
+        Details: 'Details'
+    },
+    ElectricalMonitoring: {
+        coding: "Coding",
+        name: "Name",
+        status: 'Status',
+        area: 'Area',
+        address: 'Address',
+        Reset: 'Reset',
+        Loop: 'Loop',
+        value: "Value",
+        LoopStatus: "LoopStatus",
+        operating: "Operating",
+        history: 'History'
     }
 }

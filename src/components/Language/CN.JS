@@ -49,6 +49,35 @@ module.exports = {
         alarmController: "报警控制器",
         communicationDevice: "通讯装置",
         statistics: '数据统计图例',
-        eventList: '事件列表'
+        eventList: '事件列表',
+        stateTrend: '状态趋势图',
+        stateStatistics: '状态统计图',
+        statisticsChart: '数量统计图',
+        eventName: '事件名称',
+        time: '时间',
+        equipmentName: '设备名称',
+        address: '地址'
+    },
+    FireMonitoring: {
+        InstallationNumber: '安装编号',
+        EquipmentName: '设备名称',
+        EquipmentNumber: '设备编码',
+        State: '当前状态',
+        Area: '区域',
+        Address: '地址',
+        Details: '详情'
+    },
+    ElectricalMonitoring: {
+        coding: "设备编码",
+        name: "设备名称",
+        status: '设备状态',
+        area: '设备区域',
+        address: '地址',
+        Reset: '复位',
+        Loop: '回路',
+        value: "当前值",
+        LoopStatus: "状态",
+        operating: "操作",
+        history: '历史记录'
     }
 }

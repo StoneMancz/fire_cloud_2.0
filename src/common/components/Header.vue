@@ -59,6 +59,8 @@ export default {
           this.$parent.getRightData('zh-CN')
         } else if (this.$route.path == '/fireMonitoring') {
           this.switchEn_Ch('zh-CN')
+        } else if (this.$route.path == '/ElectricalMonitoring') {
+          this.$parent.initElecticaData()
         }
       } else {
         localStorage.setItem('Language', 'en-US') //将用户设置存储到localStorage以便用户下次打开时使用此设置

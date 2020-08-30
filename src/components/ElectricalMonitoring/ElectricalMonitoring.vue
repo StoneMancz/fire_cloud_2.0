@@ -11,32 +11,32 @@
               <div class="electricTile">
                 <div class="deviceName">
                   <div>
-                    <span>设备编码：{{item.deviceSN}}</span>
+                    <span>{{$t('ElectricalMonitoring.coding')}}：{{item.deviceSN}}</span>
                   </div>
                   <div style="width:133px">
-                    <span>设备名称：{{item.dcTypeName}}</span>
+                    <span>{{$t('ElectricalMonitoring.name')}}：{{item.dcTypeName}}</span>
                   </div>
                 </div>
                 <div class="deviceStatus">
                   <div>
-                    <span>设备状态：{{item.runStatusName}}</span>
+                    <span>{{$t('ElectricalMonitoring.status')}}：{{item.runStatusName}}</span>
                   </div>
-                  <div style="width:133px"><span>设备区域：{{item.areaName}}</span></div>
+                  <div style="width:133px"><span>{{$t('ElectricalMonitoring.area')}}：{{item.areaName}}</span></div>
                 </div>
                 <div class="deviceStatus">
                   <div>
-                    <span>地址：{{item.deviceAddr}} </span>
+                    <span>{{$t('ElectricalMonitoring.address')}}：{{item.deviceAddr}} </span>
                   </div>
-                  <div class="button">复位</div>
+                  <div class="button">{{$t('ElectricalMonitoring.Reset')}}</div>
                 </div>
               </div>
               <div class="tableData">
                 <div class="tableHeader">
-                  <span>回路</span>
-                  <span>设备名称</span>
-                  <span>当前值</span>
-                  <span>状态</span>
-                  <span>操作</span>
+                  <span>{{$t('ElectricalMonitoring.Loop')}}</span>
+                  <span>{{$t('ElectricalMonitoring.name')}}</span>
+                  <span>{{$t('ElectricalMonitoring.value')}}</span>
+                  <span>{{$t('ElectricalMonitoring.LoopStatus')}}</span>
+                  <span>{{$t('ElectricalMonitoring.operating')}}</span>
                 </div>
                 <div class="tebleColumnSwrap">
                   <div class="tebleColumn" v-for="(item1,index1) in item.electList" :key="index1">
@@ -44,7 +44,7 @@
                     <div>{{item1.typeName}}</div>
                     <div>{{item1.checkVal}}{{item1.unitName}}</div>
                     <div>{{item1.statusName}}</div>
-                    <div @click="openHistory(item1.electId,item1.typeName)">历史记录</div>
+                    <div @click="openHistory(item1.electId,item1.typeName)">{{$t('ElectricalMonitoring.history')}}</div>
                   </div>
                 </div>
               </div>
@@ -101,6 +101,8 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/elect/devs', currentData)
         .then(function (response) {
+          console.log('电气火灾的放回数据')
+          console.log(response)
           this_.recordsData = response.data.data.records
           this_.total = response.data.data.total
           this_.pageNo = response.data.data.current

@@ -25,13 +25,13 @@
             </div>
             <div class="installInfo">
               <div class="tableHeader">
-                <span>安装编号</span>
-                <span>设备名称</span>
-                <span>设备编码</span>
-                <span>当前状态</span>
-                <span>所属区域</span>
-                <span>地址</span>
-                <span>详情</span>
+                <span>{{$t('FireMonitoring.InstallationNumber')}}</span>
+                <span>{{$t('FireMonitoring.EquipmentName')}}</span>
+                <span>{{$t('FireMonitoring.EquipmentNumber')}}</span>
+                <span>{{$t('FireMonitoring.State')}}</span>
+                <span>{{$t('FireMonitoring.Area')}}</span>
+                <span>{{$t('FireMonitoring.Address')}}</span>
+                <span>{{$t('FireMonitoring.Details')}}</span>
               </div>
               <div class="tebleColumn" v-for="(item,index) in installInfoList" :key="index">
                 <div>{{item.installNumber}}</div>
@@ -44,7 +44,7 @@
                 <div v-else>{{item.runStatusName}}</div>
                 <div>{{item.areaName}}</div>
                 <div>{{item.deviceAddr}}</div>
-                <div style="color:rgba(112,212,254,1);" @click="seeDeviceDetail(item.deviceId)">详情</div>
+                <div style="color:rgba(112,212,254,1);" @click="seeDeviceDetail(item.deviceId)">{{$t('FireMonitoring.Details')}}</div>
               </div>
               <el-pagination class="pagination2" :current-page.sync="currentPage" layout="prev, pager, next" :total="total" style="text-align: center;" @current-change="handleCurrentChange"></el-pagination>
             </div>
