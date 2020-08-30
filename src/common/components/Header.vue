@@ -60,7 +60,13 @@ export default {
         } else if (this.$route.path == '/fireMonitoring') {
           this.switchEn_Ch('zh-CN')
         } else if (this.$route.path == '/ElectricalMonitoring') {
-          this.$parent.initElecticaData()
+          this.$parent.switchLanguage('zh-CN')
+        } else if (this.$route.path == '/water') {
+          this.$parent.switchLanguage('zh-CN')
+        } else if (this.$route.path == '/controllerList') {
+          this.$parent.switchLanguage('zh-CN')
+        } else if (this.$route.path == '/newsletter') {
+          this.$parent.switchLanguage('zh-CN')
         }
       } else {
         localStorage.setItem('Language', 'en-US') //将用户设置存储到localStorage以便用户下次打开时使用此设置
@@ -75,6 +81,14 @@ export default {
           this.$parent.getRightData('en-US')
         } else if (this.$route.path == '/fireMonitoring') {
           this.switchEn_Ch('en-US')
+        } else if (this.$route.path == '/ElectricalMonitoring') {
+          this.$parent.switchLanguage('en-US')
+        } else if (this.$route.path == '/water') {
+          this.$parent.switchLanguage('en-US')
+        } else if (this.$route.path == '/controllerList') {
+          this.$parent.switchLanguage('en-US')
+        } else if (this.$route.path == '/newsletter') {
+          this.$parent.switchLanguage('en-US')
         }
       }
     },

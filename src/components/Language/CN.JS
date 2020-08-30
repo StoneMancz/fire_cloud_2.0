@@ -56,7 +56,8 @@ module.exports = {
         eventName: '事件名称',
         time: '时间',
         equipmentName: '设备名称',
-        address: '地址'
+        address: '地址',
+        all: '全部'
     },
     FireMonitoring: {
         InstallationNumber: '安装编号',
@@ -65,7 +66,8 @@ module.exports = {
         State: '当前状态',
         Area: '区域',
         Address: '地址',
-        Details: '详情'
+        Details: '详情',
+        Hint: "请输入设备编号"
     },
     ElectricalMonitoring: {
         coding: "设备编码",
@@ -84,6 +86,34 @@ module.exports = {
         name: "名称",
         coding: "编码",
         area: '区域',
-        address: '地址'
+        address: '地址',
+        Types: '设备类型',
+        status: '当前状态',
+        hint: "请输入设备编号"
+    },
+    Controller: {
+        AbnormalNode: '异常节点',
+        Machine: '机号',
+        Circuit: '回路号',
+        Node: '节点号',
+        Type: '节点类型',
+        status: '节点状态',
+        Partition: '分区',
+        address: '地址',
+        time: '时间',
+        operating: '操作',
+        area: '区域',
+        history: '历史纪录',
+        Contrstatus: '控制器状态',
+        ControllerNumber: '控制器号',
+        ControllerList: '控制器列表',
+    },
+    Newsletter: {
+        deviceID: '设备编号',
+        status: '状态',
+        area: '区域',
+        address: '地址',
+        Details: '详情',
+        All: '全部'
     }
 }

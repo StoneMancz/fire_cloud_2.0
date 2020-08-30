@@ -5,7 +5,7 @@
         <div :class="(1==tabIndex)?'activity':'normal'" @click="tabChange(1)">{{$t('Index.statistics')}}</div>
         <div :class="(2==tabIndex)?'activity':'normal'" @click="tabChange(2)">{{$t('Index.eventList')}}</div>
       </div>
-      <img src="../../../src/static/img/rightDelete.png">
+      <img src="../../../src/static/img/rightDelete.png" @click="rightDelete">
     </div>
     <div class="graphical" v-show="1==tabIndex">
       <Indexgraphical ref="graphical"></Indexgraphical>
@@ -92,6 +92,9 @@ export default {
       this.$refs.events.eventLevelFn()
       //设备类型
       this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
+    },
+    rightDelete() {
+      this.$parent.closeRightComponents()
     },
     //火灾监控初始化图例
     fireMonitorInitData(lang, areaID) {

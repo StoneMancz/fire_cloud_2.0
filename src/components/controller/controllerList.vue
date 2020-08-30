@@ -7,18 +7,18 @@
         <div class="boxWrap">
           <div class="leftTable">
             <el-tabs v-model="activeName1" @tab-click="handleClick">
-              <el-tab-pane label="异常节点" name="first">
+              <el-tab-pane :label="$t('Controller.AbnormalNode')" name="first">
                 <div class="table">
                   <div class="tebleHeader" style="background:rgba(0,14,71,1);">
-                    <div>机号</div>
-                    <div>回路号</div>
-                    <div>节点号</div>
-                    <div style="flex: 2;">节点类型</div>
-                    <div style="flex: 2;">节点状态</div>
-                    <div>分区</div>
-                    <div style="flex: 2;">地址</div>
-                    <div style="flex: 2;">时间</div>
-                    <div>操作</div>
+                    <div>{{$t('Controller.Machine')}}</div>
+                    <div>{{$t('Controller.Circuit')}}</div>
+                    <div>{{$t('Controller.Node')}}</div>
+                    <div style="flex: 2;">{{$t('Controller.Type')}}</div>
+                    <div style="flex: 2;">{{$t('Controller.status')}}</div>
+                    <div>{{$t('Controller.Partition')}}</div>
+                    <div style="flex: 2;">{{$t('Controller.address')}}</div>
+                    <div style="flex: 2;">{{$t('Controller.time')}}</div>
+                    <div>{{$t('Controller.operating')}}</div>
                   </div>
                   <div class="tebleColumn" v-for="item in tableData" :key="item.id">
                     <div>{{item.mcNo}}</div>
@@ -30,20 +30,20 @@
                     <div style="flex: 2;">{{item.deviceAddr}}</div>
                     <div style="flex: 2;">{{item.msgTime}}</div>
                     <div>
-                      <span class="detalis" @click="nodeDetails">详情</span>
+                      <span class="detalis" @click="nodeDetails(item.deviceId)">详情</span>
                     </div>
                   </div>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="控制器列表" name="second">
+              <el-tab-pane :label="$t('Controller.ControllerList')" name="second">
                 <div class="table">
                   <div class="tebleHeader" style="background:rgba(0,14,71,1);">
-                    <div>机号</div>
-                    <div>控制器号</div>
-                    <div>控制器状态</div>
-                    <div>区域</div>
-                    <div>地址</div>
-                    <div>操作</div>
+                    <div>{{$t('Controller.Machine')}}</div>
+                    <div>{{$t('Controller.ControllerNumber')}}</div>
+                    <div>{{$t('Controller.Contrstatus')}}</div>
+                    <div>{{$t('Controller.area')}}</div>
+                    <div>{{$t('Controller.address')}}</div>
+                    <div>{{$t('Controller.operating')}}</div>
                   </div>
                   <div class="tebleColumn" v-for="(item1,index1) in tableData1" :key="index1" style="background:#00061F">
                     <div>{{item1.mcNo}}</div>
@@ -52,7 +52,7 @@
                     <div>{{item1.areaName}}</div>
                     <div>{{item1.deviceAddr}}</div>
                     <div>
-                      <span class="detalis">详情</span>
+                      <span class="detalis">{{$t('Controller.history')}}</span>
                     </div>
                   </div>
                 </div>
@@ -65,11 +65,13 @@
         </div>
       </div>
     </div>
+    <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
   </renderless-component-example>
 </template>
 <script>
 import qs from 'qs'
 import Headers from '../../common/components/Header'
+import DeviceDetailsCom from '../../common/components/DeviceDetails'
 import LeftCommon from '../../common/components/LeftCommon'
 import RightCommon from '../../common/components/RightCommon'
 import { getTimeToString } from './../rule/getTime'
@@ -78,6 +80,7 @@ export default {
     Headers,
     LeftCommon,
     RightCommon,
+    DeviceDetailsCom,
   },
   data() {
     return {
@@ -100,6 +103,8 @@ export default {
       this.areaId = data.id
       //显示右侧数据
       this.$refs.rightChild.initControllEchar(this.lang, data.id)
+      this.abnormalNode(this.areaId, this.pageNo, this.lang)
+      this.controllerList(this.areaId, this.pageNo, this.lang)
     },
     abnormalNode(areaId, pageNo, lang) {
       let this_ = this
@@ -111,15 +116,21 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/fctrl/faultnds', currentData)
         .then(function (response) {
-          console.log('异常节点数据')
-          console.log(response)
           this_.tableData = response.data.data.records.map((item) => {
             item.msgTime = getTimeToString(item.msgTime)
             return item
           })
         })
     },
-    nodeDetails(nodeID) {},
+    nodeDetails(deviceId) {
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
+    },
+    switchLanguage(lang) {
+      this.lang = lang
+      this.abnormalNode(this.areaId, this.pageNo, this.lang)
+      this.controllerList(this.areaId, this.pageNo, this.lang)
+      this.$refs.rightChild.initControllEchar(this.lang, this.areaId)
+    },
     controllerList(areaId, pageNo, lang) {
       let this_ = this
       var currentData = qs.stringify({

@@ -9,18 +9,18 @@
             <div class="filterData">
               <div>
                 <el-select v-model="equipmentValue" placeholder="设备类型" style @change="equipmentValueChange">
-                  <el-option label="设备类型" value></el-option>
+                  <el-option :label="$t('FireMonitoring.EquipmentName')" value></el-option>
                   <el-option v-for="item in equipmentTyleList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
               <div>
                 <el-select v-model="deviceStatus" placeholder="设备状态" @change="deviceStatusChange">
-                  <el-option label="设备状态" value></el-option>
+                  <el-option :label="$t('FireMonitoring.State')" value></el-option>
                   <el-option v-for="item in deviceStatusList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
               <div>
-                <input class="installNumbers" placeholder="请输入设备编号" @change="getDevsData" v-model="installNumber">
+                <input class="installNumbers" :placeholder="$t('FireMonitoring.Hint')" @change="getDevsData" v-model="installNumber">
               </div>
             </div>
             <div class="installInfo">
@@ -130,6 +130,7 @@ export default {
     switchLanguage(lang) {
       this.lang = lang
       this.getDevsData()
+      this.$refs.rightChild.fireMonitorInitData(lang, this.areaId)
     },
     handleCurrentChange(val) {
       this.currentPage = val

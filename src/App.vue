@@ -35,9 +35,9 @@ html {
 }
 
 .el-input__inner {
-  color: rgba(255, 255, 255, 1);
+  color: rgba(255, 255, 255, 1) !important;
   background: #001773 !important;
-  border: none;
+  border: none !important;
 }
 
 .amap-info-content {

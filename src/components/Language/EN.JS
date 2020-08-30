@@ -56,7 +56,8 @@ module.exports = {
         eventName: 'EventName',
         time: 'Time',
         equipmentName: 'EquipmentName',
-        address: 'Address'
+        address: 'Address',
+        all: 'All'
     },
     FireMonitoring: {
         InstallationNumber: 'Installation',
@@ -65,7 +66,8 @@ module.exports = {
         State: 'State',
         Area: 'Area',
         Address: 'Address',
-        Details: 'Details'
+        Details: 'Details',
+        Hint: "Please enter the device number"
     },
     ElectricalMonitoring: {
         coding: "Coding",
@@ -84,6 +86,34 @@ module.exports = {
         name: "Name",
         coding: "Coding",
         area: 'Area',
-        address: 'Address'
+        address: 'Address',
+        Types: 'Types',
+        status: 'Status',
+        hint: "Please enter the device number"
+    },
+    Controller: {
+        AbnormalNode: 'AbnormalNode',
+        Machine: 'Machine',
+        Circuit: 'Circuit',
+        Node: 'Node',
+        Type: 'Type',
+        status: 'Status',
+        Partition: 'Partition',
+        address: 'Address',
+        time: 'Time',
+        operating: 'operating',
+        area: 'Area',
+        history: 'History',
+        Contrstatus: 'Contrstatus',
+        ControllerNumber: 'ControllerNumber',
+        ControllerList: 'ControllerList',
+    },
+    Newsletter: {
+        deviceID: 'DeviceID',
+        status: 'Status',
+        area: 'Area',
+        address: 'Address',
+        Details: 'Details',
+        All: 'ALL'
     }
 }

@@ -5,7 +5,7 @@
         <div class="echartsTilte">{{$t('Index.stateTrend')}}</div>
         <div class="echartsChild">
           <el-select v-model="echartEquipmentType" placeholder="设备类型" style="width:120px" @change="equipmentTypeChange">
-            <el-option label="全部" value=""></el-option>
+            <el-option :label="$t('Index.all')" value=""></el-option>
             <el-option v-for="item in equipmentTypeData" :key="item.type" :label="item.name" :value="item.type"></el-option>
           </el-select>
           <el-date-picker v-model="trendValue1" @change="pickerChange" style="background: #000D42;margin-left:10px;width:150px" type="datetimerange"></el-date-picker>
@@ -18,7 +18,7 @@
         <div class="echartsTilte">{{$t('Index.stateStatistics')}}</div>
         <div style="margin-left:200px;" class="echartsChild">
           <el-select v-model="ecahrtsValue2" placeholder="设备类型" @change="equipmentTypeChange2">
-            <el-option label="全部" value=""></el-option>
+            <el-option :label="$t('Index.all')" value=""></el-option>
             <el-option v-for="item in equipmentTypeData" :key="item.type" :label="item.name" :value="item.type"></el-option>
           </el-select>
         </div>
@@ -124,14 +124,14 @@ export default {
       let this_ = this
       this_.lang = lang
       var currentData = { areaId: this_.areaID, lang: this_.lang }
-      console.log('param', currentData)
-      console.log('url', url)
+      console.log("请求参数",currentData);
       this.$http.get(url, { params: currentData }).then(function (response) {
         this_.equipmentTypeData = response.data.data
       })
     },
     alarmTrend(url, areaID, deviceType, startTime, endTime) {
       this.alarmTrendUrl = url
+      this.areaID = areaID
       let this_ = this
       var currentData = qs.stringify({
         areaId: areaID,
@@ -286,6 +286,7 @@ export default {
       myChart.setOption({
         tooltip: {
           trigger: 'item',
+          itemGap: 5,
           formatter: '{b}: {c} ({d}%)',
         },
         legend: {
@@ -313,7 +314,7 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: '30',
+                fontSize: '20',
                 fontWeight: 'bold',
               },
             },
@@ -412,7 +413,6 @@ export default {
     display: flex;
     width: 100%;
     align-items: center;
-    padding-top: 10px;
     margin-left: 10px;
     overflow: hidden;
 
@@ -436,7 +436,7 @@ export default {
 
 .PieChart {
   margin-top: 15px;
-  height: 30%;
+  height: 32%;
   background: rgba(0, 13, 66, 0.25);
   border-radius: 4px;
 
@@ -444,7 +444,6 @@ export default {
     display: flex;
     width: 100%;
     align-items: center;
-    padding-top: 10px;
     margin-left: 10px;
     overflow: hidden;
 

@@ -9,35 +9,33 @@
             <div class="filterData">
               <div>
                 <el-select v-model="deviceStatus" placeholder="设备状态" style @change="deviceStatusChange">
-                  <el-option label="设备状态" value></el-option>
+                  <el-option :label="$t('Newsletter.status')" value></el-option>
                   <el-option v-for="item in deviceStatusList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
               <div>
                 <el-select v-model="installNumber" placeholder="MAC/IMEI" style @change="installNumberChange">
-                  <el-option label="全部" value></el-option>
+                  <el-option :label="$t('Newsletter.All')" value></el-option>
                   <el-option v-for="item in installNumberList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
             </div>
             <div class="installInfo">
               <div class="tableHeader">
-                <span>设备编号</span>
+                <span>{{$t('Newsletter.deviceID')}}</span>
                 <span>MAC/IMEI</span>
-                <span>状态</span>
-                <span>区域</span>
-                <span>地址</span>
-                <span>最后接收时间</span>
-                <span>详情</span>
+                <span>{{$t('Newsletter.status')}}</span>
+                <span>{{$t('Newsletter.area')}}</span>
+                <span>{{$t('Newsletter.address')}}</span>
+                <span>{{$t('Newsletter.Details')}}</span>
               </div>
               <div class="tebleColumn" v-for="(item,index) in installInfoList" :key="index">
                 <div>{{item.deviceSN}}</div>
-                <div></div>
+                <div>{{item.macImei}}</div>
                 <div>{{item.runStatusName}}</div>
                 <div>{{item.areaName}}</div>
                 <div>{{item.deviceAddr}}</div>
-                <div></div>
-                <div>详情</div>
+                <div @click="nodeDetails(item.deviceId)">{{$t('Newsletter.Details')}}</div>
               </div>
               <el-pagination class="pagination2" :current-page.sync="currentPage" layout="prev, pager, next" :total="total" style="text-align: center;" @current-change="handleCurrentChange"></el-pagination>
             </div>
@@ -48,10 +46,12 @@
         </div>
       </div>
     </div>
+    <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
   </renderless-component-example>
 </template>
 <script>
 import RightCommon from '../../common/components/RightCommon'
+import DeviceDetailsCom from '../../common/components/DeviceDetails'
 import qs from 'qs'
 import Headers from '../../common/components/Header'
 import LeftCommon from '../../common/components/LeftCommon'
@@ -80,14 +80,11 @@ export default {
     Headers,
     DetailsCommon,
     RightCommon,
+    DeviceDetailsCom,
   },
   mounted() {
-    // //查询设备列表
     this.getDevsData()
-    // //查询设备类型
-    // this.deiceTypes()
-    // //查询设备的状态列表
-    // this.deiceStusList()
+    this.deiceStusList()
   },
   methods: {
     getDevsData() {
@@ -104,6 +101,9 @@ export default {
         .then(function (response) {
           this_.installInfoList = response.data.data
         })
+    },
+    nodeDetails(deviceId) {
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
     },
     fatherClickFn(data) {
       this.areaId = data.id
@@ -139,7 +139,9 @@ export default {
     //查询设备的状态列表
     deiceStusList() {
       let this_ = this
-      this.$http.get('http://srv.shine-iot.com:8060/fdev/mnt/stus').then(function (response) {
+      this.$http.get('http://srv.shine-iot.com:8060/gwdtu/stus').then(function (response) {
+        console.log('设备状态列表')
+        console.log(response)
         this_.deviceStatusList = response.data.data
       })
     },

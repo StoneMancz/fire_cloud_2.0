@@ -118,6 +118,11 @@ export default {
       this.$refs.history.histval(electId, '', '')
       this.$refs.history.openHistory(typeName)
     },
+    switchLanguage(lang) {
+      this.lang = lang
+      this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
+      this.$refs.rightChild.initElectEchar(this.lang, this.areaId)
+    },
   },
 }
 </script>

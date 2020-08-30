@@ -9,31 +9,39 @@
             <div class="filterData">
               <div>
                 <el-select v-model="equipmentValue" placeholder="设备类型" style @change="equipmentValueChange">
-                  <el-option label="设备类型" value></el-option>
+                  <el-option :label="$t('Water.Types')" value></el-option>
                   <el-option v-for="item in equipmentTyleList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
               <div>
                 <el-select v-model="deviceStatus" placeholder="当前状态" @change="deviceStatusChange">
-                  <el-option label="当前状态" value></el-option>
+                  <el-option :label="$t('Water.status')" value></el-option>
                   <el-option v-for="item in deviceStatusList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
               <div>
-                <input class="installNumbers" placeholder="请输入设备编号" v-model="deviceSN" @change="getWaterData">
+                <input class="installNumbers" :placeholder="$t('Water.hint')" v-model="deviceSN" @change="getWaterData">
               </div>
             </div>
             <div class="waterConten">
               <div class="showWaterTanks" v-for="(item1,index1) in waterList" :key="index1">
                 <div class="watertitle">
                   <span>{{item1.runStatusName}}</span>
-                  <span>米</span>
+                  <span v-if="item1.deviceTypeCode==16 || item1.deviceTypeCode==17">{{item1.buildInfoModels[0].curVal}}{{item1.buildInfoModels[0].rangUnitName}}</span>
+                  <span v-if="item1.deviceTypeCode==7">{{item1.runStatusName}}</span>
+                  <span v-if="item1.deviceTypeCode==2">{{item1.buildInfoModels[0].curVal}}{{item1.buildInfoModels[0].rangUnitName}}</span>
                 </div>
                 <WaterCharts v-if="item1.deviceTypeCode==16" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></WaterCharts>
                 <HydraulicFn v-if="item1.deviceTypeCode==17" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></HydraulicFn>
                 <Thermometer v-if="item1.deviceTypeCode==2" v-bind:item="item1.buildInfoModels"></Thermometer>
-                <Switchs v-if="item1.runStatusName=='门关闭'|| item1.runStatusName=='离线'"></Switchs>
-                <div class="Graphics">
+                <Switchs v-if="item1.deviceTypeCode==7"></Switchs>
+                <div class="Graphics" v-if="item1.deviceTypeCode==2" style="margin-top: -25px;">
+                  <div>{{$t('Water.name')}}:{{item1.dcTypeName}}</div>
+                  <div>{{$t('Water.coding')}}:{{item1.deviceSN}}</div>
+                  <div>{{$t('Water.area')}}:{{item1.areaName}}</div>
+                  <div>{{$t('Water.address')}}:{{item1.deviceAddr}}</div>
+                </div>
+                <div class="Graphics" v-else>
                   <div>{{$t('Water.name')}}:{{item1.dcTypeName}}</div>
                   <div>{{$t('Water.coding')}}:{{item1.deviceSN}}</div>
                   <div>{{$t('Water.area')}}:{{item1.areaName}}</div>
@@ -107,26 +115,34 @@ export default {
     //切换中英文
     switchLanguage(lang) {
       this.lang = lang
+      //用水的列表
+      this.facilitiesList()
+      //当前状态
+      this.statusList()
+      //设备类型列表
+      this.equipmentListFn()
+      //显示右侧数据
+      this.$refs.rightChild.initWaterEcharts(this.lang, this.areaId)
     },
     statusList() {
       let this_ = this
-      var currentData = qs.stringify({
+      var currentData = {
         lang: this_.lang,
-      })
+      }
       this.$http
-        .get('http://srv.shine-iot.com:8060/facilities/stus', currentData)
+        .get('http://srv.shine-iot.com:8060/facilities/stus', { params: currentData })
         .then(function (response) {
           this_.deviceStatusList = response.data.data
         })
     },
     equipmentListFn() {
       let this_ = this
-      var currentData = qs.stringify({
+      var currentData = {
         lang: this.lang,
         areaId: this.areaId,
-      })
+      }
       this.$http
-        .get('http://srv.shine-iot.com:8060/facilities/tpcodes', currentData)
+        .get('http://srv.shine-iot.com:8060/facilities/tpcodes', { params: currentData })
         .then(function (response) {
           this_.equipmentTyleList = response.data.data
         })
@@ -152,6 +168,8 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/facilities/devs', currentData)
         .then(function (response) {
+          console.log('查看用水数据')
+          console.log(response)
           this_.waterList = response.data.data
         })
     },

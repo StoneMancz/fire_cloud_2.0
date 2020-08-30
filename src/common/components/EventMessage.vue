@@ -20,16 +20,16 @@
     <div class="eventList">
       <div class="tableHeader">
         <span>{{$t('Index.eventName')}}</span>
-        <span>{{$t('Index.time')}}</span>
+        <span style=" flex: 2;">{{$t('Index.time')}}</span>
         <span>{{$t('Index.equipmentName')}}</span>
-        <span>{{$t('Index.address')}}</span>
+        <span style=" flex: 2;">{{$t('Index.address')}}</span>
       </div>
       <div class="tebleColumn" v-for="(item,index) in eventAreaEvtsList" @click="eventDetails(item.eventId)" :key="index">
         <div>{{item.eventName}}</div>
-        <div>{{item.eventTime}}</div>
+        <div style=" flex: 2;">{{item.eventTime}}</div>
         <div>{{item.deviceName}}</div>
         <el-tooltip :content="item.deviceDetailedAddr" placement="bottom" effect="light">
-          <div style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;cursor: pointer;">{{item.deviceAddr}}</div>
+          <div style=" flex: 2;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;cursor: pointer;">{{item.deviceAddr}}</div>
         </el-tooltip>
       </div>
       <el-pagination class="pagination2" :current-page.sync="currentPage" layout="prev, pager, next" :total="total" style="text-align: center;" @current-change="handleCurrentChange"></el-pagination>
@@ -129,6 +129,8 @@ export default {
       }
     },
     eventDetails(eventId) {
+      console.log('eventId')
+      console.log(eventId)
       this.$refs.child.drawersFn(eventId)
     },
     pickerEventChange() {

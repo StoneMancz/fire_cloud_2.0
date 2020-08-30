@@ -158,6 +158,8 @@ export default {
       this.$http
         .get('http://srv.shine-iot.com:8060/event/devo/' + eventId)
         .then(function (response) {
+          console.log('事件详情')
+          console.log(response)
           let eventData = response.data.data
           let eventDetails = {
             eventId: eventData.eventId,
