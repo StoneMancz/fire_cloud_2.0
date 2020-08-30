@@ -122,8 +122,11 @@ export default {
     //查询设备类型
     equipmentType(url, lang) {
       let this_ = this
-      var currentData = qs.stringify({ areaId: this_.areaId, lang: lang })
-      this.$http.get(url, currentData).then(function (response) {
+      this_.lang = lang
+      var currentData = { areaId: this_.areaID, lang: this_.lang }
+      console.log('param', currentData)
+      console.log('url', url)
+      this.$http.get(url, { params: currentData }).then(function (response) {
         this_.equipmentTypeData = response.data.data
       })
     },

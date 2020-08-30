@@ -29,7 +29,6 @@ export default {
   },
   data() {
     return {
-      markers: [],
       map: '',
       mapTypeList: [],
     }
@@ -55,70 +54,71 @@ export default {
           this.$http.post('http://srv.shine-iot.com:8060/org/logps').then((data) => {
             data.data.data.forEach((obj, index) => {
               const lnglat = [obj.areaLong, obj.areaLat]
-              that.map.add(
-                new AMap.Marker({
-                  position: lnglat,
-                  icon: 'http://srv.shine-iot.com:8060/img/map/water/green.png',
-                  offset: new AMap.Pixel(-15, -15),
-                }).on('click', function () {
-                  var currentData = qs.stringify({ areaId: obj.areaID })
-                  that.$http
-                    .post('http://srv.shine-iot.com:8060/org/area/dcnt', currentData)
-                    .then(function (response) {
-                      var infoWindow
-                      //构建信息窗体中显示的内容
-                      var info = []
-                      let content = `
-                          <div >
+              if (obj.areaLong != '' && obj.areaLat != '') {
+                that.map.add(
+                  new AMap.Marker({
+                    position: lnglat,
+                    icon: 'http://srv.shine-iot.com:8060/img/map/water/green.png',
+                    offset: new AMap.Pixel(-15, -15),
+                  }).on('click', function () {
+                    var currentData = qs.stringify({ areaId: obj.areaID })
+                    that.$http
+                      .post('http://srv.shine-iot.com:8060/org/area/dcnt', currentData)
+                      .then(function (response) {
+                        var infoWindow
+                        //构建信息窗体中显示的内容
+                        var info = []
+                        let content = `
+                          <div style='width:393px'>
                             <div style="padding:0px 0px 0px 4px;color:white;font-size:16px;">
                               单位信息
                             </div>
                             <div style=margin-top:10px>
                               <span style=font-size:14px;color:rgba(153,153,153,1);>名称：</span>
-                              <span style=font-size:14px;>${response.data.areaName}</span>
+                              <span style=font-size:14px;margin-left:30px>${response.data.areaName}</span>
                             </div>
 
-                            <div style=width:110%;>
+                            <div style=width:100%;margin-top:19px>
                                 <span style=font-size:14px;color:rgba(153,153,153,1);>地址：</span>
-                                <span style=font-size:14px;>${response.data.areaLocDetail}</span>
+                                <span style=font-size:14px;margin-left:30px>${response.data.areaLocDetail}</span>
                             </div>
 
-                            <div style=width:100%;display:flex;>
+                            <div style=width:100%;display:flex;margin-top:19px>
                               <div style=width:150px;>
                                 <span style=font-size:14px;color:rgba(153,153,153,1);>联系人：</span>
                                 <span style=font-size:14px;>${response.data.areaContact}</span>
                               </div>
                               <div>
-                                <span style="font-size:14px;color:rgba(153,153,153,1);">联系电话：</span>
+                                <span style="font-size:14px;color:rgba(153,153,153,1);margin-left:70px">联系电话：</span>
                                 <span>${response.data.areaContactPhone}</span>
                               </div>
                             </div>
 
-                            <div style=width:100%;display:flex;>
+                            <div style=width:100%;display:flex;margin-top:19px>
                               <div style=width:150px;>
-                                <span style=font-size:14px;color:rgba(153,153,153,1);>类型：</span>
-                                <span style=font-size:14px;>${DeviceType(
-                                  response.data.deviceKinds
-                                )}</span>
+                                <span style=font-size:14px;color:rgba(153,153,153,1);>设备种类：</span>
+                                <span style=font-size:14px;>${response.data.deviceKinds}</span>
                               </div>
                               <div>
-                                <span style=font-size:14px;color:rgba(153,153,153,1);>设备数量：</span>    
+                                <span style=font-size:14px;color:rgba(153,153,153,1);margin-left:70px>设备数量：</span>    
                                 <span style=font-size:14px;>
                                   ${response.data.deviceCount}
                                 </span>
                               </div>
-                                                      
-                              </div>
+                            </div>
                           </div>
 
                       `
-                      infoWindow = new AMap.InfoWindow({
-                        content: content, //使用默认信息窗体框样式，显示信息内容
+                        infoWindow = new AMap.InfoWindow({
+                          content: content, //使用默认信息窗体框样式，显示信息内容
+                        })
+                        infoWindow.open(that.map, lnglat)
                       })
-                      infoWindow.open(that.map, lnglat)
-                    })
-                })
-              )
+                  })
+                )
+              } else {
+                return
+              }
             })
           })
         },
@@ -135,13 +135,10 @@ export default {
     areDeviceMap(data) {
       this.location(data.areaLong, data.areaLat)
       let that = this
-      that.markers = []
       var currentData = qs.stringify({ areaId: data.id })
       this.$http
         .post('http://srv.shine-iot.com:8060/device/area/devgps', currentData)
         .then((data) => {
-          console.log('查看区域下的设备')
-          console.log(data)
           data.data.data.forEach((obj, index) => {
             const lnglat = [obj.deviceGpsLong, obj.deviceGpsLati]
             if (obj.runStatus === 1 || obj.runStatus === 29) {
@@ -154,23 +151,23 @@ export default {
                   var infoWindow
                   //构建信息窗体中显示的内容
                   let content = `
-                    <div style=width:399px>
+                    <div style='width:399px'>
                       <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
-                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;>
+                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;margin-top:20px>
                           <span style=color:rgba(153,153,153,1);>设备编号：</span>
                           <span>${obj.deviceSN}</span>
-                          <span style=color:rgba(153,153,153,1);>设备类型：</span>
+                          <span style=color:rgba(153,153,153,1);margin-left:10px;>设备类型：</span>
                           <span>${obj.dcTypeName}</span>
                         </div>
                         </br>
-                        <div style=width:100%;display:flex;font-size:14px;margin-top:-20px><div style=width:195px;>
+                        <div style=width:100%;display:flex;font-size:14px;><div style=width:195px;>
                           <span style=color:rgba(153,153,153,1);>设备状态：</span>
                           <span>${deviceStatus(obj.runStatus)}</span>
                         </div>
                          </br>
                         <button value='${
                           obj.deviceId
-                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline>设备详情</button>
+                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>设备详情</button>
                       </div>
                       </br>
                       <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
@@ -200,23 +197,23 @@ export default {
                   var infoWindow
                   //构建信息窗体中显示的内容
                   let content = `
-                    <div style=width:399px>
+                    <div style='width:399px'>
                       <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
-                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;>
+                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;margin-top:20px>
                           <span style=color:rgba(153,153,153,1);>设备编号：</span>
                           <span>${obj.deviceSN}</span>
-                          <span style=color:rgba(153,153,153,1);>设备类型：</span>
+                          <span style=color:rgba(153,153,153,1);margin-left:10px;>设备类型：</span>
                           <span>${obj.dcTypeName}</span>
                         </div>
                         </br>
-                        <div style=width:100%;display:flex;font-size:14px;margin-top:-20px><div style=width:195px;>
+                        <div style=width:100%;display:flex;font-size:14px;><div style=width:195px;>
                           <span style=color:rgba(153,153,153,1);>设备状态：</span>
                           <span>${deviceStatus(obj.runStatus)}</span>
                         </div>
                          </br>
                         <button value='${
                           obj.deviceId
-                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline>设备详情</button>
+                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>设备详情</button>
                       </div>
                       </br>
                       <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
@@ -241,23 +238,23 @@ export default {
                   var infoWindow
                   //构建信息窗体中显示的内容
                   let content = `
-                    <div style=width:399px>
+                    <div style='width:399px'>
                       <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
-                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;>
+                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;margin-top:20px>
                           <span style=color:rgba(153,153,153,1);>设备编号：</span>
                           <span>${obj.deviceSN}</span>
-                          <span style=color:rgba(153,153,153,1);>设备类型：</span>
+                          <span style=color:rgba(153,153,153,1);margin-left:10px;>设备类型：</span>
                           <span>${obj.dcTypeName}</span>
                         </div>
                         </br>
-                        <div style=width:100%;display:flex;font-size:14px;margin-top:-20px><div style=width:195px;>
+                        <div style=width:100%;display:flex;font-size:14px;><div style=width:195px;>
                           <span style=color:rgba(153,153,153,1);>设备状态：</span>
                           <span>${deviceStatus(obj.runStatus)}</span>
                         </div>
                          </br>
                         <button value='${
                           obj.deviceId
-                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline>设备详情</button>
+                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>设备详情</button>
                       </div>
                       </br>
                       <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
@@ -282,23 +279,23 @@ export default {
                   var infoWindow
                   //构建信息窗体中显示的内容
                   let content = `
-                    <div style=width:399px>
+                    <div style='width:399px'>
                       <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
-                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;>
+                        <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;margin-top:20px>
                           <span style=color:rgba(153,153,153,1);>设备编号：</span>
                           <span>${obj.deviceSN}</span>
-                          <span style=color:rgba(153,153,153,1);>设备类型：</span>
+                          <span style=color:rgba(153,153,153,1);margin-left:10px;>设备类型：</span>
                           <span>${obj.dcTypeName}</span>
                         </div>
                         </br>
-                        <div style=width:100%;display:flex;font-size:14px;margin-top:-20px><div style=width:195px;>
+                        <div style=width:100%;display:flex;font-size:14px;><div style=width:195px;>
                           <span style=color:rgba(153,153,153,1);>设备状态：</span>
                           <span>${deviceStatus(obj.runStatus)}</span>
                         </div>
                          </br>
                         <button value='${
                           obj.deviceId
-                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline>设备详情</button>
+                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>设备详情</button>
                       </div>
                       </br>
                       <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
@@ -326,8 +323,6 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/device/org/kcnt', paramData)
         .then(function (response) {
-          console.log('输出放回数据')
-          console.log(response)
           this_.mapTypeList = response.data
         })
     },

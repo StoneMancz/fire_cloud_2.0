@@ -79,5 +79,11 @@ module.exports = {
         LoopStatus: "LoopStatus",
         operating: "Operating",
         history: 'History'
+    },
+    Water: {
+        name: "Name",
+        coding: "Coding",
+        area: 'Area',
+        address: 'Address'
     }
 }

@@ -34,10 +34,10 @@
                 <Thermometer v-if="item1.deviceTypeCode==2" v-bind:item="item1.buildInfoModels"></Thermometer>
                 <Switchs v-if="item1.runStatusName=='门关闭'|| item1.runStatusName=='离线'"></Switchs>
                 <div class="Graphics">
-                  <div>名称:{{item1.dcTypeName}}</div>
-                  <div>编码:{{item1.deviceSN}}</div>
-                  <div>区域:{{item1.areaName}}</div>
-                  <div>地址:{{item1.deviceAddr}}</div>
+                  <div>{{$t('Water.name')}}:{{item1.dcTypeName}}</div>
+                  <div>{{$t('Water.coding')}}:{{item1.deviceSN}}</div>
+                  <div>{{$t('Water.area')}}:{{item1.areaName}}</div>
+                  <div>{{$t('Water.address')}}:{{item1.deviceAddr}}</div>
                 </div>
               </div>
             </div>
@@ -68,7 +68,7 @@ export default {
       equipmentValue: '',
       deviceStatus: '',
       show2: true,
-      areaId:'',
+      areaId: '',
       lang: localStorage.getItem('Language'),
       currentPage: '',
       total: 0,
@@ -99,8 +99,8 @@ export default {
   methods: {
     fatherClickFn(data) {
       this.areaId = data.id
-      this.equipmentListFn();
-      this.facilitiesList();
+      this.equipmentListFn()
+      this.facilitiesList()
       //显示右侧数据
       this.$refs.rightChild.initWaterEcharts(this.lang, data.id)
     },
@@ -108,26 +108,30 @@ export default {
     switchLanguage(lang) {
       this.lang = lang
     },
-    statusList(){
+    statusList() {
       let this_ = this
       var currentData = qs.stringify({
         lang: this_.lang,
       })
-      this.$http.get('http://srv.shine-iot.com:8060/facilities/stus',currentData).then(function (response) {
-        this_.deviceStatusList=response.data.data;
-      })
+      this.$http
+        .get('http://srv.shine-iot.com:8060/facilities/stus', currentData)
+        .then(function (response) {
+          this_.deviceStatusList = response.data.data
+        })
     },
-    equipmentListFn(){
+    equipmentListFn() {
       let this_ = this
       var currentData = qs.stringify({
         lang: this.lang,
-        areaId:this.areaId
+        areaId: this.areaId,
       })
-      this.$http.get('http://srv.shine-iot.com:8060/facilities/tpcodes',currentData).then(function (response) {
-        this_.equipmentTyleList=response.data.data;
-      })
+      this.$http
+        .get('http://srv.shine-iot.com:8060/facilities/tpcodes', currentData)
+        .then(function (response) {
+          this_.equipmentTyleList = response.data.data
+        })
     },
-    getWaterData(){
+    getWaterData() {
       this.facilitiesList()
     },
     equipmentValueChange() {
@@ -140,14 +144,16 @@ export default {
       let this_ = this
       var currentData = qs.stringify({
         lang: this_.lang,
-        areaId:this_.areaId,
-        deviceType:this_.equipmentValue,
-        runStatus:this_.deviceStatus,
-        deviceSN:this.deviceSN
+        areaId: this_.areaId,
+        deviceType: this_.equipmentValue,
+        runStatus: this_.deviceStatus,
+        deviceSN: this.deviceSN,
       })
-      this.$http.post('http://srv.shine-iot.com:8060/facilities/devs',currentData).then(function (response) {
-        this_.waterList = response.data.data
-      })
+      this.$http
+        .post('http://srv.shine-iot.com:8060/facilities/devs', currentData)
+        .then(function (response) {
+          this_.waterList = response.data.data
+        })
     },
   },
 }

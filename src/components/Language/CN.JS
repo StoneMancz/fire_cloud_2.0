@@ -79,5 +79,11 @@ module.exports = {
         LoopStatus: "状态",
         operating: "操作",
         history: '历史记录'
+    },
+    Water: {
+        name: "名称",
+        coding: "编码",
+        area: '区域',
+        address: '地址'
     }
 }

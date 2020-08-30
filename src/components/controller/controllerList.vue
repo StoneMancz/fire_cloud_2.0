@@ -13,24 +13,24 @@
                     <div>机号</div>
                     <div>回路号</div>
                     <div>节点号</div>
-                    <div>节点类型</div>
-                    <div>节点状态</div>
+                    <div style="flex: 2;">节点类型</div>
+                    <div style="flex: 2;">节点状态</div>
                     <div>分区</div>
-                    <div>地址</div>
-                    <div>时间</div>
+                    <div style="flex: 2;">地址</div>
+                    <div style="flex: 2;">时间</div>
                     <div>操作</div>
                   </div>
                   <div class="tebleColumn" v-for="item in tableData" :key="item.id">
                     <div>{{item.mcNo}}</div>
                     <div>{{item.loopNo}}</div>
                     <div>{{item.nodeNo}}</div>
-                    <div>{{item.nodeTypeName}}</div>
-                    <div>{{item.nodeStatName}}</div>
+                    <div style="flex: 2;">{{item.nodeTypeName}}</div>
+                    <div style="flex: 2;">{{item.nodeStatName}}</div>
                     <div>{{item.area}}</div>
-                    <div>{{item.deviceAddr}}</div>
-                    <div></div>
+                    <div style="flex: 2;">{{item.deviceAddr}}</div>
+                    <div style="flex: 2;">{{item.msgTime}}</div>
                     <div>
-                      <span class="detalis">详情</span>
+                      <span class="detalis" @click="nodeDetails">详情</span>
                     </div>
                   </div>
                 </div>
@@ -72,6 +72,7 @@ import qs from 'qs'
 import Headers from '../../common/components/Header'
 import LeftCommon from '../../common/components/LeftCommon'
 import RightCommon from '../../common/components/RightCommon'
+import { getTimeToString } from './../rule/getTime'
 export default {
   components: {
     Headers,
@@ -110,9 +111,15 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/fctrl/faultnds', currentData)
         .then(function (response) {
-          this_.tableData = response.data.data.records
+          console.log('异常节点数据')
+          console.log(response)
+          this_.tableData = response.data.data.records.map((item) => {
+            item.msgTime = getTimeToString(item.msgTime)
+            return item
+          })
         })
     },
+    nodeDetails(nodeID) {},
     controllerList(areaId, pageNo, lang) {
       let this_ = this
       var currentData = qs.stringify({
