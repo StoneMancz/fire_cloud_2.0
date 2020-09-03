@@ -143,6 +143,7 @@ module.exports = {
         Contrstatus: 'Contrstatus',
         ControllerNumber: 'ControllerNumber',
         ControllerList: 'ControllerList',
+        Details:'Details',
         Loop:{
             circuit:"circuit",
             types:'types',

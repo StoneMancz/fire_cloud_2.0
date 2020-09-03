@@ -99,8 +99,6 @@ export default {
     },
     eventLevelFn(lang) {
       let this_ = this
-      console.log('事件等级')
-      console.log(lang)
       this.$http
         .get('http://srv.shine-iot.com:8060/event/level?lang=' + lang)
         .then(function (response) {

@@ -36,7 +36,7 @@
                     <div style="flex: 2;">{{item.deviceAddr}}</div>
                     <div style="flex: 2;">{{item.msgTime}}</div>
                     <div>
-                      <span class="detalis" @click="nodeDetails(item.deviceId)">详情</span>
+                      <span class="detalis" @click="nodeDetails(item.deviceId)">{{$t('Controller.Details')}}</span>
                     </div>
                   </div>
                 </div>
@@ -51,14 +51,14 @@
                     <div>{{$t('Controller.address')}}</div>
                     <div>{{$t('Controller.operating')}}</div>
                   </div>
-                  <div class="tebleColumn" v-for="(item1,index1) in tableData1" :key="index1" style="background:#00061F">
+                  <div class="tebleColumn" v-for="(item1,index1) in tableData2" :key="index1" style="background:#00061F">
                     <div>{{item1.mcNo}}</div>
                     <div>{{item1.ctrlNo}}</div>
                     <div>{{item1.ctrlCmdName}}</div>
                     <div>{{item1.areaName}}</div>
                     <div>{{item1.deviceAddr}}</div>
                     <div>
-                      <span class="detalis">{{$t('Controller.history')}}</span>
+                      <span class="detalis" @click="historyFn(item1.deviceId)">{{$t('Controller.history')}}</span>
                     </div>
                   </div>
                 </div>
@@ -72,7 +72,7 @@
       </div>
     </div>
     <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
-    <Loops></Loops>
+    <Loops ref="LoopChild"></Loops>
   </renderless-component-example>
 </template>
 <script>
@@ -119,6 +119,9 @@ export default {
       } else {
         this.abnormalNode(this.areaId, this.pageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
       }
+    },
+    historyFn(deviceId){
+      this.$refs.LoopChild.initLoopData(deviceId,this.lang,1)
     },
     fatherClickFn(data) {
       this.areaId = data.id
@@ -172,7 +175,7 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/fctrl/devs', currentData)
         .then(function (response) {
-          this_.tableData1 = response.data.data.records
+          this_.tableData2 = response.data.data.records
         })
     },
   },
