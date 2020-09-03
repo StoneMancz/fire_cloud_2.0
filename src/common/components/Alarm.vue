@@ -29,7 +29,7 @@
                 <span>{{item.eventType}}</span>
               </div>
               <div class="cavetContent">
-                <div style="width: 150px;">设备名称：</div>
+                <div style="width: 120px;">设备名称：</div>
                 <span>{{item.deviceTypeCode}}</span>
               </div>
             </div>
@@ -53,7 +53,7 @@
                 <span>{{item.areaContactPhone}}</span>
               </div>
               <div class="cavetContent">
-                <div style="width: 150px;">操作：</div>
+                <div style="width: 120px;">操作：</div>
                 <span style="color:rgba(112,212,254,1);cursor: pointer;" @click="eventDetails(item.eventId)"><u>查看详情</u></span>
               </div>
             </div>
@@ -65,12 +65,16 @@
         </div>
       </div>
     </div>
+    <DetailsCommon ref="child"></DetailsCommon>
   </div>
 </template>
 <script>
 import { getTimeToString } from '../../components/rule/getTime'
+import DetailsCommon from '../../common/components/DetailsCommon'
 export default {
-  components: {},
+  components: {
+    DetailsCommon,
+  },
   data() {
     return {
       isShowBg: false,
@@ -110,6 +114,9 @@ export default {
       ws.onclose = function (e) {
         console.log('ws 连接关闭了')
       }
+    },
+    eventDetails(eventId) {
+      this.$refs.child.drawersFn(eventId)
     },
     closeCatInfo() {
       this.isShowBg = false
@@ -240,8 +247,8 @@ export default {
   .caveatList::-webkit-scrollbar-thumb {
     /* 滚动条里面小方块 */
     border-radius: 5px;
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background: rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 0 0 5px #1A2655;
+    background: #1A2655;
   }
 
   .caveatList::-webkit-scrollbar-track {

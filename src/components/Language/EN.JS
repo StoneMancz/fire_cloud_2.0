@@ -57,7 +57,43 @@ module.exports = {
         time: 'Time',
         equipmentName: 'EquipmentName',
         address: 'Address',
-        all: 'All'
+        all: 'All',
+        Information: 'Information',
+        DeviceID: 'DeviceID',
+        Type: 'Type',
+        Status: 'Status',
+        Details: 'Details',
+        event: {
+            eventDetails: "EventDetails",
+            EventInformation: 'EventInformation',
+            name: 'Name',
+            grade: 'Grade',
+            Time: 'Time',
+        },
+        Device: {
+            DeviceInfo: 'DeviceInfo',
+            Types: 'Types',
+            Numbering: 'Numbering',
+            status: 'Status',
+            QRCode: 'QRCode',
+            batteryPower: 'BatteryPower',
+            checkInTime: 'CheckInTime',
+            module: 'Module'
+        },
+        Installation: {
+            Information: 'InstallationInfo',
+            unit: 'Unit',
+            area: 'Area',
+            Address: 'Address',
+            Contact: 'Contact',
+            phone: 'Phone',
+            place: 'Place',
+            time: 'Time',
+            Partition: 'Partition',
+            number: 'Number'
+        },
+        dealWith: 'DealWith',
+        More: 'More'
     },
     FireMonitoring: {
         InstallationNumber: 'Installation',

@@ -2,78 +2,78 @@
   <div>
     <el-drawer title="事件详情" custom-class="eventDetails" :visible.sync="drawers" :with-header="false" size="41%">
       <div v-if="showEvenDetails==1">
-        <div class="titleBk">事件详情</div>
+        <div class="titleBk">{{$t('Index.event.eventDetails')}}</div>
         <div class="detailsBk">
-          <div class="detail_titel">事件信息</div>
+          <div class="detail_titel">{{$t('Index.event.EventInformation')}}</div>
           <div class="detailsContent">
             <div class="detailsItem">
-              <div>事件名称：<span>{{eventDetails.eventName}}</span></div>
-              <div>事件等级：<span class="eventLevel">{{eventDetails.eventLevel}}</span></div>
+              <div>{{$t('Index.event.name')}}：<span>{{eventDetails.eventName}}</span></div>
+              <div>{{$t('Index.event.grade')}}：<span class="eventLevel">{{eventDetails.eventLevel}}</span></div>
             </div>
             <div class="detailsItem">
-              <div>发生时间：<span>{{eventDetails.eventTime}}</span></div>
+              <div>{{$t('Index.event.Time')}}：<span>{{eventDetails.eventTime}}</span></div>
             </div>
           </div>
         </div>
         <div class="detailsBk">
-          <div class="detail_titel">设备信息</div>
+          <div class="detail_titel">{{$t('Index.Device.DeviceInfo')}}</div>
           <div class="detailsContent">
             <div class="detailsItem">
-              <div>设备类型：<span>{{equipmentDetails.deviceName}}</span></div>
-              <div>设备编号：<span>{{equipmentDetails.deviceSN}}</span></div>
+              <div>{{$t('Index.Device.Types')}}：<span>{{equipmentDetails.deviceName}}</span></div>
+              <div>{{$t('Index.Device.Numbering')}}：<span>{{equipmentDetails.deviceSN}}</span></div>
             </div>
             <div class="detailsItem">
-              <div>运行状态：{{equipmentDetails.runStatusName}}</div>
+              <div>{{$t('Index.Device.status')}}：{{equipmentDetails.runStatusName}}</div>
               <div style="color:#365CF5;cursor:pointer;">
                 <div class="footer_flex clearfix">
                   <div>
-                    查看二维码
+                    {{$t('Index.Device.QRCode')}}
                     <div class="flex-footera" id="qrcode1" style=""></div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="detailsItem">
-              <div>电池电量：{{equipmentDetails.batteryName}}</div>
-              <div>登记时间：{{equipmentDetails.entryTime}}</div>
+              <div>{{$t('Index.Device.batteryPower')}}：{{equipmentDetails.batteryName}}</div>
+              <div>{{$t('Index.Device.checkInTime')}}：{{equipmentDetails.entryTime}}</div>
             </div>
-            <div style="margin-top:20px;color:white">通讯模块编码：<span>{{equipmentDetails.signalModuleSN}}</span></div>
+            <div style="margin-top:20px;color:white">{{$t('Index.Device.module')}}：<span>{{equipmentDetails.signalModuleSN}}</span></div>
           </div>
         </div>
         <div class="detailsBk">
-          <div class="detail_titel">安装信息</div>
+          <div class="detail_titel">{{$t('Index.Installation.Information')}}</div>
           <div class="detailsContent">
             <div class="detailsItem">
-              <div>单位：<span>{{installation.orgName}}</span></div>
-              <div>区域：<span>{{installation.areaName}}</span></div>
+              <div>{{$t('Index.Installation.unit')}}：<span>{{installation.orgName}}</span></div>
+              <div>{{$t('Index.Installation.area')}}：<span>{{installation.areaName}}</span></div>
             </div>
-            <div style="margin-top:20px;color:white">详细地址：<span>{{installation.deviceAddr}}</span></div>
+            <div style="margin-top:20px;color:white">{{$t('Index.Installation.Address')}}：<span>{{installation.deviceAddr}}</span></div>
             <div class="detailsItem">
-              <div>联系人：<span>{{installation.areaContact}}</span></div>
-              <div>联系方式：<span>{{installation.areaContactPhone}}</span></div>
-            </div>
-            <div class="detailsItem">
-              <div>安装场所：<span>{{installation.placeName}}</span></div>
-              <div>安装时间：<span>{{installation.deviceFixDate}}</span></div>
+              <div>{{$t('Index.Installation.Contact')}}：<span>{{installation.areaContact}}</span></div>
+              <div>{{$t('Index.Installation.phone')}}：<span>{{installation.areaContactPhone}}</span></div>
             </div>
             <div class="detailsItem">
-              <div>分区编号：<span>{{installation.areaNO}}</span></div>
-              <div>安装编号：<span>{{installation.installNumber}}</span></div>
+              <div>{{$t('Index.Installation.place')}}：<span>{{installation.placeName}}</span></div>
+              <div>{{$t('Index.Installation.time')}}：<span>{{installation.deviceFixDate}}</span></div>
+            </div>
+            <div class="detailsItem">
+              <div>{{$t('Index.Installation.Partition')}}：<span>{{installation.areaNO}}</span></div>
+              <div>{{$t('Index.Installation.number')}}：<span>{{installation.installNumber}}</span></div>
             </div>
           </div>
         </div>
         <div class="detailsBk">
-          <div class="detail_titel">更多</div>
+          <div class="detail_titel">{{$t('Index.More')}}</div>
           <div class="detailsContent">
             <div style="margin-top:30px">
-              <span class="otherDetail" @click="SeeDeviceDetail(equipmentDetails.deviceId)">设备详情</span>
-              <span class="otherDetail" @click="eventHandling">事件处理</span>
+              <span class="otherDetail" @click="SeeDeviceDetail(equipmentDetails.deviceId)">{{$t('Index.Details')}}</span>
+              <span class="otherDetail" @click="eventHandling">{{$t('Index.dealWith')}}</span>
             </div>
           </div>
         </div>
       </div>
       <div v-else-if="showEvenDetails==2">
-        <div class="titleBk">事件详情</div>
+        <div class="titleBk">{{$t('Index.event.eventDetails')}}</div>
         <div class="qualitativEvent">
           <div class="qualitativEventItem">
             <div>
@@ -158,8 +158,6 @@ export default {
       this.$http
         .get('http://srv.shine-iot.com:8060/event/devo/' + eventId)
         .then(function (response) {
-          console.log('事件详情')
-          console.log(response)
           let eventData = response.data.data
           let eventDetails = {
             eventId: eventData.eventId,

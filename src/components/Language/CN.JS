@@ -57,7 +57,43 @@ module.exports = {
         time: '时间',
         equipmentName: '设备名称',
         address: '地址',
-        all: '全部'
+        all: '全部',
+        Information: '设备信息',
+        DeviceID: '设备编号',
+        Type: '设备类型',
+        Status: '设备状态',
+        Details: '设备详情',
+        event: {
+            eventDetails: "事件详情",
+            EventInformation: '事件信息',
+            name: '事件名称',
+            grade: '事件等级',
+            Time: '发生时间',
+        },
+        Device: {
+            DeviceInfo: '设备详情',
+            Types: '类型',
+            Numbering: '编号',
+            status: '状态',
+            QRCode: '查看二维码',
+            batteryPower: '电池电量',
+            checkInTime: '登记时间',
+            module: '通讯模块编码'
+        },
+        Installation: {
+            Information: '安装信息',
+            unit: '单位',
+            area: '区域',
+            Address: '详细地址',
+            Contact: '联系人',
+            phone: '联系方式',
+            place: '场所',
+            time: '安装时间',
+            Partition: '分区',
+            number: '安装编号'
+        },
+        dealWith: '处理',
+        More: '更多'
     },
     FireMonitoring: {
         InstallationNumber: '安装编号',

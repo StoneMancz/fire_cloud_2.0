@@ -3,13 +3,13 @@
     <div class="select" style="margin-top:10px">
       <div style="width:120px">
         <el-select v-model="eventLevelValue" placeholder="事件等级" @change="eventTypeChange" style="width:120px">
-          <el-option label="全部" value></el-option>
+          <el-option :label="$t('Index.all')" value></el-option>
           <el-option v-for="item in eventLevelValueData" :key="item.type" :label="item.name" :value="item.type"></el-option>
         </el-select>
       </div>
       <div style="margin-left:20px;width:120px">
         <el-select v-model="eventDevcieValue3" placeholder="设备类型" style @change="equipmentTypeChange3">
-          <el-option label="全部" value></el-option>
+          <el-option :label="$t('Index.all')" value></el-option>
           <el-option v-for="item in equipmentTypeData" :key="item.type" :label="item.name" :value="item.type"></el-option>
         </el-select>
       </div>
@@ -91,16 +91,21 @@ export default {
     },
     equipmentType(url, lang) {
       let this_ = this
-      var currentData = qs.stringify({ areaId: this_.areaId, lang: lang })
-      this.$http.get(url, currentData).then(function (response) {
+
+      var currentData = { areaId: this_.areaId, lang: lang }
+      this.$http.get(url, { params: currentData }).then(function (response) {
         this_.equipmentTypeData = response.data.data
       })
     },
-    eventLevelFn() {
+    eventLevelFn(lang) {
       let this_ = this
-      this.$http.get('http://srv.shine-iot.com:8060/event/level').then(function (response) {
-        this_.eventLevelValueData = response.data.data
-      })
+      console.log('事件等级')
+      console.log(lang)
+      this.$http
+        .get('http://srv.shine-iot.com:8060/event/level?lang=' + lang)
+        .then(function (response) {
+          this_.eventLevelValueData = response.data.data
+        })
     },
     handleCurrentChange(val) {
       this.currentPage = val
@@ -129,8 +134,6 @@ export default {
       }
     },
     eventDetails(eventId) {
-      console.log('eventId')
-      console.log(eventId)
       this.$refs.child.drawersFn(eventId)
     },
     pickerEventChange() {

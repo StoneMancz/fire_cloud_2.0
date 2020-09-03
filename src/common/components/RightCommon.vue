@@ -89,7 +89,7 @@ export default {
         1
       )
       //查询事件等级
-      this.$refs.events.eventLevelFn()
+      this.$refs.events.eventLevelFn(lang)
       //设备类型
       this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
     },
@@ -135,7 +135,7 @@ export default {
         1
       )
       //查询事件等级
-      this.$refs.events.eventLevelFn()
+      this.$refs.events.eventLevelFn(lang)
       //设备类型
       this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/fdev/mnt/types', lang)
     },
@@ -182,7 +182,7 @@ export default {
         1
       )
       //查询事件等级
-      this.$refs.events.eventLevelFn()
+      this.$refs.events.eventLevelFn(lang)
       //设备类型
       this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/elect/channel/tycodes', lang)
     },
@@ -226,7 +226,7 @@ export default {
         1
       )
       //查询事件等级
-      this.$refs.events.eventLevelFn()
+      this.$refs.events.eventLevelFn(lang)
       //设备类型
       this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/fctrl/tpcodes', lang)
     },
@@ -269,7 +269,7 @@ export default {
         1
       )
       //查询事件等级
-      this.$refs.events.eventLevelFn()
+      this.$refs.events.eventLevelFn(lang)
       //设备类型
       this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/gwdtu/tpcodes', lang)
     },
@@ -313,7 +313,7 @@ export default {
         1
       )
       //查询事件等级
-      this.$refs.events.eventLevelFn()
+      this.$refs.events.eventLevelFn(lang)
       //设备类型
       this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
     },
