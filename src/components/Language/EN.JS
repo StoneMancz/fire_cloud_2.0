@@ -143,6 +143,15 @@ module.exports = {
         Contrstatus: 'Contrstatus',
         ControllerNumber: 'ControllerNumber',
         ControllerList: 'ControllerList',
+        Loop:{
+            circuit:"circuit",
+            types:'types',
+            Point:"point",
+            nodeType:'nodeType',
+            status:'status',
+            Partition:'partition',
+            time:'time'
+        }
     },
     Newsletter: {
         deviceID: 'DeviceID',

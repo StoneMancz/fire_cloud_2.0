@@ -72,6 +72,7 @@
       </div>
     </div>
     <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
+    <Loops></Loops>
   </renderless-component-example>
 </template>
 <script>
@@ -81,12 +82,14 @@ import DeviceDetailsCom from '../../common/components/DeviceDetails'
 import LeftCommon from '../../common/components/LeftCommon'
 import RightCommon from '../../common/components/RightCommon'
 import { getTimeToString } from './../rule/getTime'
+import Loops from '../../common/components/Loops'
 export default {
   components: {
     Headers,
     LeftCommon,
     RightCommon,
     DeviceDetailsCom,
+    Loops
   },
   data() {
     return {

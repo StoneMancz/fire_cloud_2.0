@@ -143,6 +143,15 @@ module.exports = {
         Contrstatus: '控制器状态',
         ControllerNumber: '控制器号',
         ControllerList: '控制器列表',
+        Loop:{
+            circuit:"回路号",
+            types:'回路类型',
+            Point:"点号",
+            nodeType:'节点类型',
+            status:'状态',
+            Partition:'分区',
+            time:'时间'
+        }
     },
     Newsletter: {
         deviceID: '设备编号',
