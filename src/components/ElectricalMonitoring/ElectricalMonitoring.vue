@@ -7,6 +7,18 @@
       <div class="right">
         <div class="boxWrap">
           <div class="ElectricaData">
+            <div class="filterData">
+              <div>
+                <input class="installNumbers" :placeholder="$t('ElectricalMonitoring.coding')" v-model="deviceSN" @change="changeElectData">
+              </div>
+              <div>
+                <el-select v-model="loopStatus" :placeholder="$t('FireMonitoring.State')" @change="changeElectData" >
+                  <el-option :label="$t('FireMonitoring.State')" value></el-option>
+                  <el-option v-for="item in status" :key="item.type" :label="item.name" :value="item.type"></el-option>
+                </el-select>
+              </div>
+            </div>
+
             <div class="electricTable" v-for="(item,index) in recordsData" :key="index">
               <div class="electricTile">
                 <div class="deviceName">
@@ -76,6 +88,7 @@ export default {
       deviceSN: '',
       loopStatus: '',
       lang: 'zh-CN',
+      status:[],
       recordsData: [],
     }
   },
@@ -87,6 +100,7 @@ export default {
   },
   mounted() {
     this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
+    this.statusList();
   },
   methods: {
     initElecticaData(pageNo, areaId, deviceSN, loopStatus, lang) {
@@ -101,12 +115,23 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/elect/devs', currentData)
         .then(function (response) {
-          console.log('电气火灾的放回数据')
-          console.log(response)
           this_.recordsData = response.data.data.records
           this_.total = response.data.data.total
           this_.pageNo = response.data.data.current
         })
+    },
+    changeElectData(){
+      this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
+    },
+    //查询当前状态列表接口
+    statusList(){
+      let this_ = this
+      var currentData = {lang: this_.lang }
+      this.$http.get("http://srv.shine-iot.com:8060/elect/channel/stus", { params: currentData }).then(function (response) {
+        console.log("数据");
+        console.log(response)
+        this_.status = response.data.data
+      })
     },
     fatherClickFn(data) {
       this.areaId = data.id
@@ -122,7 +147,9 @@ export default {
       this.lang = lang
       this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
       this.$refs.rightChild.initElectEchar(this.lang, this.areaId)
+      this.statusList();
     },
+
   },
 }
 </script>
@@ -152,6 +179,24 @@ export default {
         padding-left: 42px;
         background: #00061f;
         border: 1px solid rgba(112, 212, 254, 1);
+
+        .filterData {
+          widows: 100%;
+          display: flex;
+
+          div {
+            width: 220px;
+            margin-right: 20px;
+
+            .installNumbers {
+              width: 210px;
+              color: white;
+              height: 40px;
+              background: rgba(0, 13, 65, 1);
+              border-radius: 4px;
+            }
+          }
+        }
 
         .electricTable {
           float: left;

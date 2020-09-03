@@ -97,9 +97,9 @@ module.exports = {
     },
     FireMonitoring: {
         InstallationNumber: 'Installation',
-        EquipmentName: 'Name',
+        EquipmentName: 'All',
         EquipmentNumber: 'EquipmentNumber',
-        State: 'State',
+        State: 'All',
         Area: 'Area',
         Address: 'Address',
         Details: 'Details',

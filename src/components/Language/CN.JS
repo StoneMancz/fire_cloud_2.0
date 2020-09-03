@@ -97,13 +97,13 @@ module.exports = {
     },
     FireMonitoring: {
         InstallationNumber: '安装编号',
-        EquipmentName: '设备名称',
+        EquipmentName: '全部',
         EquipmentNumber: '设备编码',
-        State: '当前状态',
+        status: '全部',
         Area: '区域',
         Address: '地址',
         Details: '详情',
-        Hint: "请输入设备编号"
+        Hint: "请输入设备编码"
     },
     ElectricalMonitoring: {
         coding: "设备编码",
@@ -125,7 +125,7 @@ module.exports = {
         address: '地址',
         Types: '设备类型',
         status: '当前状态',
-        hint: "请输入设备编号"
+        hint: "请输入设备编码"
     },
     Controller: {
         AbnormalNode: '异常节点',

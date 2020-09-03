@@ -6,6 +6,12 @@
       <div class="right">
         <div class="boxWrap">
           <div class="leftTable">
+            <div class="filterData">
+              <div style="width:300px;margin-left:20px">
+                <el-date-picker v-model="nodeTimes" @change="nodeTimesChange" style="width:300px;float:right;background: #000D42;" 
+                type="datetimerange"></el-date-picker>
+              </div>
+            </div>
             <el-tabs v-model="activeName1" @tab-click="handleClick">
               <el-tab-pane :label="$t('Controller.AbnormalNode')" name="first">
                 <div class="table">
@@ -87,6 +93,7 @@ export default {
       activeName1: 'first',
       show2: true,
       areaId: '',
+      nodeTimes:'',
       lang: 'zh-CN',
       pageNo: 1,
       tableData: [],
@@ -94,24 +101,41 @@ export default {
     }
   },
   mounted() {
-    this.abnormalNode(this.areaId, this.pageNo, this.lang)
+    if (!this.nodeTimes) {
+      this.abnormalNode(this.areaId, this.pageNo, this.lang,'','')
+    } else {
+      this.abnormalNode(this.areaId, this.pageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
+    }
     this.controllerList(this.areaId, this.pageNo, this.lang)
   },
   methods: {
     handleClick(tab, event) {},
+    nodeTimesChange(){
+      if (!this.nodeTimes) {
+        this.abnormalNode(this.areaId, this.pageNo, this.lang,'','')
+      } else {
+        this.abnormalNode(this.areaId, this.pageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
+      }
+    },
     fatherClickFn(data) {
       this.areaId = data.id
       //显示右侧数据
       this.$refs.rightChild.initControllEchar(this.lang, data.id)
-      this.abnormalNode(this.areaId, this.pageNo, this.lang)
+      if (!this.nodeTimes) {
+        this.abnormalNode(this.areaId, this.pageNo, this.lang,'','')
+      } else {
+        this.abnormalNode(this.areaId, this.pageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
+      }
       this.controllerList(this.areaId, this.pageNo, this.lang)
     },
-    abnormalNode(areaId, pageNo, lang) {
+    abnormalNode(areaId, pageNo, lang,startTime,endTime) {
       let this_ = this
       var currentData = qs.stringify({
         areaId: areaId,
         pageNo: pageNo,
         lang: lang,
+        startTime:startTime,
+        endTime:endTime
       })
       this.$http
         .post('http://srv.shine-iot.com:8060/fctrl/faultnds', currentData)
@@ -127,7 +151,11 @@ export default {
     },
     switchLanguage(lang) {
       this.lang = lang
-      this.abnormalNode(this.areaId, this.pageNo, this.lang)
+      if (!this.nodeTimes) {
+        this.abnormalNode(this.areaId, this.pageNo, this.lang,'','')
+      } else {
+        this.abnormalNode(this.areaId, this.pageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
+      }
       this.controllerList(this.areaId, this.pageNo, this.lang)
       this.$refs.rightChild.initControllEchar(this.lang, this.areaId)
     },
@@ -174,6 +202,24 @@ export default {
         padding: 15px;
         position: relative;
         background: #00061f;
+
+        .filterData {
+          widows: 100%;
+          display: flex;
+
+          div {
+            width: 220px;
+            margin-right: 20px;
+
+            .installNumbers {
+              width: 210px;
+              color: white;
+              height: 40px;
+              background: rgba(0, 13, 65, 1);
+              border-radius: 4px;
+            }
+          }
+        }
 
         .table {
           width: 100%;
