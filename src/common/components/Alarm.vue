@@ -66,19 +66,23 @@
       </div>
     </div>
     <DetailsCommon ref="child"></DetailsCommon>
+    <WarningCom ref="warningComChild"></WarningCom>
   </div>
 </template>
 <script>
 import { getTimeToString } from '../../components/rule/getTime'
+import WarningCom from '../../common/components/warning'
 import DetailsCommon from '../../common/components/DetailsCommon'
 export default {
   components: {
     DetailsCommon,
+    WarningCom,
   },
   data() {
     return {
       isShowBg: false,
       caveatList: [],
+      warningList: [],
       isShowCaveatInfo: false,
     }
   },
@@ -101,13 +105,14 @@ export default {
           this.showDiv()
           music.play()
         } else if (msgobj.msgType == 2) {
-          msgobj.deviceTypeCode = DeviceType(msgobj.deviceTypeCode)
-          msgobj.eventType = LevCodeName(msgobj.eventType)
+          msgobj.deviceTypeCode = msgobj.dcTypeName
+          msgobj.eventType = msgobj.eventName
           msgobj.eventTimeLong = getTimeToString(msgobj.eventTimeLong)
           this.warningList.unshift(msgobj)
           if (this.warningList.length > 4) {
             this.warningList.length = 4
           }
+          this.$refs.warningComChild.initwarnList(this.warningList)
         }
       }
 

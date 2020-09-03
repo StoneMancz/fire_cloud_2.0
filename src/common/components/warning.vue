@@ -38,6 +38,14 @@ export default {
       warningList: [],
     }
   },
+  methods: {
+    initwarnList(item) {
+      this.warningList = item
+    },
+    warnClick(index) {
+      this.warningList.splice(index, 1)
+    },
+  },
 }
 </script>
 <style lang="stylus">
