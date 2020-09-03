@@ -8,13 +8,13 @@
           <div class="MonitorData">
             <div class="filterData">
               <div>
-                <el-select v-model="equipmentValue" placeholder="设备类型" style @change="equipmentValueChange">
+                <el-select v-model="equipmentValue" style @change="equipmentValueChange">
                   <el-option :label="$t('FireMonitoring.EquipmentName')" value></el-option>
                   <el-option v-for="item in equipmentTyleList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
               <div>
-                <el-select v-model="deviceStatus" placeholder="设备状态" @change="deviceStatusChange">
+                <el-select v-model="deviceStatus" @change="deviceStatusChange">
                   <el-option :label="$t('FireMonitoring.State')" value></el-option>
                   <el-option v-for="item in deviceStatusList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
@@ -148,16 +148,22 @@ export default {
     //查询设备类型
     deiceTypes() {
       let this_ = this
-      this.$http.get('http://srv.shine-iot.com:8060/fdev/mnt/types').then(function (response) {
-        this_.equipmentTyleList = response.data.data
-      })
+      var currentData = { lang: this_.lang }
+      this.$http
+        .get('http://srv.shine-iot.com:8060/fdev/mnt/types', { params: currentData })
+        .then(function (response) {
+          this_.equipmentTyleList = response.data.data
+        })
     },
     //查询设备的状态列表
     deiceStusList() {
       let this_ = this
-      this.$http.get('http://srv.shine-iot.com:8060/fdev/mnt/stus').then(function (response) {
-        this_.deviceStatusList = response.data.data
-      })
+      var currentData = { lang: this_.lang }
+      this.$http
+        .get('http://srv.shine-iot.com:8060/fdev/mnt/stus', { params: currentData })
+        .then(function (response) {
+          this_.deviceStatusList = response.data.data
+        })
     },
   },
 }

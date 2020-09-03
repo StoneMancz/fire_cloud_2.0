@@ -14,25 +14,18 @@
           <span>{{$t('Controller.Loop.nodeType')}}</span>
           <span>{{$t('Controller.Loop.status')}}</span>
           <span>{{$t('Controller.Loop.Partition')}}</span>
-          <span>{{$t('Controller.Loop.time')}}</span>
+          <span style="flex:2">{{$t('Controller.Loop.time')}}</span>
         </div>
         <div class="tebleColumn" v-for="(item,index) in loopList" :key="index">
           <div>{{item.loopNo}}</div>
-          <div >{{item.loopTypeName}}</div>
+          <div>{{item.loopTypeName}}</div>
           <div>{{item.nodeNo}}</div>
           <div>{{item.nodeTypeName}}</div>
           <div>{{item.nodeStatName}}</div>
           <div>{{item.area}}</div>
-          <div>{{item.msgTime}}</div>
+          <div style="flex:2">{{item.msgTime}}</div>
         </div>
-        <el-pagination
-          class="pagination2"
-          :current-page.sync="pageNo"
-          layout="prev, pager, next"
-          :total="totalLoop"
-          style="text-align: center;"
-          @current-change="loopCurrentChange"
-        ></el-pagination>
+        <el-pagination class="pagination2" :current-page.sync="pageNo" layout="prev, pager, next" :total="totalLoop" style="text-align: center;" @current-change="loopCurrentChange"></el-pagination>
       </div>
     </div>
   </renderless-component-example>
@@ -40,46 +33,50 @@
 
 <script>
 import qs from 'qs'
+import { getTimeToString } from '../../components/rule/getTime'
 export default {
   data() {
     return {
       isShowBg: false,
-      totalLoop:0,
+      totalLoop: 0,
       loopList: [],
-      deviceId:'',
-      lang:'',
-      pageNo:1
-    };
+      deviceId: '',
+      lang: '',
+      pageNo: 1,
+    }
   },
   methods: {
-    initLoopData(deviceId,lang,pageNo) {
-      this.isShowBg=true
-      this.deviceId=deviceId
-      this.lang=lang
-      let this_ = this;
+    initLoopData(deviceId, lang, pageNo) {
+      this.isShowBg = true
+      this.deviceId = deviceId
+      this.lang = lang
+      let this_ = this
       var currentData = qs.stringify({
         deviceId: deviceId,
         lang: lang,
-        pageNo:pageNo
-      });
+        pageNo: pageNo,
+      })
       this.$http
-        .post("http://srv.shine-iot.com:8060/fctrl/nds", currentData)
+        .post('http://srv.shine-iot.com:8060/fctrl/nds', currentData)
         .then(function (response) {
-            console.log(response)
-            this_.pageNo=response.data.data.current
-            this_.totalLoop=response.data.data.total
-            this_.loopList=response.data.data.records
-        });
+          console.log(response)
+          this_.pageNo = response.data.data.current
+          this_.totalLoop = response.data.data.total
+          this_.loopList = response.data.data.records.map((item) => {
+            item.msgTime = getTimeToString(item.msgTime)
+            return item
+          })
+        })
     },
-    loopCurrentChange(){
-        this.initLoopData(this.deviceId,this.lang,this.pageNo)
+    loopCurrentChange() {
+      this.initLoopData(this.deviceId, this.lang, this.pageNo)
     },
-    closeLoopDetail(){
-        this.isShowBg=false
-    }
+    closeLoopDetail() {
+      this.isShowBg = false
+    },
   },
   mounted() {},
-};
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -101,15 +98,16 @@ export default {
   height: 740px;
   left: 0;
   right: 0;
-  top: 18%;
+  top: 12%;
   margin: auto;
   float: left;
   z-index: 100;
   background: #00061F;
-  color:white;
+  color: white;
+
   .messageTitle {
     display: flex;
-    width: 880px;
+    width: 840px;
     height: 92px;
     justify-content: space-between;
     align-items: center;

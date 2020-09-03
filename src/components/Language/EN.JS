@@ -79,7 +79,7 @@ module.exports = {
             batteryPower: 'BatteryPower',
             checkInTime: 'CheckInTime',
             module: 'Module',
-            Manufacturer:'Manufacturer'
+            Manufacturer: 'Manufacturer'
         },
         Installation: {
             Information: 'InstallationInfo',
@@ -93,34 +93,35 @@ module.exports = {
             Partition: 'Partition',
             number: 'Number'
         },
-        otherInformation:{
-            otherInformation:"otherInformation",
-            currentValue:"currentValue",
-            alarmUpperLimit:'alarmUpperLimit',
-            alarmLowerLimit:'alarmLowerLimit',
-            upperWarningLimit:'upperWarningLimit',
-            lowerWarningLimit:'lowerWarningLimit',
-            currentState:'currentState',
-            defaultState:'defaultState'
+        otherInformation: {
+            otherInformation: "otherInformation",
+            currentValue: "currentValue",
+            alarmUpperLimit: 'alarmUpperLimit',
+            alarmLowerLimit: 'alarmLowerLimit',
+            upperWarningLimit: 'upperWarningLimit',
+            lowerWarningLimit: 'lowerWarningLimit',
+            currentState: 'currentState',
+            defaultState: 'defaultState'
         },
-        Qualitative:'Qualitative',
-        eventDealWith:'eventDealWith',
-        closeEvenDesc:'closeEvenDesc',
-        true:'true',
-        false:'false',
-        submit:'submit',
-        cancel:'cancel',
-        placeholder:'Please enter content',
+        Qualitative: 'Qualitative',
+        eventDealWith: 'eventDealWith',
+        closeEvenDesc: 'closeEvenDesc',
+        true: 'true',
+        false: 'false',
+        submit: 'submit',
+        cancel: 'cancel',
+        placeholder: 'Please enter content',
         dealWith: 'DealWith',
         More: 'More',
-        channelDetails:'channelDetails',
-        service:'service'
+        channelDetails: 'channelDetails',
+        service: 'service'
     },
     FireMonitoring: {
+        addrNum: 'addrNum',
         InstallationNumber: 'Installation',
         EquipmentName: 'All',
         EquipmentNumber: 'EquipmentNumber',
-        State: 'All',
+        status: 'All',
         Area: 'Area',
         Address: 'Address',
         Details: 'Details',
@@ -164,15 +165,15 @@ module.exports = {
         Contrstatus: 'Contrstatus',
         ControllerNumber: 'ControllerNumber',
         ControllerList: 'ControllerList',
-        Details:'Details',
-        Loop:{
-            circuit:"circuit",
-            types:'types',
-            Point:"point",
-            nodeType:'nodeType',
-            status:'status',
-            Partition:'partition',
-            time:'time'
+        Details: 'Details',
+        Loop: {
+            circuit: "circuit",
+            types: 'types',
+            Point: "point",
+            nodeType: 'nodeType',
+            status: 'status',
+            Partition: 'partition',
+            time: 'time'
         }
     },
     Newsletter: {

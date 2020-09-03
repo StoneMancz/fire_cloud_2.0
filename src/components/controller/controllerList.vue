@@ -7,9 +7,8 @@
         <div class="boxWrap">
           <div class="leftTable">
             <div class="filterData">
-              <div style="width:300px;margin-left:20px">
-                <el-date-picker v-model="nodeTimes" @change="nodeTimesChange" style="width:300px;float:right;background: #000D42;" 
-                type="datetimerange"></el-date-picker>
+              <div style="width:220px;">
+                <el-date-picker v-model="nodeTimes" @change="nodeTimesChange" style="width:220px;background: #000D42;" type="datetimerange"></el-date-picker>
               </div>
             </div>
             <el-tabs v-model="activeName1">
@@ -40,14 +39,7 @@
                     </div>
                   </div>
                 </div>
-                <el-pagination
-                    class="pagination2"
-                    :current-page.sync="abnormalPageNo"
-                    layout="prev, pager, next"
-                    :total="abnormalTotal"
-                    style="text-align: center;bottom:-5%"
-                    @current-change="abnormalCurrentChange"
-                  ></el-pagination>
+                <el-pagination class="pagination2" :current-page.sync="abnormalPageNo" layout="prev, pager, next" :total="abnormalTotal" style="text-align: center;bottom:-5%" @current-change="abnormalCurrentChange"></el-pagination>
               </el-tab-pane>
               <el-tab-pane :label="$t('Controller.ControllerList')" name="second">
                 <div class="table">
@@ -70,14 +62,7 @@
                     </div>
                   </div>
                 </div>
-                <el-pagination
-                    class="pagination2"
-                    :current-page.sync="pageNoContr"
-                    layout="prev, pager, next"
-                    :total="totalContr"
-                    style="text-align: center;bottom:-15%"
-                    @current-change="contrCurrentChange"
-                  ></el-pagination>
+                <el-pagination class="pagination2" :current-page.sync="pageNoContr" layout="prev, pager, next" :total="totalContr" style="text-align: center;bottom:-15%" @current-change="contrCurrentChange"></el-pagination>
               </el-tab-pane>
             </el-tabs>
           </div>
@@ -105,72 +90,96 @@ export default {
     LeftCommon,
     RightCommon,
     DeviceDetailsCom,
-    Loops
+    Loops,
   },
   data() {
     return {
       activeName1: 'first',
       show2: true,
       areaId: '',
-      nodeTimes:'',
+      nodeTimes: '',
       lang: 'zh-CN',
       pageNo: 1,
-      abnormalPageNo:1,
-      abnormalTotal:0,
-      totalContr:0,
-      pageNoContr:1,
+      abnormalPageNo: 1,
+      abnormalTotal: 0,
+      totalContr: 0,
+      pageNoContr: 1,
       tableData: [],
       tableData2: [],
     }
   },
   mounted() {
     if (!this.nodeTimes) {
-      this.abnormalNode(this.areaId, this.pageNo, this.lang,'','')
+      this.abnormalNode(this.areaId, this.pageNo, this.lang, '', '')
     } else {
-      this.abnormalNode(this.areaId, this.pageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
+      this.abnormalNode(
+        this.areaId,
+        this.pageNo,
+        this.lang,
+        this.nodeTimes[0].getTime(),
+        this.nodeTimes[1].getTime()
+      )
     }
     this.controllerList(this.areaId, this.pageNo, this.lang)
   },
   methods: {
-    abnormalCurrentChange(){
+    abnormalCurrentChange() {
       if (!this.nodeTimes) {
-        this.abnormalNode(this.areaId, this.abnormalPageNo, this.lang,'','')
+        this.abnormalNode(this.areaId, this.abnormalPageNo, this.lang, '', '')
       } else {
-        this.abnormalNode(this.areaId, this.abnormalPageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
+        this.abnormalNode(
+          this.areaId,
+          this.abnormalPageNo,
+          this.lang,
+          this.nodeTimes[0].getTime(),
+          this.nodeTimes[1].getTime()
+        )
       }
     },
-    contrCurrentChange(){
+    contrCurrentChange() {
       this.controllerList(this.areaId, this.pageNoContr, this.lang)
     },
-    nodeTimesChange(){
+    nodeTimesChange() {
       if (!this.nodeTimes) {
-        this.abnormalNode(this.areaId, this.pageNo, this.lang,'','')
+        this.abnormalNode(this.areaId, this.pageNo, this.lang, '', '')
       } else {
-        this.abnormalNode(this.areaId, this.pageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
+        this.abnormalNode(
+          this.areaId,
+          this.pageNo,
+          this.lang,
+          this.nodeTimes[0].getTime(),
+          this.nodeTimes[1].getTime()
+        )
       }
     },
-    historyFn(deviceId){
-      this.$refs.LoopChild.initLoopData(deviceId,this.lang,1)
+    historyFn(deviceId) {
+      this.$refs.LoopChild.initLoopData(deviceId, this.lang, 1)
     },
     fatherClickFn(data) {
       this.areaId = data.id
       //显示右侧数据
       this.$refs.rightChild.initControllEchar(this.lang, data.id)
       if (!this.nodeTimes) {
-        this.abnormalNode(this.areaId, this.pageNo, this.lang,'','')
+        this.abnormalNode(this.areaId, this.pageNo, this.lang, '', '')
       } else {
-        this.abnormalNode(this.areaId, this.pageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
+        this.abnormalNode(
+          this.areaId,
+          this.pageNo,
+          this.lang,
+          this.nodeTimes[0].getTime(),
+          this.nodeTimes[1].getTime()
+        )
       }
       this.controllerList(this.areaId, this.pageNo, this.lang)
     },
-    abnormalNode(areaId, pageNo, lang,startTime,endTime) {
+    abnormalNode(areaId, pageNo, lang, startTime, endTime) {
       let this_ = this
       var currentData = qs.stringify({
         areaId: areaId,
         pageNo: pageNo,
         lang: lang,
-        startTime:startTime,
-        endTime:endTime
+        startTime: startTime,
+        endTime: endTime,
       })
       this.$http
         .post('http://srv.shine-iot.com:8060/fctrl/faultnds', currentData)
@@ -179,7 +188,7 @@ export default {
             item.msgTime = getTimeToString(item.msgTime)
             return item
           })
-          this_.abnormalTotal=response.data.data.total
+          this_.abnormalTotal = response.data.data.total
         })
     },
     nodeDetails(deviceId) {
@@ -188,9 +197,15 @@ export default {
     switchLanguage(lang) {
       this.lang = lang
       if (!this.nodeTimes) {
-        this.abnormalNode(this.areaId, this.pageNo, this.lang,'','')
+        this.abnormalNode(this.areaId, this.pageNo, this.lang, '', '')
       } else {
-        this.abnormalNode(this.areaId, this.pageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
+        this.abnormalNode(
+          this.areaId,
+          this.pageNo,
+          this.lang,
+          this.nodeTimes[0].getTime(),
+          this.nodeTimes[1].getTime()
+        )
       }
       this.controllerList(this.areaId, this.pageNo, this.lang)
       this.$refs.rightChild.initControllEchar(this.lang, this.areaId)
@@ -206,7 +221,7 @@ export default {
         .post('http://srv.shine-iot.com:8060/fctrl/devs', currentData)
         .then(function (response) {
           this_.tableData2 = response.data.data.records
-          this_.totalContr=response.data.data.total
+          this_.totalContr = response.data.data.total
         })
     },
   },
@@ -243,6 +258,8 @@ export default {
         .filterData {
           widows: 100%;
           display: flex;
+          margin-bottom: 20px;
+          justify-content: flex-start;
 
           div {
             width: 220px;

@@ -91,7 +91,6 @@ export default {
     },
     equipmentType(url, lang) {
       let this_ = this
-
       var currentData = { areaId: this_.areaId, lang: lang }
       this.$http.get(url, { params: currentData }).then(function (response) {
         this_.equipmentTypeData = response.data.data
@@ -188,7 +187,7 @@ export default {
       let this_ = this
       this.eventAreaEvtsUrl = url
       this.lang = lang
-      this.eventDevcieValue3=deviceType
+      this.eventDevcieValue3 = deviceType
       var currentData = qs.stringify({
         lang: lang,
         areaId: areaId,

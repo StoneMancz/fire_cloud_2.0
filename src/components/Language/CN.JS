@@ -63,10 +63,10 @@ module.exports = {
         Type: '设备类型',
         Status: '设备状态',
         Details: '设备详情',
-        submit:'提交',
-        cancel:'取消',
-        Basic:'基本信息',
-        placeholder:'请输入内容',
+        submit: '提交',
+        cancel: '取消',
+        Basic: '基本信息',
+        placeholder: '请输入内容',
         event: {
             eventDetails: "事件详情",
             EventInformation: '事件信息',
@@ -82,9 +82,9 @@ module.exports = {
             QRCode: '查看二维码',
             batteryPower: '电池电量',
             checkInTime: '登记时间',
-            moduleMethod:'通讯方式',
+            moduleMethod: '通讯方式',
             module: '通讯模块编码',
-            Manufacturer:'生产厂家'
+            Manufacturer: '生产厂家'
         },
         Installation: {
             Information: '安装信息',
@@ -98,25 +98,25 @@ module.exports = {
             Partition: '分区',
             number: '安装编号'
         },
-        otherInformation:{
-            otherInformation:"其他信息",
-            currentValue:"当前值",
-            alarmUpperLimit:'报警上限值',
-            alarmLowerLimit:'报警下限值',
-            upperWarningLimit:'预警上限值',
-            lowerWarningLimit:'预警下限值',
-            currentState:'当前状态',
-            defaultState:'默认状态'
+        otherInformation: {
+            otherInformation: "其他信息",
+            currentValue: "当前值",
+            alarmUpperLimit: '报警上限值',
+            alarmLowerLimit: '报警下限值',
+            upperWarningLimit: '预警上限值',
+            lowerWarningLimit: '预警下限值',
+            currentState: '当前状态',
+            defaultState: '默认状态'
         },
-        Qualitative:'事件定性',
-        eventDealWith:'事件处理',
-        closeEvenDesc:'是否关闭当前事件',
-        true:'是',
-        false:'否',
+        Qualitative: '事件定性',
+        eventDealWith: '事件处理',
+        closeEvenDesc: '是否关闭当前事件',
+        true: '是',
+        false: '否',
         dealWith: '处理',
         More: '更多',
-        channelDetails:'通道详情',
-        service:'维修'
+        channelDetails: '通道详情',
+        service: '维修'
     },
     FireMonitoring: {
         InstallationNumber: '安装编号',
@@ -129,6 +129,7 @@ module.exports = {
         Hint: "请输入设备编码"
     },
     ElectricalMonitoring: {
+        addrNum: '地址码',
         coding: "设备编码",
         name: "设备名称",
         status: '设备状态',
@@ -165,16 +166,16 @@ module.exports = {
         history: '历史纪录',
         Contrstatus: '控制器状态',
         ControllerNumber: '控制器号',
-        Details:'详情',
+        Details: '详情',
         ControllerList: '控制器列表',
-        Loop:{
-            circuit:"回路号",
-            types:'回路类型',
-            Point:"节点号",
-            nodeType:'节点类型',
-            status:'状态',
-            Partition:'分区',
-            time:'时间'
+        Loop: {
+            circuit: "回路号",
+            types: '回路类型',
+            Point: "节点号",
+            nodeType: '节点类型',
+            status: '状态',
+            Partition: '分区',
+            time: '时间'
         }
     },
     Newsletter: {

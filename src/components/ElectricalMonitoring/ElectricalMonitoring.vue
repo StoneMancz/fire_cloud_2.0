@@ -12,8 +12,8 @@
                 <input class="installNumbers" :placeholder="$t('ElectricalMonitoring.coding')" v-model="deviceSN" @change="changeElectData">
               </div>
               <div>
-                <el-select v-model="loopStatus" :placeholder="$t('FireMonitoring.State')" @change="changeElectData" >
-                  <el-option :label="$t('FireMonitoring.State')" value></el-option>
+                <el-select v-model="loopStatus" :placeholder="$t('FireMonitoring.State')" @change="changeElectData">
+                  <el-option :label="$t('FireMonitoring.status')" value></el-option>
                   <el-option v-for="item in status" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
@@ -25,7 +25,7 @@
                   <div>
                     <span>{{$t('ElectricalMonitoring.coding')}}：{{item.deviceSN}}</span>
                   </div>
-                  <div style="width:133px">
+                  <div style="width:153px">
                     <span>{{$t('ElectricalMonitoring.name')}}：{{item.dcTypeName}}</span>
                   </div>
                 </div>
@@ -33,7 +33,11 @@
                   <div>
                     <span>{{$t('ElectricalMonitoring.status')}}：{{item.runStatusName}}</span>
                   </div>
-                  <div style="width:133px"><span>{{$t('ElectricalMonitoring.area')}}：{{item.areaName}}</span></div>
+                  <div style="width:153px;display: flex;justify-content: space-between;">
+                    <span>{{$t('ElectricalMonitoring.area')}}：{{item.areaName}}</span>
+                    <span class="button" @click="seeDeviceDetail(item.deviceId)">{{$t('FireMonitoring.Details')}}</span>
+                  </div>
+
                 </div>
                 <div class="deviceStatus">
                   <div>
@@ -44,6 +48,7 @@
               </div>
               <div class="tableData">
                 <div class="tableHeader">
+                  <span>{{$t('ElectricalMonitoring.addrNum')}}</span>
                   <span>{{$t('ElectricalMonitoring.Loop')}}</span>
                   <span>{{$t('ElectricalMonitoring.name')}}</span>
                   <span>{{$t('ElectricalMonitoring.value')}}</span>
@@ -53,10 +58,12 @@
                 <div class="tebleColumnSwrap">
                   <div class="tebleColumn" v-for="(item1,index1) in item.electList" :key="index1">
                     <div>{{item1.addrNum}}</div>
+                    <div>{{item1.loopNum}}</div>
                     <div>{{item1.typeName}}</div>
                     <div>{{item1.checkVal}}{{item1.unitName}}</div>
-                    <div>{{item1.statusName}}</div>
-                    <div @click="openHistory(item1.electId,item1.typeName)">{{$t('ElectricalMonitoring.history')}}</div>
+                    <div v-if="item1.loopStatus==1" style="color:green">{{item1.statusName}}</div>
+                    <div v-if="item1.loopStatus!=1" style="color:yellow">{{item1.statusName}}</div>
+                    <div @click="openHistory(item1.electId,item1.typeName)" class="historyCss">{{$t('ElectricalMonitoring.history')}}</div>
                   </div>
                 </div>
               </div>
@@ -70,6 +77,7 @@
       </div>
     </div>
     <HistoryRecord ref="history"></HistoryRecord>
+    <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
   </renderless-component-example>
 </template>
 <script>
@@ -78,6 +86,7 @@ import Headers from '../../common/components/Header'
 import LeftCommon from '../../common/components/LeftCommon'
 import RightCommon from '../../common/components/RightCommon'
 import HistoryRecord from './components/HistoryRecord'
+import DeviceDetailsCom from '../../common/components/DeviceDetails'
 export default {
   data() {
     return {
@@ -88,7 +97,7 @@ export default {
       deviceSN: '',
       loopStatus: '',
       lang: 'zh-CN',
-      status:[],
+      status: [],
       recordsData: [],
     }
   },
@@ -97,10 +106,11 @@ export default {
     RightCommon,
     LeftCommon,
     HistoryRecord,
+    DeviceDetailsCom,
   },
   mounted() {
     this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
-    this.statusList();
+    this.statusList()
   },
   methods: {
     initElecticaData(pageNo, areaId, deviceSN, loopStatus, lang) {
@@ -120,18 +130,21 @@ export default {
           this_.pageNo = response.data.data.current
         })
     },
-    changeElectData(){
+    seeDeviceDetail(deviceId) {
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
+    },
+    changeElectData() {
       this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
     },
     //查询当前状态列表接口
-    statusList(){
+    statusList() {
       let this_ = this
-      var currentData = {lang: this_.lang }
-      this.$http.get("http://srv.shine-iot.com:8060/elect/channel/stus", { params: currentData }).then(function (response) {
-        console.log("数据");
-        console.log(response)
-        this_.status = response.data.data
-      })
+      var currentData = { lang: this_.lang }
+      this.$http
+        .get('http://srv.shine-iot.com:8060/elect/channel/stus', { params: currentData })
+        .then(function (response) {
+          this_.status = response.data.data
+        })
     },
     fatherClickFn(data) {
       this.areaId = data.id
@@ -147,9 +160,8 @@ export default {
       this.lang = lang
       this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
       this.$refs.rightChild.initElectEchar(this.lang, this.areaId)
-      this.statusList();
+      this.statusList()
     },
-
   },
 }
 </script>
@@ -183,6 +195,8 @@ export default {
         .filterData {
           widows: 100%;
           display: flex;
+          margin-top: 30px;
+          margin-bottom: 30px;
 
           div {
             width: 220px;
@@ -247,6 +261,7 @@ export default {
               }
 
               .button {
+                cursor: pointer;
                 width: 40px;
                 height: 20px;
                 text-align: center;
@@ -305,6 +320,14 @@ export default {
                   white-space: nowrap;
                   overflow: hidden;
                   color: rgba(229, 229, 229, 1);
+                }
+
+                .historyCss {
+                  font-size: 14px;
+                  font-family: PingFang SC;
+                  font-weight: 300;
+                  text-decoration: underline;
+                  color: #70D4FE;
                 }
               }
             }

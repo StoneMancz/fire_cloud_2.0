@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-drawer title="事件详情" custom-class="eventDetails" :visible.sync="drawers" :with-header="false" size="41%">
+    <el-drawer title="事件详情" custom-class="eventDetailss" :visible.sync="drawers" :with-header="false" size="41%">
       <div v-if="showEvenDetails==1">
         <div class="titleBk">{{$t('Index.event.eventDetails')}}</div>
         <div class="detailsBk">
@@ -68,6 +68,7 @@
             <div style="margin-top:30px">
               <span class="otherDetail" @click="SeeDeviceDetail(equipmentDetails.deviceId)">{{$t('Index.Details')}}</span>
               <span class="otherDetail" @click="eventHandling">{{$t('Index.dealWith')}}</span>
+              <span class="otherDetail" v-if="$route.path == '/water'" @click="historyWaterfn(equipmentDetails)">{{$t('ElectricalMonitoring.history')}}</span>
             </div>
           </div>
         </div>
@@ -105,7 +106,7 @@
         </div>
         <div class="handldescription">
           <div class="descHeader"></div>
-          <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="textarea">
+          <el-input type="textarea" :rows="10" :placeholder="$t('Index.placeholder')" v-model="textarea">
           </el-input>
         </div>
         <div style="margin-top:60px;margin-left: 40px;">
@@ -115,12 +116,14 @@
       </div>
     </el-drawer>
     <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
+    <HistoryWater ref="historyWater"></HistoryWater>
   </div>
 </template>
 
 <script>
 import qs from 'qs'
 import QRCode from 'qrcodejs2'
+import HistoryWater from '../../components/water/components/HistoryWater'
 import { deviceStatus, DeviceType, LevCodeName } from '../../components/rule/typeName'
 import DeviceDetailsCom from '../../common/components/DeviceDetails'
 export default {
@@ -149,11 +152,12 @@ export default {
   },
   components: {
     DeviceDetailsCom,
+    HistoryWater,
   },
   methods: {
     drawersFn(eventId) {
-      this.drawers = true
       this.showEvenDetails = 1
+      this.drawers = true
       let this_ = this
       this.$http
         .get('http://srv.shine-iot.com:8060/event/devo/' + eventId)
@@ -197,6 +201,11 @@ export default {
           this_.eventDetails = eventDetails
           this_.qrcode(eventData.deviceQRCode)
         })
+    },
+    historyWaterfn(item) {
+      this.drawers = false
+      this.$refs.historyWater.histval(item.deviceId, '', '')
+      this.$refs.historyWater.openHistory(item.deviceName)
     },
     SeeDeviceDetail(deviceId) {
       this.drawers = false
@@ -322,7 +331,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.eventDetails {
+.eventDetailss {
   background: linear-gradient(-30deg, rgba(0, 8, 41, 1) 0%, rgba(0, 14, 71, 1) 98%);
 
   .titleBk {
@@ -400,7 +409,6 @@ export default {
           .footer_flex div {
             width: 100px;
             float: left;
-            text-align: center;
             cursor: pointer;
             position: relative;
             z-index: 10;

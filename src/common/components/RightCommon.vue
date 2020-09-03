@@ -300,7 +300,7 @@ export default {
       )
 
       //设备类型
-      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/facilities/tpcodes', lang)
       //初始化事件列表
       this.$refs.events.eventAreaEvts(
         'http://srv.shine-iot.com:8060/facilities/area/evts',
@@ -315,26 +315,26 @@ export default {
       //查询事件等级
       this.$refs.events.eventLevelFn(lang)
       //设备类型
-      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/facilities/tpcodes', lang)
     },
     tabChange(num) {
       this.tabIndex = num
       if (this.tabIndex == 2) {
         //事件等级
       } else {
-        if (this.$route.path == '/index') {
-          this.initEcharData(this.lang, this.areaID)
-        } else if (this.$route.path == '/fireMonitoring') {
-          this.fireMonitorInitData(this.lang, this.areaID)
-        } else if (this.$route.path == '/ElectricalMonitoring') {
-          this.initElectEchar(this.lang, this.areaID)
-        } else if (this.$route.path == '/controllerList') {
-          this.initControllEchar(this.lang, this.areaID)
-        } else if (this.$route.path == '/newsletter') {
-          this.initNewsletter(this.lang, this.areaID)
-        } else if (this.$route.path == '/water') {
-          this.initWaterEcharts(this.lang, this.areaID)
-        }
+        // if (this.$route.path == '/index') {
+        //   this.initEcharData(this.lang, this.areaID)
+        // } else if (this.$route.path == '/fireMonitoring') {
+        //   this.fireMonitorInitData(this.lang, this.areaID)
+        // } else if (this.$route.path == '/ElectricalMonitoring') {
+        //   this.initElectEchar(this.lang, this.areaID)
+        // } else if (this.$route.path == '/controllerList') {
+        //   this.initControllEchar(this.lang, this.areaID)
+        // } else if (this.$route.path == '/newsletter') {
+        //   this.initNewsletter(this.lang, this.areaID)
+        // } else if (this.$route.path == '/water') {
+        //   this.initWaterEcharts(this.lang, this.areaID)
+        // }
       }
     },
   },

@@ -140,8 +140,6 @@ export default {
     deiceStusList() {
       let this_ = this
       this.$http.get('http://srv.shine-iot.com:8060/gwdtu/stus').then(function (response) {
-        console.log('设备状态列表')
-        console.log(response)
         this_.deviceStatusList = response.data.data
       })
     },

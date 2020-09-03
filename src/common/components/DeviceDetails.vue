@@ -1,5 +1,5 @@
 <template>
-  <el-drawer custom-class="eventDetails" :visible.sync="deviceDrawers" :with-header="false" size="41%">
+  <el-drawer custom-class="eventDetailss" :visible.sync="deviceDrawers" :with-header="false" size="41%">
     <div class="titleBk">{{$t('Index.Details')}}</div>
     <div class="detailsBk">
       <div class="detail_titel">{{$t('Index.Basic')}}</div>
@@ -44,7 +44,7 @@
           <div style="width:100%">{{$t('Index.Installation.Address')}}：<span>{{installation.deviceAddr}}</span></div>
         </div>
         <div class="detailsItem">
-          <div>{{$t('Index.Installation.Contact')}}<span>{{installation.areaContact}}</span></div>
+          <div>{{$t('Index.Installation.Contact')}}：<span>{{installation.areaContact}}</span></div>
           <div>{{$t('Index.Installation.phone')}}：<span>{{installation.areaContactPhone}}</span></div>
         </div>
         <div class="detailsItem">
@@ -116,8 +116,6 @@ export default {
       this.$http
         .get('http://srv.shine-iot.com:8060/device/base/detail/' + deviceId)
         .then(function (response) {
-          console.log('设备详情')
-          console.log(response)
           let deviceDetailsData = response.data.data
           let deviceInfo = {
             deviceTypeCode: deviceDetailsData.deviceTypeCode,
@@ -183,7 +181,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.eventDetails {
+.eventDetailss {
   background: linear-gradient(-30deg, rgba(0, 8, 41, 1) 0%, rgba(0, 14, 71, 1) 98%);
 
   .titleBk {
@@ -262,7 +260,6 @@ export default {
         .footer_flex div {
           width: 100px;
           float: left;
-          text-align: center;
           cursor: pointer;
           position: relative;
           z-index: 10;
