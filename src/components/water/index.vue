@@ -33,8 +33,8 @@
                 </div>
                 <WaterCharts v-if="item1.deviceTypeCode==16" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></WaterCharts>
                 <HydraulicFn v-if="item1.deviceTypeCode==17" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></HydraulicFn>
-                <Thermometer v-if="item1.deviceTypeCode==2" v-bind:item="item1.buildInfoModels"></Thermometer>
-                <Switchs v-if="item1.deviceTypeCode==7"></Switchs>
+                <Thermometer v-if="item1.deviceTypeCode==2"  v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></Thermometer>
+                <Switchs v-if="item1.deviceTypeCode==7" v-bind:deviceId="item1.deviceId"></Switchs>
                 <div class="Graphics" v-if="item1.deviceTypeCode==2" style="margin-top: -25px;">
                   <div>{{$t('Water.name')}}:{{item1.dcTypeName}}</div>
                   <div>{{$t('Water.coding')}}:{{item1.deviceSN}}</div>
@@ -56,6 +56,7 @@
         </div>
       </div>
     </div>
+    <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
   </renderless-component-example>
 </template>
 <script>
@@ -168,11 +169,13 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/facilities/devs', currentData)
         .then(function (response) {
-          console.log('查看用水数据')
-          console.log(response)
           this_.waterList = response.data.data
         })
     },
+    SeeDeviceDetail(deviceId) {
+      console.log(deviceId)
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
+    }
   },
 }
 </script>
@@ -212,7 +215,7 @@ export default {
         border: 1px solid rgba(112, 212, 254, 1);
 
         .filterData {
-          widows: 100%;
+          width: 100%;
           display: flex;
 
           div {
@@ -232,7 +235,7 @@ export default {
         .waterConten {
           margin-right: 30px;
           margin-top: 0px;
-
+          width:100%;
           .showWaterTanks {
             margin-right: 20px;
             margin-top: 20px;

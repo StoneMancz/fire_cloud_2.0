@@ -219,8 +219,8 @@ export default {
         'http://srv.shine-iot.com:8060/event/area/evts',
         lang,
         areaID,
-        '',
         14,
+        '',
         '',
         '',
         1

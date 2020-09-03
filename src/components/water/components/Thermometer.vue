@@ -1,10 +1,17 @@
 <template>
-  <div id="wdjnow" class="thermometer"></div>
+  <renderless-component-example>
+    <div id="wdjnow" class="thermometer"></div>
+    <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
+  </renderless-component-example>
 </template>
 <script>
+import DeviceDetailsCom from '../../../common/components/DeviceDetails'
 export default {
   data() {
     return {}
+  },
+  components:{
+    DeviceDetailsCom
   },
   methods: {
     initTherMometer(item) {
@@ -256,10 +263,12 @@ export default {
         ],
       })
     },
+    SeeDeviceDetail() {
+      this.$refs.childEquipmentDetails.openEquipmentDetails(this.deviceId)
+    }
   },
-  props: ['item'],
+  props: ['item','deviceId'],
   mounted() {
-    console.log(this.item)
     this.initTherMometer(this.item[0])
   },
 }

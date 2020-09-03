@@ -1,22 +1,21 @@
-<!--
- * @Author: your name
- * @Date: 2020-08-24 20:00:43
- * @LastEditTime: 2020-08-24 23:09:32
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \fireControl\src\components\water\components\HydraulicFn.vue
--->
 <template>
-  <div :id="this.id" class="Hydraulic"></div>
+  <renderless-component-example>
+    <div :id="this.id" class="Hydraulic" @click="SeeDeviceDetail"></div>
+    <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
+  </renderless-component-example>
 </template>
 <script>
 import $ from 'jquery'
 import 'echarts-liquidfill/src/liquidFill.js'
+import DeviceDetailsCom from '../../../common/components/DeviceDetails'
 export default {
   data() {
     return {
       id: 'hydraulic',
     }
+  },
+  components:{
+    DeviceDetailsCom
   },
   methods: {
     showWaterTank(id, item) {
@@ -86,6 +85,9 @@ export default {
     initWaterTank() {
       this.showWaterTank(this.id, this.item)
     },
+    SeeDeviceDetail() {
+      this.$refs.childEquipmentDetails.openEquipmentDetails(this.deviceId)
+    }
   },
   props: ['item', 'deviceId'],
   mounted() {

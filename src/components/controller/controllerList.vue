@@ -12,7 +12,7 @@
                 type="datetimerange"></el-date-picker>
               </div>
             </div>
-            <el-tabs v-model="activeName1" @tab-click="handleClick">
+            <el-tabs v-model="activeName1">
               <el-tab-pane :label="$t('Controller.AbnormalNode')" name="first">
                 <div class="table">
                   <div class="tebleHeader" style="background:rgba(0,14,71,1);">

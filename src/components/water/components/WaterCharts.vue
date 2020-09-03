@@ -1,14 +1,21 @@
 <template>
-  <div :id="this.id" class="showWaterTank"></div>
+    <renderless-component-example>
+      <div :id="this.id" class="showWaterTank" @click="SeeDeviceDetail"></div>
+      <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
+    </renderless-component-example>
 </template>
 <script>
 import $ from 'jquery'
 import 'echarts-liquidfill/src/liquidFill.js'
+import DeviceDetailsCom from '../../../common/components/DeviceDetails'
 export default {
   data() {
     return {
       id: 'waterTank',
     }
+  },
+  components:{
+    DeviceDetailsCom
   },
   methods: {
     showWaterTank(id, item) {
@@ -30,6 +37,9 @@ export default {
           },
         ],
       })
+    },
+    SeeDeviceDetail() {
+      this.$refs.childEquipmentDetails.openEquipmentDetails(this.deviceId)
     },
     initWaterTank() {
       this.showWaterTank(this.id, this.item)
