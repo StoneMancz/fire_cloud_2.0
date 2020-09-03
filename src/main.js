@@ -84,12 +84,12 @@ const i18n = new VueI18n({
     messages: {
         'zh': require('./components/Language/CN.JS'), // 中文语言包
         'en': require('./components/Language/EN.JS')
-    }
+    },
+    silentTranslationWarn: true,
 })
 
 export default i18n
 
-/* eslint-disable no-new */
 new Vue({
     el: '#app',
     router,

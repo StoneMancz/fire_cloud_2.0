@@ -188,6 +188,7 @@ export default {
       let this_ = this
       this.eventAreaEvtsUrl = url
       this.lang = lang
+      this.eventDevcieValue3=deviceType
       var currentData = qs.stringify({
         lang: lang,
         areaId: areaId,

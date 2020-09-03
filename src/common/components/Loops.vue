@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       isShowBg: false,
-      totalLoop:'',
+      totalLoop:0,
       loopList: [],
       deviceId:'',
       lang:'',

@@ -40,6 +40,14 @@
                     </div>
                   </div>
                 </div>
+                <el-pagination
+                    class="pagination2"
+                    :current-page.sync="abnormalPageNo"
+                    layout="prev, pager, next"
+                    :total="abnormalTotal"
+                    style="text-align: center;bottom:-5%"
+                    @current-change="abnormalCurrentChange"
+                  ></el-pagination>
               </el-tab-pane>
               <el-tab-pane :label="$t('Controller.ControllerList')" name="second">
                 <div class="table">
@@ -62,6 +70,14 @@
                     </div>
                   </div>
                 </div>
+                <el-pagination
+                    class="pagination2"
+                    :current-page.sync="pageNoContr"
+                    layout="prev, pager, next"
+                    :total="totalContr"
+                    style="text-align: center;bottom:-15%"
+                    @current-change="contrCurrentChange"
+                  ></el-pagination>
               </el-tab-pane>
             </el-tabs>
           </div>
@@ -99,6 +115,10 @@ export default {
       nodeTimes:'',
       lang: 'zh-CN',
       pageNo: 1,
+      abnormalPageNo:1,
+      abnormalTotal:0,
+      totalContr:0,
+      pageNoContr:1,
       tableData: [],
       tableData2: [],
     }
@@ -112,7 +132,16 @@ export default {
     this.controllerList(this.areaId, this.pageNo, this.lang)
   },
   methods: {
-    handleClick(tab, event) {},
+    abnormalCurrentChange(){
+      if (!this.nodeTimes) {
+        this.abnormalNode(this.areaId, this.abnormalPageNo, this.lang,'','')
+      } else {
+        this.abnormalNode(this.areaId, this.abnormalPageNo, this.lang,this.nodeTimes[0].getTime(),this.nodeTimes[1].getTime())
+      }
+    },
+    contrCurrentChange(){
+      this.controllerList(this.areaId, this.pageNoContr, this.lang)
+    },
     nodeTimesChange(){
       if (!this.nodeTimes) {
         this.abnormalNode(this.areaId, this.pageNo, this.lang,'','')
@@ -150,6 +179,7 @@ export default {
             item.msgTime = getTimeToString(item.msgTime)
             return item
           })
+          this_.abnormalTotal=response.data.data.total
         })
     },
     nodeDetails(deviceId) {
@@ -176,6 +206,7 @@ export default {
         .post('http://srv.shine-iot.com:8060/fctrl/devs', currentData)
         .then(function (response) {
           this_.tableData2 = response.data.data.records
+          this_.totalContr=response.data.data.total
         })
     },
   },
