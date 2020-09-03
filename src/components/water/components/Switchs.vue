@@ -1,9 +1,9 @@
 <template>
-  <div class="closeImg" @click="SeeDeviceDetail">
-    <img src="../../../static/img/close.png">
+  <div class="closeImg">
+    <img src="../../../static/img/close.png" @click="SeeDeviceDetail">
     <el-radio-group v-model="radio1" style="margin-top:10px">
-      <el-radio-button label="关"></el-radio-button>
-      <el-radio-button label="开"></el-radio-button>
+      <el-radio-button label="关" ></el-radio-button>
+      <el-radio-button label="开" disabled></el-radio-button>
     </el-radio-group>
     <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
   </div>

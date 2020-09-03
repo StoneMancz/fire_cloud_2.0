@@ -59,10 +59,14 @@ module.exports = {
         address: '地址',
         all: '全部',
         Information: '设备信息',
-        DeviceID: '设备编号',
+        DeviceID: '设备编码',
         Type: '设备类型',
         Status: '设备状态',
         Details: '设备详情',
+        submit:'提交',
+        cancel:'取消',
+        Basic:'基本信息',
+        placeholder:'请输入内容',
         event: {
             eventDetails: "事件详情",
             EventInformation: '事件信息',
@@ -78,7 +82,9 @@ module.exports = {
             QRCode: '查看二维码',
             batteryPower: '电池电量',
             checkInTime: '登记时间',
-            module: '通讯模块编码'
+            moduleMethod:'通讯方式',
+            module: '通讯模块编码',
+            Manufacturer:'生产厂家'
         },
         Installation: {
             Information: '安装信息',
@@ -92,8 +98,25 @@ module.exports = {
             Partition: '分区',
             number: '安装编号'
         },
+        otherInformation:{
+            otherInformation:"其他信息",
+            currentValue:"当前值",
+            alarmUpperLimit:'报警上限值',
+            alarmLowerLimit:'报警下限值',
+            upperWarningLimit:'预警上限值',
+            lowerWarningLimit:'预警下限值',
+            currentState:'当前状态',
+            defaultState:'默认状态'
+        },
+        Qualitative:'事件定性',
+        eventDealWith:'事件处理',
+        closeEvenDesc:'是否关闭当前事件',
+        true:'是',
+        false:'否',
         dealWith: '处理',
-        More: '更多'
+        More: '更多',
+        channelDetails:'通道详情',
+        service:'维修'
     },
     FireMonitoring: {
         InstallationNumber: '安装编号',

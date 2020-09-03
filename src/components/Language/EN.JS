@@ -78,7 +78,8 @@ module.exports = {
             QRCode: 'QRCode',
             batteryPower: 'BatteryPower',
             checkInTime: 'CheckInTime',
-            module: 'Module'
+            module: 'Module',
+            Manufacturer:'Manufacturer'
         },
         Installation: {
             Information: 'InstallationInfo',
@@ -92,8 +93,28 @@ module.exports = {
             Partition: 'Partition',
             number: 'Number'
         },
+        otherInformation:{
+            otherInformation:"otherInformation",
+            currentValue:"currentValue",
+            alarmUpperLimit:'alarmUpperLimit',
+            alarmLowerLimit:'alarmLowerLimit',
+            upperWarningLimit:'upperWarningLimit',
+            lowerWarningLimit:'lowerWarningLimit',
+            currentState:'currentState',
+            defaultState:'defaultState'
+        },
+        Qualitative:'Qualitative',
+        eventDealWith:'eventDealWith',
+        closeEvenDesc:'closeEvenDesc',
+        true:'true',
+        false:'false',
+        submit:'submit',
+        cancel:'cancel',
+        placeholder:'Please enter content',
         dealWith: 'DealWith',
-        More: 'More'
+        More: 'More',
+        channelDetails:'channelDetails',
+        service:'service'
     },
     FireMonitoring: {
         InstallationNumber: 'Installation',

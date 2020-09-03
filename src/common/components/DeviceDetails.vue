@@ -1,107 +1,98 @@
 <template>
   <el-drawer custom-class="eventDetails" :visible.sync="deviceDrawers" :with-header="false" size="41%">
-    <div class="titleBk">设备详情</div>
+    <div class="titleBk">{{$t('Index.Details')}}</div>
     <div class="detailsBk">
-      <div class="detail_titel">基本信息</div>
+      <div class="detail_titel">{{$t('Index.Basic')}}</div>
       <div class="detailsContent">
         <div class="detailsItem">
-          <div>设备名称：<span>{{deviceInfo.dcTypeName}}</span></div>
-          <div>设备编码：<span>{{deviceInfo.deviceSN}}</span></div>
+          <div>{{$t('Index.equipmentName')}}：<span>{{deviceInfo.dcTypeName}}</span></div>
+          <div>{{$t('Index.DeviceID')}}：<span>{{deviceInfo.deviceSN}}</span></div>
         </div>
         <div class="detailsItem">
           <div>运行状态：<span>{{deviceInfo.runStatusName}}</span></div>
           <div style="color:#365CF5;cursor:pointer;">
             <div class="footer_flex clearfix">
               <div>
-                查看二维码
+                {{$t('Index.Device.QRCode')}}
                 <div class="flex-footera" id="qrcode2" style=""></div>
               </div>
             </div>
           </div>
         </div>
         <div class="detailsItem">
-          <div>电池电量：<span>{{deviceInfo.batteryName}}</span></div>
-          <div>登记时间：<span>{{deviceInfo.entryTime}}</span></div>
+          <div>{{$t('Index.Device.batteryPower')}}：<span>{{deviceInfo.batteryName}}</span></div>
+          <div>{{$t('Index.Device.checkInTime')}}：<span>{{deviceInfo.entryTime}}</span></div>
         </div>
         <div class="detailsItem">
-          <div>通讯方式：<span>{{deviceInfo.protocolTypeName}}</span></div>
-          <div>通讯模块编码：<span>{{deviceInfo.protocolTypeName}}</span></div>
+          <div>{{$t('Index.Device.moduleMethod')}}：<span>{{deviceInfo.protocolTypeName}}</span></div>
+          <div>{{$t('Index.Device.module')}}：<span>{{deviceInfo.protocolTypeName}}</span></div>
         </div>
         <div class="detailsItem">
-          <div>设备类型：<span>{{deviceInfo.dcTypeName}}</span></div>
-          <div>生产厂家：<span>{{deviceInfo.providerName}}</span></div>
+          <div>{{$t('Index.Device.Type')}}：<span>{{deviceInfo.dcTypeName}}</span></div>
+          <div>{{$t('Index.Device.Manufacturer')}}：<span>{{deviceInfo.providerName}}</span></div>
         </div>
       </div>
     </div>
     <div class="detailsBk">
-      <div class="detail_titel">安装信息</div>
+      <div class="detail_titel">{{$t('Index.Installation.Information')}}</div>
       <div class="detailsContent">
         <div class="detailsItem">
-          <div>单位：<span>{{installation.orgName}}</span></div>
-          <div>区域：<span>{{installation.areaName}}</span></div>
+          <div>{{$t('Index.Installation.unit')}}：<span>{{installation.orgName}}</span></div>
+          <div>{{$t('Index.Installation.area')}}：<span>{{installation.areaName}}</span></div>
         </div>
         <div class="detailsItem" style="width:100%">
-          <div style="width:100%">详细地址：<span>{{installation.deviceAddr}}</span></div>
+          <div style="width:100%">{{$t('Index.Installation.Address')}}：<span>{{installation.deviceAddr}}</span></div>
         </div>
         <div class="detailsItem">
-          <div>联系人<span>{{installation.areaContact}}</span></div>
-          <div>联系电话：<span>{{installation.areaContactPhone}}</span></div>
+          <div>{{$t('Index.Installation.Contact')}}<span>{{installation.areaContact}}</span></div>
+          <div>{{$t('Index.Installation.phone')}}：<span>{{installation.areaContactPhone}}</span></div>
         </div>
         <div class="detailsItem">
-          <div>安装场所：<span>{{installation.placeName}}</span></div>
-          <div>安装时间：<span>{{installation.deviceFixDate}}</span></div>
+          <div>{{$t('Index.Installation.place')}}：<span>{{installation.placeName}}</span></div>
+          <div>{{$t('Index.Installation.time')}}：<span>{{installation.deviceFixDate}}</span></div>
         </div>
         <div class="detailsItem">
-          <div>分区编号：<span>{{installation.areaNo}}</span></div>
-          <div>安装编号：<span>{{installation.installNumber}}</span></div>
+          <div>{{$t('Index.Installation.Partition')}}：<span>{{installation.areaNo}}</span></div>
+          <div>{{$t('Index.Installation.number')}}：<span>{{installation.installNumber}}</span></div>
         </div>
       </div>
     </div>
     <div class="detailsBk" v-if="deviceInfo.deviceTypeCode==16 || deviceInfo.deviceTypeCode==17">
-      <div class="detail_titel">其他信息</div>
+      <div class="detail_titel">{{$t('Index.otherInformation.otherInformation')}}</div>
       <div class="detailsContent">
         <div class="detailsItem">
-          <div>当前值：<span>{{buildInfoModel.curVal}}{{buildInfoModel.rangUnitName}}</span></div>
+          <div>{{$t('Index.otherInformation.currentValue')}}：<span>{{buildInfoModel.curVal}}{{buildInfoModel.rangUnitName}}</span></div>
         </div>
         <div class="detailsItem">
-          <div>报警上限值：<span>{{buildInfoModel.upAlarm}}{{buildInfoModel.rangUnitName}}</span></div>
-          <div>报警下限值：<span>{{buildInfoModel.lowAlarm}}{{buildInfoModel.rangUnitName}}</span></div>
+          <div>{{$t('Index.otherInformation.alarmUpperLimit')}}：<span>{{buildInfoModel.upAlarm}}{{buildInfoModel.rangUnitName}}</span></div>
+          <div>{{$t('Index.otherInformation.alarmLowerLimit')}}：<span>{{buildInfoModel.lowAlarm}}{{buildInfoModel.rangUnitName}}</span></div>
         </div>
         <div class="detailsItem">
-          <div>预警上限值：<span>{{buildInfoModel.upWarn}}{{buildInfoModel.rangUnitName}}</span></div>
-          <div>预警下限值：<span>{{buildInfoModel.lowWarn}}{{buildInfoModel.rangUnitName}}</span></div>
+          <div>{{$t('Index.otherInformation.upperWarningLimit')}}：<span>{{buildInfoModel.upWarn}}{{buildInfoModel.rangUnitName}}</span></div>
+          <div>{{$t('Index.otherInformation.lowerWarningLimit')}}：<span>{{buildInfoModel.lowWarn}}{{buildInfoModel.rangUnitName}}</span></div>
         </div>
       </div>
     </div>
 
     <div class="detailsBk" v-if="deviceInfo.deviceTypeCode==7">
-      <div class="detail_titel">其他信息</div>
+      <div class="detail_titel">{{$t('Index.otherInformation.otherInformation')}}</div>
       <div class="detailsContent">
         <div class="detailsItem">
-          <div>当前状态：<span>{{switchData.deftStatusName}}</span></div>
-          <div>默认状态：<span>{{switchData.runStatusName}}</span></div>
+          <div>{{$t('Index.otherInformation.currentState')}}：<span>{{switchData.deftStatusName}}</span></div>
+          <div>{{$t('Index.otherInformation.defaultState')}}：<span>{{switchData.runStatusName}}</span></div>
         </div>
       </div>
     </div>
 
     <div class="detailsBk" v-if="deviceInfo.deviceTypeCode==30">
-      <div class="detail_titel">更多</div>
+      <div class="detail_titel">{{$t('Index.More')}}</div>
       <div class="detailsContent">
         <div class="detailsItem">
-          <div>通道详情</div>
-          <div>维修</div>
+          <div>{{$t('Index.channelDetails')}}</div>
+          <div>{{$t('Index.service')}}</div>
         </div>
       </div>
     </div>
-    <!-- <div class="detailsBk" v-if="deviceInfo.deviceTypeCode==30">
-      <div class="detail_titel">更多</div>
-      <div class="detailsContent">
-        <div class="detailsItem">
-          <div>通道详情</div>
-          <div>维修</div>
-        </div>
-      </div>
-    </div> -->
   </el-drawer>
 </template>
 

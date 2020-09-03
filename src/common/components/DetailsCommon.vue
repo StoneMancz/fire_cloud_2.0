@@ -78,30 +78,30 @@
           <div class="qualitativEventItem">
             <div>
               <span class="required">*</span>
-              <span class="handlDesc">事件定性：</span>
-              <el-select v-model="eventqualitativeValue" placeholder="事件定性" class="handlSelect">
+              <span class="handlDesc">{{$t('Index.Qualitative')}}：</span>
+              <el-select v-model="eventqualitativeValue" :placeholder="$t('Index.Qualitative')" class="handlSelect">
                 <el-option v-for="item in eventqualitative" :key="item.type" :label="item.name" :value="item.type"></el-option>
               </el-select>
             </div>
             <div style="margin-left:30px">
               <span class="required">*</span>
-              <span class="handlDesc">事件处理：</span>
-              <el-select v-model="eventResult" placeholder="事件处理" class="handlSelect" @change="changeEvent">
+              <span class="handlDesc">{{$t('Index.eventDealWith')}}：</span>
+              <el-select v-model="eventResult" :placeholder="$t('Index.eventDealWith')" class="handlSelect" @change="changeEvent">
                 <el-option v-for="item in eventHandlingArr" :key="item.type" :label="item.name" :value="item.type"></el-option>
               </el-select>
             </div>
           </div>
           <div class="qualitativEventItem" v-if="showBlockTime">
             <span class="required">*</span>
-            <span class="handlDesc">时间:</span>
+            <span class="handlDesc">{{$t('Index.time')}}:</span>
             <el-date-picker v-model="eventHandlingTime" @change="pickerChange" style="background: #000D42;margin-left:10px;width:220px" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
             </el-date-picker>
           </div>
         </div>
         <div class="closeEvent">
-          <span class="closeEvenDesc">是否关闭当前事件：</span>
-          <el-radio v-model="radio" label="2">是</el-radio>
-          <el-radio v-model="radio" label="1">否</el-radio>
+          <span class="closeEvenDesc">{{$t('Index.closeEvenDesc')}}：</span>
+          <el-radio v-model="radio" label="2">{{$t('Index.true')}}</el-radio>
+          <el-radio v-model="radio" label="1">{{$t('Index.false')}}</el-radio>
         </div>
         <div class="handldescription">
           <div class="descHeader"></div>
@@ -109,8 +109,8 @@
           </el-input>
         </div>
         <div style="margin-top:60px;margin-left: 40px;">
-          <button class="submits" @click="sumbmitEventHanding">提交</button>
-          <button class="cancel" @click="cancel">取消</button>
+          <button class="submits" @click="sumbmitEventHanding">{{$t('Index.submit')}}</button>
+          <button class="cancel" @click="cancel">{{$t('Index.cancel')}}</button>
         </div>
       </div>
     </el-drawer>

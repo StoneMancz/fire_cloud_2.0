@@ -1,6 +1,6 @@
 <template>
   <renderless-component-example>
-    <div id="wdjnow" class="thermometer"></div>
+    <div id="wdjnow" class="thermometer" @click="SeeDeviceDetail"></div>
     <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
   </renderless-component-example>
 </template>
