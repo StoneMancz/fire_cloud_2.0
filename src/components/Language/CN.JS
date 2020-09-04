@@ -123,6 +123,7 @@ module.exports = {
         EquipmentName: '全部',
         EquipmentNumber: '设备编码',
         status: '全部',
+        State:'状态',
         Area: '区域',
         Address: '地址',
         Details: '详情',

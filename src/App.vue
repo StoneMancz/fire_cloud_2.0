@@ -13,7 +13,7 @@ export default {
 <style>
 body,
 html {
-  padding: 0;
+  padding-right: 0 !important;
   margin: 0;
   border: 0;
   width: 100%;

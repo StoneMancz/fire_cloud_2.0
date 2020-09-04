@@ -123,6 +123,7 @@ module.exports = {
         EquipmentNumber: 'EquipmentNumber',
         status: 'All',
         Area: 'Area',
+        State:'State',
         Address: 'Address',
         Details: 'Details',
         Hint: "Please enter the device number"

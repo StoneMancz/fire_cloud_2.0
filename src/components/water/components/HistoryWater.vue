@@ -43,11 +43,9 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/dev/msg/levpes/histval', currentData)
         .then(function (response) {
-          console.log('用水历史记录')
-          console.log(response)
           let pressMsg = response.data.data.pressMsg
           let timeArry = pressMsg.map((item) => {
-            return getTimeToString(item.msgDate)
+            return this_.formatDate(item.msgDate)
           })
           let checkValArry = pressMsg.map((item) => {
             return item.checkVal
@@ -57,6 +55,36 @@ export default {
           //  let upperVal = response.data.data.buildInfoModel.upperVal
           this_.historyEchar(timeArry, checkValArry, '', '', '')
         })
+    },
+    //将时间戳转换成日期
+    formatDate(d) {
+      var now = new Date(d)
+      var year = now.getFullYear()
+      var month = now.getMonth() + 1
+      var date = now.getDate()
+      var hour = now.getHours()
+      var minute = now.getMinutes()
+      var second = now.getSeconds()
+      if (second < 10) {
+        second = '0' + second
+      }
+
+      if (minute < 10) {
+        minute = '0' + minute
+      }
+
+      if (hour < 10) {
+        hour = '0' + hour
+      }
+
+      if (date < 10) {
+        date = '0' + date
+      }
+
+      if (month < 10) {
+        month = '0' + month
+      }
+      return month + '-' + date
     },
     historyChange() {
       this.startTime = this.historyValue[0].getTime()

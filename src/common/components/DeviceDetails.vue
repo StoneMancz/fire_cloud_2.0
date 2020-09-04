@@ -28,7 +28,7 @@
           <div>{{$t('Index.Device.module')}}：<span>{{deviceInfo.protocolTypeName}}</span></div>
         </div>
         <div class="detailsItem">
-          <div>{{$t('Index.Device.Type')}}：<span>{{deviceInfo.dcTypeName}}</span></div>
+          <div>{{$t('Index.Device.Types')}}：<span>{{deviceInfo.dcTypeName}}</span></div>
           <div>{{$t('Index.Device.Manufacturer')}}：<span>{{deviceInfo.providerName}}</span></div>
         </div>
       </div>

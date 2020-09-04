@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-drawer title="事件详情" custom-class="eventDetailss" :visible.sync="drawers" :with-header="false" size="41%">
+    <el-drawer title="事件详情" custom-class="eventDetailss" :modal-append-to-body="true"
+    :visible.sync="drawers" :with-header="false" size="41%">
       <div v-if="showEvenDetails==1">
         <div class="titleBk">{{$t('Index.event.eventDetails')}}</div>
         <div class="detailsBk">

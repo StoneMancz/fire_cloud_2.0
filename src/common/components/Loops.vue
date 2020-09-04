@@ -8,6 +8,7 @@
       </div>
       <div class="loopList">
         <div class="tableHeader">
+          <span>{{$t('Controller.Machine')}}</span>
           <span>{{$t('Controller.Loop.circuit')}}</span>
           <span>{{$t('Controller.Loop.types')}}</span>
           <span>{{$t('Controller.Loop.Point')}}</span>
@@ -17,6 +18,7 @@
           <span style="flex:2">{{$t('Controller.Loop.time')}}</span>
         </div>
         <div class="tebleColumn" v-for="(item,index) in loopList" :key="index">
+          <div>{{item.mcNo}}</div>
           <div>{{item.loopNo}}</div>
           <div>{{item.loopTypeName}}</div>
           <div>{{item.nodeNo}}</div>
@@ -25,8 +27,9 @@
           <div>{{item.area}}</div>
           <div style="flex:2">{{item.msgTime}}</div>
         </div>
-        <el-pagination class="pagination2" :current-page.sync="pageNo" layout="prev, pager, next" :total="totalLoop" style="text-align: center;" @current-change="loopCurrentChange"></el-pagination>
       </div>
+      <el-pagination class="pagination2" :current-page.sync="pageNo" 
+      layout="prev, pager, next" :total="totalLoop" style="text-align: center;bottom:-15px;" @current-change="loopCurrentChange"></el-pagination>
     </div>
   </renderless-component-example>
 </template>

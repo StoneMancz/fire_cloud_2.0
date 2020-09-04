@@ -15,7 +15,7 @@
               </div>
               <div>
                 <el-select v-model="deviceStatus" @change="deviceStatusChange">
-                  <el-option :label="$t('FireMonitoring.State')" value></el-option>
+                  <el-option :label="$t('FireMonitoring.status')" value></el-option>
                   <el-option v-for="item in deviceStatusList" :key="item.type" :label="item.name" :value="item.type"></el-option>
                 </el-select>
               </div>
