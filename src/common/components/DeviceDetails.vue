@@ -1,5 +1,5 @@
 <template>
-  <el-drawer custom-class="eventDetailss" :visible.sync="deviceDrawers" :with-header="false" size="41%">
+  <el-drawer custom-class="eventDetailss" :visible.sync="deviceDrawers" :with-header="false" size="41%" >
     <div class="titleBk">{{$t('Index.Details')}}</div>
     <div class="detailsBk">
       <div class="detail_titel">{{$t('Index.Basic')}}</div>

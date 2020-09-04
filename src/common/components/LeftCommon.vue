@@ -15,6 +15,7 @@
       <div class="qrcodeClass">
         <div id="qrcode"></div>
         <div class="arerDesc">
+          <div><span>{{$t('Index.Installation.area')}}：</span><span>{{areaName}}</span></div>
           <div><span>{{$t('Index.principal')}}：</span><span>{{areaContact}}</span></div>
           <div><span>{{$t('Index.Contact')}}：</span><span>{{areaContactPhone}}</span></div>
           <div><span>{{$t('Index.AddressInfo')}}：</span><span>{{areaLocDetail}}</span></div>
@@ -31,6 +32,7 @@ export default {
     return {
       areaID: '',
       data: [],
+      areaName:'',
       filterText: '',
       areaContact: '',
       areaContactPhone: '',
@@ -43,6 +45,8 @@ export default {
   },
   methods: {
     clickFn(data) {
+      console.log(data);
+      this.areaName=data.label;
       this.areaContact = data.areaContact
       this.areaContactPhone = data.areaContactPhone
       this.areaLocDetail = data.areaLocDetail
