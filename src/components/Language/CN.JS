@@ -141,7 +141,14 @@ module.exports = {
         value: "当前值",
         LoopStatus: "状态",
         operating: "操作",
-        history: '历史记录'
+        history: '历史记录',
+        Record:{
+            startTime:"开始日期",
+            endTime:"结束日期",
+            lastWeek:"最近一周",
+            lastMonth:"最近一个月",
+            lastThreeMonths:"最近三个月"
+        }
     },
     Water: {
         name: "名称",

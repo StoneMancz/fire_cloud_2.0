@@ -7,11 +7,12 @@
         <img src="../../../static/img/delete.png" @click="closeHistory">
       </div>
       <div class="filterTime">
-        <el-date-picker v-model="historyValue" style="margin-left: 30px;z-index:99999999;width:220px;height:50px;" @change="historyChange" type="datetimerange" start-placeholder="开始日期" end-placeholder="结束日期">
+        <el-date-picker v-model="historyValue" style="margin-left: 30px;z-index:99999999;width:220px;height:50px;" @change="historyChange" type="datetimerange" 
+        :start-placeholder="$t('ElectricalMonitoring.Record.startTime')" :end-placeholder="$t('ElectricalMonitoring.Record.endTime')">
         </el-date-picker>
-        <div class="timeItem" @click="aWeek">最近一周</div>
-        <div class="timeItem" @click="aMonth">最近一个月</div>
-        <div class="timeItem" @click="threeMonth">最近三个月</div>
+        <div class="timeItem" @click="aWeek">{{$t('ElectricalMonitoring.Record.lastWeek')}}</div>
+        <div class="timeItem" @click="aMonth">{{$t('ElectricalMonitoring.Record.lastMonth')}}</div>
+        <div class="timeItem" @click="threeMonth">{{$t('ElectricalMonitoring.Record.lastThreeMonths')}}</div>
       </div>
       <div class="historyEchar" id="history"></div>
     </div>

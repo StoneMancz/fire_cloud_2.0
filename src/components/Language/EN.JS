@@ -131,6 +131,7 @@ module.exports = {
     ElectricalMonitoring: {
         coding: "Coding",
         name: "Name",
+        addrNum: 'addrNum',
         status: 'Status',
         area: 'Area',
         address: 'Address',
@@ -139,7 +140,14 @@ module.exports = {
         value: "Value",
         LoopStatus: "LoopStatus",
         operating: "Operating",
-        history: 'History'
+        history: 'History',
+        Record:{
+            startTime:"startTime",
+            endTime:"endTime",
+            lastWeek:"lastWeek",
+            lastMonth:"lastMonth",
+            lastThreeMonths:"lastThreeMonths"
+        }
     },
     Water: {
         name: "Name",

@@ -25,7 +25,9 @@
         <span style=" flex: 2;">{{$t('Index.address')}}</span>
       </div>
       <div class="tebleColumn" v-for="(item,index) in eventAreaEvtsList" @click="eventDetails(item.eventId)" :key="index">
-        <div>{{item.eventName}}</div>
+        <div v-if="$route.path === '/ElectricalMonitoring' && item.eventName=='正常'" style="color:green;">{{item.eventName}}</div>
+        <div v-else-if="$route.path === '/ElectricalMonitoring' && item.eventName!='正常'" style="color:yellow;">{{item.eventName}}</div>
+        <div v-else>{{item.eventName}}</div>
         <div style=" flex: 2;">{{item.eventTime}}</div>
         <div>{{item.deviceName}}</div>
         <el-tooltip :content="item.deviceDetailedAddr" placement="bottom" effect="light">

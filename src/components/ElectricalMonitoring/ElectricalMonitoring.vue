@@ -96,7 +96,7 @@ export default {
       total: 0, // 事件列表length
       deviceSN: '',
       loopStatus: '',
-      lang: 'zh-CN',
+      lang: localStorage.getItem('Language'),
       status: [],
       recordsData: [],
     }

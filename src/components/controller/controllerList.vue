@@ -98,7 +98,7 @@ export default {
       show2: true,
       areaId: '',
       nodeTimes: '',
-      lang: 'zh-CN',
+      lang: localStorage.getItem('Language'),
       pageNo: 1,
       abnormalPageNo: 1,
       abnormalTotal: 0,

@@ -35,7 +35,7 @@
                 <div>{{item.runStatusName}}</div>
                 <div>{{item.areaName}}</div>
                 <div>{{item.deviceAddr}}</div>
-                <div @click="nodeDetails(item.deviceId)">{{$t('Newsletter.Details')}}</div>
+                <div @click="nodeDetails(item.deviceId)" style="color: #70d4fe;">{{$t('Newsletter.Details')}}</div>
               </div>
               <el-pagination class="pagination2" :current-page.sync="currentPage" layout="prev, pager, next" :total="total" style="text-align: center;" @current-change="handleCurrentChange"></el-pagination>
             </div>
