@@ -123,4 +123,9 @@ html {
   color: white !important;
   background: transparent !important;
 }
+/* 修改用水的背景颜色 */
+.el-radio-button__orig-radio:disabled+.el-radio-button__inner{
+  background-color:transparent !important;
+  border-color:#365CF5;
+}
 </style>
