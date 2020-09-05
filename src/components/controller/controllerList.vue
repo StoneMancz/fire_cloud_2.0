@@ -30,7 +30,7 @@
                     <div>{{item.loopNo}}</div>
                     <div>{{item.nodeNo}}</div>
                     <div style="flex: 2;">{{item.nodeTypeName}}</div>
-                    <div style="flex: 2;">{{item.nodeStatName}}</div>
+                    <div style="flex: 2;color:green">{{item.nodeStatName}}</div>
                     <div>{{item.area}}</div>
                     <div style="flex: 2;">{{item.deviceAddr}}</div>
                     <div style="flex: 2;">{{item.msgTime}}</div>

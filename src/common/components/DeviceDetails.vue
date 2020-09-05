@@ -107,6 +107,7 @@ export default {
       installation: {},
       buildInfoModel: {},
       switchData: {},
+      lang: localStorage.getItem('Language'),
     }
   },
   methods: {
@@ -114,7 +115,7 @@ export default {
       this.deviceDrawers = true
       let this_ = this
       this.$http
-        .get('http://srv.shine-iot.com:8060/device/base/detail/' + deviceId)
+        .get('http://srv.shine-iot.com:8060/device/base/detail/' + deviceId+'?lang='+this.lang)
         .then(function (response) {
           let deviceDetailsData = response.data.data
           let deviceInfo = {

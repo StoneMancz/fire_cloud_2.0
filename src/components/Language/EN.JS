@@ -78,6 +78,7 @@ module.exports = {
             QRCode: 'QRCode',
             batteryPower: 'BatteryPower',
             checkInTime: 'CheckInTime',
+            moduleMethod:'ModuleMethod',
             module: 'Module',
             Manufacturer: 'Manufacturer'
         },
