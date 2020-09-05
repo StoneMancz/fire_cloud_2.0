@@ -130,6 +130,9 @@ export default {
     switchLanguage(lang) {
       this.lang = lang
       this.getDevsData()
+      this.deiceStusList()
+      //查询设备类型
+      this.deiceTypes()
       this.$refs.rightChild.fireMonitorInitData(lang, this.areaId)
     },
     handleCurrentChange(val) {

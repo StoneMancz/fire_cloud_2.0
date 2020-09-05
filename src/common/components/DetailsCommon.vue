@@ -146,6 +146,7 @@ export default {
       eventqualitative: [],
       eventHandlingArr: [],
       textarea: '',
+      lang: localStorage.getItem('Language'),
       showBlockTime: false,
       eventHandlingTime: [],
       deviceDetailsData: {},
@@ -157,12 +158,14 @@ export default {
   },
   methods: {
     drawersFn(eventId) {
+      console.log("eventId",eventId)
       this.showEvenDetails = 1
       this.drawers = true
       let this_ = this
       this.$http
-        .get('http://srv.shine-iot.com:8060/event/devo/' + eventId)
+        .get('http://srv.shine-iot.com:8060/event/devo/' + eventId+'?lang='+this.lang)
         .then(function (response) {
+          console.log(response);
           let eventData = response.data.data
           let eventDetails = {
             eventId: eventData.eventId,

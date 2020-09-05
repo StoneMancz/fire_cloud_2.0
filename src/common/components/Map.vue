@@ -18,10 +18,14 @@
 </template>
 
 <script>
-import MapLoader from '../../assets/js/AMap'
-import DeviceDetailsCom from '../../common/components/DeviceDetails'
-import qs from 'qs'
-import { deviceStatus, DeviceType, LevCodeName } from '../../components/rule/typeName'
+import MapLoader from "../../assets/js/AMap";
+import DeviceDetailsCom from "../../common/components/DeviceDetails";
+import qs from "qs";
+import {
+  deviceStatus,
+  DeviceType,
+  LevCodeName,
+} from "../../components/rule/typeName";
 export default {
   components: {
     MapLoader,
@@ -29,47 +33,53 @@ export default {
   },
   data() {
     return {
-      map: '',
-      lang: localStorage.getItem('Language'),
+      map: "",
+      lang: localStorage.getItem("Language"),
       mapTypeList: [],
-    }
+    };
   },
   methods: {
     handleClick(e) {
-      if (e.target.nodeName.toLowerCase() === 'button') {
-        this.seeDeviceDatil(e.target.value)
+      if (e.target.nodeName.toLowerCase() === "button") {
+        this.seeDeviceDatil(e.target.value);
       }
     },
     //地图接口调用
     initMap() {
       //加载数据
-      let that = this
+      let that = this;
       MapLoader().then(
         (AMap) => {
-          this.map = new AMap.Map('mapContent', {
+          this.map = new AMap.Map("mapContent", {
             center: [121.203894, 31.083081],
             zoom: 12,
-            mapStyle: 'amap://styles/a5752c030da62782b5dbf2ebc3081c36',
-            lang: 'zh_cn', //可选值：en，zh_en, zh_cn
-          })
-          this.$http.post('http://srv.shine-iot.com:8060/org/logps').then((data) => {
-            data.data.data.forEach((obj, index) => {
-              const lnglat = [obj.areaLong, obj.areaLat]
-              if (obj.areaLong != '' && obj.areaLat != '') {
-                that.map.add(
-                  new AMap.Marker({
-                    position: lnglat,
-                    icon: 'http://srv.shine-iot.com:8060/img/map/water/green.png',
-                    offset: new AMap.Pixel(-15, -15),
-                  }).on('click', function () {
-                    var currentData = qs.stringify({ areaId: obj.areaID })
-                    that.$http
-                      .post('http://srv.shine-iot.com:8060/org/area/dcnt', currentData)
-                      .then(function (response) {
-                        var infoWindow
-                        //构建信息窗体中显示的内容
-                        var info = []
-                        let content = `
+            mapStyle: "amap://styles/a5752c030da62782b5dbf2ebc3081c36",
+            lang: "zh_cn", //可选值：en，zh_en, zh_cn
+          });
+          this.$http
+            .post("http://srv.shine-iot.com:8060/org/logps")
+            .then((data) => {
+              data.data.data.forEach((obj, index) => {
+                const lnglat = [obj.areaLong, obj.areaLat];
+                if (obj.areaLong != "" && obj.areaLat != "") {
+                  that.map.add(
+                    new AMap.Marker({
+                      position: lnglat,
+                      icon:
+                        "http://srv.shine-iot.com:8060/img/map/water/green.png",
+                      offset: new AMap.Pixel(-15, -15),
+                    }).on("click", function () {
+                      var currentData = qs.stringify({ areaId: obj.areaID });
+                      that.$http
+                        .post(
+                          "http://srv.shine-iot.com:8060/org/area/dcnt",
+                          currentData
+                        )
+                        .then(function (response) {
+                          var infoWindow;
+                          //构建信息窗体中显示的内容
+                          var info = [];
+                          let content = `
                           <div style='width:393px'>
                             <div style="padding:0px 0px 0px 4px;color:white;font-size:16px;">
                               单位信息
@@ -109,76 +119,76 @@ export default {
                             </div>
                           </div>
 
-                      `
-                        infoWindow = new AMap.InfoWindow({
-                          content: content, //使用默认信息窗体框样式，显示信息内容
-                        })
-                        infoWindow.open(that.map, lnglat)
-                      })
-                  })
-                )
-              } else {
-                return
-              }
-            })
-          })
+                      `;
+                          infoWindow = new AMap.InfoWindow({
+                            content: content, //使用默认信息窗体框样式，显示信息内容
+                          });
+                          infoWindow.open(that.map, lnglat);
+                        });
+                    })
+                  );
+                } else {
+                  return;
+                }
+              });
+            });
         },
         (e) => {
-          console.log('地图加载失败', e)
+          console.log("地图加载失败", e);
         }
-      )
+      );
     },
     location(areaLong, areaLat) {
       if (areaLong != null && areaLat != null) {
-        this.map.setZoomAndCenter(15, [areaLong, areaLat])
+        this.map.setZoomAndCenter(15, [areaLong, areaLat]);
       }
     },
     areDeviceMap(data) {
-      this.location(data.areaLong, data.areaLat)
-      let that = this
-      var currentData = qs.stringify({ areaId: data.id })
+      this.location(data.areaLong, data.areaLat);
+      let that = this;
+      var currentData = qs.stringify({ areaId: data.id, lang: this.lang });
       this.$http
-        .post('http://srv.shine-iot.com:8060/device/area/devgps', currentData)
+        .post("http://srv.shine-iot.com:8060/device/area/devgps", currentData)
         .then((data) => {
           data.data.data.forEach((obj, index) => {
-            const lnglat = [obj.deviceGpsLong, obj.deviceGpsLati]
+            const lnglat = [obj.deviceGpsLong, obj.deviceGpsLati];
             if (obj.runStatus === 1 || obj.runStatus === 29) {
               that.map.add(
                 new AMap.Marker({
                   position: lnglat,
-                  icon: 'http://srv.shine-iot.com:8060/img/map/water/green.png',
+                  icon: "http://srv.shine-iot.com:8060/img/map/water/green.png",
                   offset: new AMap.Pixel(-15, -15),
-                }).on('click', function () {
-                  var infoWindow
+                }).on("click", function () {
+                  var infoWindow;
                   //构建信息窗体中显示的内容
                   let content = `
                     <div style='width:399px'>
                       <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>${that.$t(
-                            'Index.Information'
-                          )}</b>
+                        "Index.Information"
+                      )}</b>
                         <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;margin-top:20px>
                           <span style=color:rgba(153,153,153,1);>${that.$t(
-                            'Index.DeviceID'
+                            "Index.DeviceID"
                           )}：</span>
                           <span>${obj.deviceSN}</span>
                           <span style=color:rgba(153,153,153,1);margin-left:10px;>${that.$t(
-                            'Index.Type'
+                            "Index.Type"
                           )}：</span>
                           <span>${obj.dcTypeName}</span>
                         </div>
                         </br>
                         <div style=width:100%;display:flex;font-size:14px;><div style=width:195px;>
                           <span style=color:rgba(153,153,153,1);>${that.$t(
-                            'Index.Status'
+                            "Index.Status"
                           )}：</span>
-                          <span>${deviceStatus(obj.runStatus)}</span>
+                          <span>${obj.runStatusName}</span>
                         </div>
                          </br>
                         <button value='${
                           obj.deviceId
                         }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>${that.$t(
-                            'Index.Details'
-                          )}</button>
+                    "Index.Details"
+                  )}</button>
                       </div>
                       </br>
                       <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
@@ -186,45 +196,56 @@ export default {
                       }</div>
                       </br>
                     </div>
-                  </div>`
+                  </div>`;
                   infoWindow = new AMap.InfoWindow({
                     content: content, //使用默认信息窗体框样式，显示信息内容
-                  })
-                  infoWindow.open(that.map, lnglat)
+                  });
+                  infoWindow.open(that.map, lnglat);
                 })
-              )
+              );
             } else if (
               obj.runStatus === 3 ||
               obj.runStatus === 69 ||
               obj.runStatus === 67 ||
               obj.runStatus === 28
             ) {
+              console.log(obj);
               that.map.add(
                 new AMap.Marker({
                   position: lnglat,
-                  icon: 'http://srv.shine-iot.com:8060/img/map/water/red.png',
+                  icon: "http://srv.shine-iot.com:8060/img/map/water/red.png",
                   offset: new AMap.Pixel(-15, -15),
-                }).on('click', function () {
-                  var infoWindow
+                }).on("click", function () {
+                  var infoWindow;
                   //构建信息窗体中显示的内容
                   let content = `
                     <div style='width:399px'>
-                      <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
+                      <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>${that.$t(
+                        "Index.Information"
+                      )}</b>
                         <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;margin-top:20px>
-                          <span style=color:rgba(153,153,153,1);>设备编号：</span>
+                          <span style=color:rgba(153,153,153,1);>${that.$t(
+                            "Index.DeviceID"
+                          )}：</span>
                           <span>${obj.deviceSN}</span>
-                          <span style=color:rgba(153,153,153,1);margin-left:10px;>设备类型：</span>
+                          <span style=color:rgba(153,153,153,1);margin-left:10px;>${that.$t(
+                            "Index.Type"
+                          )}：</span>
                           <span>${obj.dcTypeName}</span>
                         </div>
                         </br>
                         <div style=width:100%;display:flex;font-size:14px;><div style=width:195px;>
-                          <span style=color:rgba(153,153,153,1);>设备状态：</span>
-                          <span>${deviceStatus(obj.runStatus)}</span>
+                          <span style=color:rgba(153,153,153,1);>${that.$t(
+                            "Index.Status"
+                          )}：</span>
+                          <span>${obj.runStatusName}</span>
                         </div>
                          </br>
                         <button value='${
                           obj.deviceId
-                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>设备详情</button>
+                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>${that.$t(
+                    "Index.Details"
+                  )}</button>
                       </div>
                       </br>
                       <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
@@ -232,40 +253,52 @@ export default {
                       }</div>
                       </br>
                     </div>
-                  </div>`
+                  </div>`;
                   infoWindow = new AMap.InfoWindow({
                     content: content, //使用默认信息窗体框样式，显示信息内容
-                  })
-                  infoWindow.open(that.map, lnglat)
+                  });
+                  infoWindow.open(that.map, lnglat);
                 })
-              )
+              );
             } else if (obj.runStatus === 2 || obj.runStatus === 8) {
+              console.log(obj);
               that.map.add(
                 new AMap.Marker({
                   position: lnglat,
-                  icon: 'http://srv.shine-iot.com:8060/img/map/water/orange.png',
+                  icon:
+                    "http://srv.shine-iot.com:8060/img/map/water/orange.png",
                   offset: new AMap.Pixel(-15, -15),
-                }).on('click', function () {
-                  var infoWindow
+                }).on("click", function () {
+                  var infoWindow;
                   //构建信息窗体中显示的内容
                   let content = `
                     <div style='width:399px'>
-                      <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
+                      <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>${that.$t(
+                        "Index.Information"
+                      )}</b>
                         <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;margin-top:20px>
-                          <span style=color:rgba(153,153,153,1);>设备编号：</span>
+                          <span style=color:rgba(153,153,153,1);>${that.$t(
+                            "Index.DeviceID"
+                          )}：</span>
                           <span>${obj.deviceSN}</span>
-                          <span style=color:rgba(153,153,153,1);margin-left:10px;>设备类型：</span>
+                          <span style=color:rgba(153,153,153,1);margin-left:10px;>${that.$t(
+                            "Index.Type"
+                          )}：</span>
                           <span>${obj.dcTypeName}</span>
                         </div>
                         </br>
                         <div style=width:100%;display:flex;font-size:14px;><div style=width:195px;>
-                          <span style=color:rgba(153,153,153,1);>设备状态：</span>
-                          <span>${deviceStatus(obj.runStatus)}</span>
+                          <span style=color:rgba(153,153,153,1);>${that.$t(
+                            "Index.Status"
+                          )}：</span>
+                          <span>${obj.runStatusName}</span>
                         </div>
                          </br>
                         <button value='${
                           obj.deviceId
-                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>设备详情</button>
+                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>${that.$t(
+                    "Index.Details"
+                  )}</button>
                       </div>
                       </br>
                       <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
@@ -273,40 +306,50 @@ export default {
                       }</div>
                       </br>
                     </div>
-                  </div>`
+                  </div>`;
                   infoWindow = new AMap.InfoWindow({
                     content: content, //使用默认信息窗体框样式，显示信息内容
-                  })
-                  infoWindow.open(that.map, lnglat)
+                  });
+                  infoWindow.open(that.map, lnglat);
                 })
-              )
+              );
             } else {
               that.map.add(
                 new AMap.Marker({
                   position: lnglat,
-                  icon: 'http://srv.shine-iot.com:8060/img/map/water/green.png',
+                  icon: "http://srv.shine-iot.com:8060/img/map/water/green.png",
                   offset: new AMap.Pixel(-15, -15),
-                }).on('click', function () {
-                  var infoWindow
+                }).on("click", function () {
+                  var infoWindow;
                   //构建信息窗体中显示的内容
                   let content = `
                     <div style='width:399px'>
-                      <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>设备信息</b>
+                      <div style="padding:0px 0px 0px 4px;font-size:16px;color:white"><b>${that.$t(
+                        "Index.Information"
+                      )}</b>
                         <div style=width:100%;display:flex;justify-content:space-between;font-size:14px;margin-top:20px>
-                          <span style=color:rgba(153,153,153,1);>设备编号：</span>
+                          <span style=color:rgba(153,153,153,1);>${that.$t(
+                            "Index.DeviceID"
+                          )}：</span>
                           <span>${obj.deviceSN}</span>
-                          <span style=color:rgba(153,153,153,1);margin-left:10px;>设备类型：</span>
+                          <span style=color:rgba(153,153,153,1);margin-left:10px;>${that.$t(
+                            "Index.Type"
+                          )}：</span>
                           <span>${obj.dcTypeName}</span>
                         </div>
                         </br>
                         <div style=width:100%;display:flex;font-size:14px;><div style=width:195px;>
-                          <span style=color:rgba(153,153,153,1);>设备状态：</span>
-                          <span>${deviceStatus(obj.runStatus)}</span>
+                          <span style=color:rgba(153,153,153,1);>${that.$t(
+                            "Index.Status"
+                          )}：</span>
+                          <span>${obj.runStatusName}</span>
                         </div>
                          </br>
                         <button value='${
                           obj.deviceId
-                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>设备详情</button>
+                        }' style=border:none;background:#000D40;color:#365CF5;text-decoration:underline;margin-left:10px;>${that.$t(
+                    "Index.Details"
+                  )}</button>
                       </div>
                       </br>
                       <div style=margin-top:-20px;><span style="color:rgba(54,92,245,1);>地址:</span>${
@@ -314,58 +357,67 @@ export default {
                       }</div>
                       </br>
                     </div>
-                  </div>`
+                  </div>`;
                   infoWindow = new AMap.InfoWindow({
                     content: content, //使用默认信息窗体框样式，显示信息内容
-                  })
-                  infoWindow.open(that.map, lnglat)
+                  });
+                  infoWindow.open(that.map, lnglat);
                 })
-              )
+              );
             }
-          })
-        })
+          });
+        });
     },
     seeDeviceDatil(deviceId) {
-      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId);
     },
     kcntFunction(areaId, lang) {
-      var paramData = qs.stringify({ areaId: areaId, lang: lang })
-      let this_ = this
+      var paramData = qs.stringify({ areaId: areaId, lang: lang });
+      let this_ = this;
       this.$http
-        .post('http://srv.shine-iot.com:8060/device/org/kcnt', paramData)
+        .post("http://srv.shine-iot.com:8060/device/org/kcnt", paramData)
         .then(function (response) {
-          this_.mapTypeList = response.data
-        })
+          this_.mapTypeList = response.data;
+        });
     },
     initEnMap() {
       //加载数据
-      let that = this
+      let that = this;
       MapLoader().then(
         (AMap) => {
-          this.map = new AMap.Map('mapContent', {
+          this.map = new AMap.Map("mapContent", {
             center: [121.203894, 31.083081],
             zoom: 12,
-            mapStyle: 'amap://styles/a5752c030da62782b5dbf2ebc3081c36',
-            lang: 'zh_en', //可选值：en，zh_en, zh_cn
-          })
-          this.$http.post('http://srv.shine-iot.com:8060/org/logps').then((data) => {
-            data.data.data.forEach((obj, index) => {
-              const lnglat = [obj.areaLong, obj.areaLat]
-              if (obj.areaLong != '' && obj.areaLat != '') {
-                that.map.add(
-                  new AMap.Marker({
-                    position: lnglat,
-                    icon: 'http://srv.shine-iot.com:8060/img/map/water/green.png',
-                    offset: new AMap.Pixel(-15, -15),
-                  }).on('click', function () {
-                    var currentData = qs.stringify({ areaId: obj.areaID, lang: 'en-US' })
-                    that.$http
-                      .post('http://srv.shine-iot.com:8060/org/area/dcnt', currentData)
-                      .then(function (response) {
-                        var infoWindow
-                        //构建信息窗体中显示的内容
-                        var info = []
-                        let content = `
+            mapStyle: "amap://styles/a5752c030da62782b5dbf2ebc3081c36",
+            lang: "zh_en", //可选值：en，zh_en, zh_cn
+          });
+          this.$http
+            .post("http://srv.shine-iot.com:8060/org/logps")
+            .then((data) => {
+              data.data.data.forEach((obj, index) => {
+                const lnglat = [obj.areaLong, obj.areaLat];
+                if (obj.areaLong != "" && obj.areaLat != "") {
+                  that.map.add(
+                    new AMap.Marker({
+                      position: lnglat,
+                      icon:
+                        "http://srv.shine-iot.com:8060/img/map/water/green.png",
+                      offset: new AMap.Pixel(-15, -15),
+                    }).on("click", function () {
+                      var currentData = qs.stringify({
+                        areaId: obj.areaID,
+                        lang: "en-US",
+                      });
+                      that.$http
+                        .post(
+                          "http://srv.shine-iot.com:8060/org/area/dcnt",
+                          currentData
+                        )
+                        .then(function (response) {
+                          var infoWindow;
+                          //构建信息窗体中显示的内容
+                          var info = [];
+                          let content = `
                           <div style='width:393px'>
                             <div style="padding:0px 0px 0px 4px;color:white;font-size:16px;">
                               Information
@@ -405,42 +457,42 @@ export default {
                             </div>
                           </div>
 
-                      `
-                        infoWindow = new AMap.InfoWindow({
-                          content: content, //使用默认信息窗体框样式，显示信息内容
-                        })
-                        infoWindow.open(that.map, lnglat)
-                      })
-                  })
-                )
-              } else {
-                return
-              }
-            })
-          })
+                      `;
+                          infoWindow = new AMap.InfoWindow({
+                            content: content, //使用默认信息窗体框样式，显示信息内容
+                          });
+                          infoWindow.open(that.map, lnglat);
+                        });
+                    })
+                  );
+                } else {
+                  return;
+                }
+              });
+            });
         },
         (e) => {
-          console.log('地图加载失败', e)
+          console.log("地图加载失败", e);
         }
-      )
+      );
     },
   },
   mounted() {
-    if(this.lang=='zh-CN'){
+    if (this.lang == "zh-CN") {
       //加载中文地图
       setTimeout(() => {
-        this.initMap()
-      }, 1000)
-    }else{
+        this.initMap();
+      }, 1000);
+    } else {
       //加载英文地图
       setTimeout(() => {
-        this.initEnMap()
-      }, 1000)
+        this.initEnMap();
+      }, 1000);
     }
 
-    this.kcntFunction('', 'zh-CN')
+    this.kcntFunction("", "zh-CN");
   },
-}
+};
 </script>
 <style lang="stylus" scoped>
 #mapContent {
