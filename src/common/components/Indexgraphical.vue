@@ -120,11 +120,11 @@ export default {
       })
     },
     //查询设备类型
-    equipmentType(url, lang) {
+    equipmentType(url, lang,areaID) {
       let this_ = this
+      this_.areaID=areaID
       this_.lang = lang
       var currentData = { areaId: this_.areaID, lang: this_.lang }
-      console.log("请求参数",currentData);
       this.$http.get(url, { params: currentData }).then(function (response) {
         this_.equipmentTypeData = response.data.data
       })

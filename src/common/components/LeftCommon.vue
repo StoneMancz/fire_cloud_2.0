@@ -45,7 +45,6 @@ export default {
   },
   methods: {
     clickFn(data) {
-      console.log(data);
       this.areaName=data.label;
       this.areaContact = data.areaContact
       this.areaContactPhone = data.areaContactPhone

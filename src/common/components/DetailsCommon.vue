@@ -2,7 +2,7 @@
   <div>
     <el-drawer title="事件详情" custom-class="eventDetailss" :modal-append-to-body="true"
     :visible.sync="drawers" :with-header="false" size="41%">
-      <div v-if="showEvenDetails==1">
+      <div v-show="showEvenDetails==1">
         <div class="titleBk">{{$t('Index.event.eventDetails')}}</div>
         <div class="detailsBk">
           <div class="detail_titel">{{$t('Index.event.EventInformation')}}</div>
@@ -29,7 +29,7 @@
                 <div class="footer_flex clearfix">
                   <div>
                     {{$t('Index.Device.QRCode')}}
-                    <div class="flex-footera" id="qrcode1" style=""></div>
+                    <div class="flex-footera" id="qrcode1"></div>
                   </div>
                 </div>
               </div>
@@ -74,7 +74,7 @@
           </div>
         </div>
       </div>
-      <div v-else-if="showEvenDetails==2">
+      <div v-show="showEvenDetails==2">
         <div class="titleBk">{{$t('Index.event.eventDetails')}}</div>
         <div class="qualitativEvent">
           <div class="qualitativEventItem">

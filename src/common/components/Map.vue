@@ -30,6 +30,7 @@ export default {
   data() {
     return {
       map: '',
+      lang: localStorage.getItem('Language'),
       mapTypeList: [],
     }
   },
@@ -425,10 +426,18 @@ export default {
     },
   },
   mounted() {
-    //加载地图
-    setTimeout(() => {
-      this.initMap()
-    }, 2000)
+    if(this.lang=='zh-CN'){
+      //加载中文地图
+      setTimeout(() => {
+        this.initMap()
+      }, 1000)
+    }else{
+      //加载英文地图
+      setTimeout(() => {
+        this.initEnMap()
+      }, 1000)
+    }
+
     this.kcntFunction('', 'zh-CN')
   },
 }

@@ -91,8 +91,9 @@ export default {
         )
       }
     },
-    equipmentType(url, lang) {
+    equipmentType(url, lang,areaID) {
       let this_ = this
+      this.areaId=areaID
       var currentData = { areaId: this_.areaId, lang: lang }
       this.$http.get(url, { params: currentData }).then(function (response) {
         this_.equipmentTypeData = response.data.data

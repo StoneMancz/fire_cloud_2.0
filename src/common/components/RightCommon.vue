@@ -76,7 +76,7 @@ export default {
         ''
       )
       //设备类型
-      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang,areaID)
       //初始化事件列表
       this.$refs.events.eventAreaEvts(
         'http://srv.shine-iot.com:8060/event/area/evts',
@@ -91,7 +91,7 @@ export default {
       //查询事件等级
       this.$refs.events.eventLevelFn(lang)
       //设备类型
-      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang)
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/device/tpcodes', lang,areaID)
     },
     rightDelete() {
       this.$parent.closeRightComponents()
@@ -122,7 +122,7 @@ export default {
         ''
       )
       //设备类型
-      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/fdev/mnt/types', lang)
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/fdev/mnt/types', lang,areaID)
       //初始化事件列表
       this.$refs.events.eventAreaEvts(
         'http://srv.shine-iot.com:8060/fdev/mnt/area/evts',
@@ -137,7 +137,7 @@ export default {
       //查询事件等级
       this.$refs.events.eventLevelFn(lang)
       //设备类型
-      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/fdev/mnt/types', lang)
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/fdev/mnt/types', lang,areaID)
     },
     //电器火灾的图例
     initElectEchar(lang, areaID) {
@@ -168,7 +168,8 @@ export default {
       //设备类型
       this.$refs.graphical.equipmentType(
         'http://srv.shine-iot.com:8060/elect/channel/tycodes',
-        lang
+        lang,
+        areaID
       )
       //初始化事件列表
       this.$refs.events.eventAreaEvts(
@@ -184,7 +185,7 @@ export default {
       //查询事件等级
       this.$refs.events.eventLevelFn(lang)
       //设备类型
-      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/elect/channel/tycodes', lang)
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/elect/channel/tycodes', lang,areaID)
     },
     //报警控制器的初始化图例
     initControllEchar(lang, areaID) {
@@ -213,7 +214,7 @@ export default {
       )
 
       //设备类型
-      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/fctrl/tpcodes', lang)
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/fctrl/tpcodes', lang,areaID)
       //初始化事件列表
       this.$refs.events.eventAreaEvts(
         'http://srv.shine-iot.com:8060/event/area/evts',
@@ -228,7 +229,7 @@ export default {
       //查询事件等级
       this.$refs.events.eventLevelFn(lang)
       //设备类型
-      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/fctrl/tpcodes', lang)
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/fctrl/tpcodes', lang,areaID)
     },
     initNewsletter(lang, areaID) {
       this.areaID = areaID
@@ -256,7 +257,7 @@ export default {
       )
 
       //设备类型
-      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/gwdtu/tpcodes', lang)
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/gwdtu/tpcodes', lang,areaID)
       //初始化事件列表
       this.$refs.events.eventAreaEvts(
         'http://srv.shine-iot.com:8060/gwdtu/area/evts',
@@ -271,7 +272,7 @@ export default {
       //查询事件等级
       this.$refs.events.eventLevelFn(lang)
       //设备类型
-      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/gwdtu/tpcodes', lang)
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/gwdtu/tpcodes', lang,areaID)
     },
     //消防用水统计图
     initWaterEcharts(lang, areaID) {
@@ -300,7 +301,7 @@ export default {
       )
 
       //设备类型
-      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/facilities/tpcodes', lang)
+      this.$refs.graphical.equipmentType('http://srv.shine-iot.com:8060/facilities/tpcodes', lang,areaID)
       //初始化事件列表
       this.$refs.events.eventAreaEvts(
         'http://srv.shine-iot.com:8060/facilities/area/evts',
@@ -315,7 +316,7 @@ export default {
       //查询事件等级
       this.$refs.events.eventLevelFn(lang)
       //设备类型
-      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/facilities/tpcodes', lang)
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/facilities/tpcodes', lang,areaID)
     },
     tabChange(num) {
       this.tabIndex = num
