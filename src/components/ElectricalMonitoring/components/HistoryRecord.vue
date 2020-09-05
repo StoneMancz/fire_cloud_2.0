@@ -7,7 +7,7 @@
         <img src="../../../static/img/delete.png" @click="closeHistory">
       </div>
       <div class="filterTime">
-        <el-date-picker v-model="historyValue" style="margin-left: 30px;z-index:99999999;width:220px;height:50px;" @change="historyChange" type="datetimerange" 
+        <el-date-picker v-model="historyValue" style="margin-left: 30px;z-index:99999999;width:220px;height:50px;" @change="historyChange" @blur="historyChange"  type="datetimerange" 
         :start-placeholder="$t('ElectricalMonitoring.Record.startTime')" :end-placeholder="$t('ElectricalMonitoring.Record.endTime')">
         </el-date-picker>
         <div class="timeItem" @click="aWeek">{{$t('ElectricalMonitoring.Record.lastWeek')}}</div>

@@ -8,7 +8,7 @@
           <div class="leftTable">
             <div class="filterData">
               <div style="width:220px;">
-                <el-date-picker v-model="nodeTimes" @change="nodeTimesChange" style="width:220px;background: #000D42;" type="datetimerange"></el-date-picker>
+                <el-date-picker v-model="nodeTimes" @change="nodeTimesChange"  @blur="nodeTimesChange" style="width:220px;background: #000D42;" type="datetimerange"></el-date-picker>
               </div>
             </div>
             <el-tabs v-model="activeName1">

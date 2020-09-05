@@ -14,7 +14,7 @@
         </el-select>
       </div>
       <div style="width:120px;margin-left:20px;">
-        <el-date-picker v-model="eventTimes" @change="pickerEventChange" style="width:150px;float:left;background: #000D42;" type="datetimerange"></el-date-picker>
+        <el-date-picker v-model="eventTimes" @change="pickerEventChange" @blur="pickerEventChange" style="width:150px;float:left;background: #000D42;" type="datetimerange"></el-date-picker>
       </div>
     </div>
     <div class="eventList">
