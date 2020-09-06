@@ -135,9 +135,6 @@ input {
 import { loginApi, detailApi } from '../../api.js'
 import qs from 'qs'
 export default {
-  test() {
-    var name = this.$t('language.name')
-  },
   data() {
     return {
       value: localStorage.getItem('Language') || 'CN',
@@ -145,19 +142,17 @@ export default {
       username: '',
       options: [
         {
-          value: 'zh',
-          label: '简体中文',
+          value: 'en-US',
+          label: 'English',
         },
         {
-          value: 'en',
-          label: 'English',
+          value: 'zh-CN',
+          label: '简体中文',
         },
       ],
     }
   },
-  mounted() {
-    console.log(name)
-  },
+  mounted() {},
   created: function () {
     var _this = this
     document.onkeydown = function (e) {
@@ -171,10 +166,6 @@ export default {
   },
   methods: {
     router() {
-      let json = {
-        username: this.username,
-        password: this.password,
-      }
       if (this.username == '' || this.username == null) {
         this.$message.error('请输入用户名')
       } else if (this.password == '' || this.password == null) {
@@ -182,15 +173,21 @@ export default {
       } else {
         this.$store.commit('settoken', '')
         localStorage.setItem('accessToken', '')
-        loginApi(qs.stringify(json)).then((res) => {
+        var currentData = qs.stringify({
+          username: this.username,
+          password: this.password,
+        })
+        let this_ = this
+        this.$http.post('http://srv.shine-iot.com:8060/login', currentData).then(function (res) {
+          res = res.data
           if (res.code == 1000) {
-            this.$store.commit('settoken', res.data.token)
+            this_.$store.commit('settoken', res.data.token)
             localStorage.setItem('accessToken', res.data.token)
-            this.$store.commit('setuserId', res.data.userId)
+            this_.$store.commit('setuserId', res.data.userId)
             localStorage.setItem('userId', res.data.userId)
-            this.$router.push({ path: 'index' })
+            this_.$router.push({ path: 'index' })
           } else {
-            this.$message.error('请输入密码')
+            this_.$message.error('请输入密码')
           }
         })
       }

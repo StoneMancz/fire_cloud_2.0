@@ -7,8 +7,7 @@
         <img src="../../../static/img/delete.png" @click="closeHistory">
       </div>
       <div class="filterTime">
-        <el-date-picker v-model="historyValue" style="margin-left: 30px;z-index:99999999;width:220px;height:50px;" @change="historyChange" @blur="historyChange"  type="datetimerange" 
-        :start-placeholder="$t('ElectricalMonitoring.Record.startTime')" :end-placeholder="$t('ElectricalMonitoring.Record.endTime')">
+        <el-date-picker v-model="historyValue" style="margin-left: 30px;z-index:99999999;width:220px;height:50px;" @change="historyChange" @blur="historyChange" type="datetimerange" :start-placeholder="$t('ElectricalMonitoring.Record.startTime')" :end-placeholder="$t('ElectricalMonitoring.Record.endTime')">
         </el-date-picker>
         <div class="timeItem" @click="aWeek">{{$t('ElectricalMonitoring.Record.lastWeek')}}</div>
         <div class="timeItem" @click="aMonth">{{$t('ElectricalMonitoring.Record.lastMonth')}}</div>
@@ -46,7 +45,7 @@ export default {
         .then(function (response) {
           let electMsgChannels = response.data.data.electMsgChannels
           let timeArry = electMsgChannels.map((item) => {
-            return getTimeToString(item.msgDate)
+            return this_.formatDate(item.msgDate)
           })
           let checkValArry = electMsgChannels.map((item) => {
             return item.checkVal
@@ -56,6 +55,36 @@ export default {
           let upperVal = response.data.data.upperVal
           this_.historyEchar(timeArry, checkValArry, lowerVal, upperVal, unitName)
         })
+    },
+    //将时间戳转换成日期
+    formatDate(d) {
+      var now = new Date(d)
+      var year = now.getFullYear()
+      var month = now.getMonth() + 1
+      var date = now.getDate()
+      var hour = now.getHours()
+      var minute = now.getMinutes()
+      var second = now.getSeconds()
+      if (second < 10) {
+        second = '0' + second
+      }
+
+      if (minute < 10) {
+        minute = '0' + minute
+      }
+
+      if (hour < 10) {
+        hour = '0' + hour
+      }
+
+      if (date < 10) {
+        date = '0' + date
+      }
+
+      if (month < 10) {
+        month = '0' + month
+      }
+      return month + '-' + date
     },
     historyChange() {
       this.startTime = this.historyValue[0].getTime()

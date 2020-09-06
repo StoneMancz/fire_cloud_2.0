@@ -61,7 +61,10 @@ module.exports = {
         Information: 'Information',
         DeviceID: 'DeviceID',
         Type: 'Type',
+        Quantity: 'Quantity',
+        A: 'A',
         Status: 'Status',
+        Basic: 'Basic',
         Details: 'Details',
         event: {
             eventDetails: "EventDetails",
@@ -78,7 +81,7 @@ module.exports = {
             QRCode: 'QRCode',
             batteryPower: 'BatteryPower',
             checkInTime: 'CheckInTime',
-            moduleMethod:'ModuleMethod',
+            moduleMethod: 'ModuleMethod',
             module: 'Module',
             Manufacturer: 'Manufacturer'
         },
@@ -124,7 +127,7 @@ module.exports = {
         EquipmentNumber: 'EquipmentNumber',
         status: 'All',
         Area: 'Area',
-        State:'State',
+        State: 'State',
         Address: 'Address',
         Details: 'Details',
         Hint: "Please enter the device number"
@@ -142,12 +145,12 @@ module.exports = {
         LoopStatus: "LoopStatus",
         operating: "Operating",
         history: 'History',
-        Record:{
-            startTime:"startTime",
-            endTime:"endTime",
-            lastWeek:"lastWeek",
-            lastMonth:"lastMonth",
-            lastThreeMonths:"lastThreeMonths"
+        Record: {
+            startTime: "startTime",
+            endTime: "endTime",
+            lastWeek: "lastWeek",
+            lastMonth: "lastMonth",
+            lastThreeMonths: "lastThreeMonths"
         }
     },
     Water: {

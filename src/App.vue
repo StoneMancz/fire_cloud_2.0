@@ -29,6 +29,10 @@ html {
   background: linear-gradient(-30deg, rgba(0, 8, 41, 1) 15%, rgba(0, 14, 71, 1) 98%);
 }
 
+.el-drawer__header {
+  margin-bottom: 0;
+}
+
 .el-date-editor .el-range-input {
   color: white;
   background-color: #001773 !important;
@@ -124,8 +128,8 @@ html {
   background: transparent !important;
 }
 /* 修改用水的背景颜色 */
-.el-radio-button__orig-radio:disabled+.el-radio-button__inner{
-  background-color:transparent !important;
-  border-color:#365CF5;
+.el-radio-button__orig-radio:disabled + .el-radio-button__inner {
+  background-color: transparent !important;
+  border-color: #365cf5;
 }
 </style>

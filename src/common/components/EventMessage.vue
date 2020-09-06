@@ -91,9 +91,9 @@ export default {
         )
       }
     },
-    equipmentType(url, lang,areaID) {
+    equipmentType(url, lang, areaID) {
       let this_ = this
-      this.areaId=areaID
+      this.areaId = areaID
       var currentData = { areaId: this_.areaId, lang: lang }
       this.$http.get(url, { params: currentData }).then(function (response) {
         this_.equipmentTypeData = response.data.data
@@ -134,7 +134,7 @@ export default {
       }
     },
     eventDetails(eventId) {
-      this.$refs.child.drawersFn(eventId)
+      this.$refs.child.drawersFn(eventId, this.lang)
     },
     pickerEventChange() {
       if (!this.eventTimes) {

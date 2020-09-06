@@ -107,12 +107,12 @@ export default {
       this.pageData = initData
     },
     loginout() {
-      this.$store.commit('settoken', '')
-      localStorage.setItem('accessToken', '')
-      this.$store.commit('setuserId', '')
-      localStorage.setItem('userId', '')
       logout().then((res) => {
-        this.$router.push({ name: 'login' })
+        this.$router.replace({ path: '/' })
+        this.$store.commit('settoken', '')
+        localStorage.setItem('accessToken', '')
+        this.$store.commit('setuserId', '')
+        localStorage.setItem('userId', '')
         this.$message({
           message: '退出成功',
           type: 'success',

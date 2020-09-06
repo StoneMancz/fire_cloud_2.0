@@ -1,14 +1,17 @@
 <template>
   <div>
-    <el-drawer title="事件详情" custom-class="eventDetailss" :modal-append-to-body="true"
-    :visible.sync="drawers" :with-header="false" size="41%">
+    <el-drawer custom-class="eventDetailss" :modal-append-to-body="true" :visible.sync="drawers" size="41%">
       <div v-show="showEvenDetails==1">
         <div class="titleBk">{{$t('Index.event.eventDetails')}}</div>
         <div class="detailsBk">
           <div class="detail_titel">{{$t('Index.event.EventInformation')}}</div>
           <div class="detailsContent">
             <div class="detailsItem">
-              <div>{{$t('Index.event.name')}}：<span>{{eventDetails.eventName}}</span></div>
+              <div>{{$t('Index.event.name')}}：
+                <span style="color: rgb(65, 65, 75);" v-if="equipmentDetails.eventType==2">{{eventDetails.eventName}}</span>
+                <span style="color: red;" v-else-if="equipmentDetails.eventType==67">{{eventDetails.eventName}}</span>
+                <span v-else>{{eventDetails.eventName}}</span>
+              </div>
               <div>{{$t('Index.event.grade')}}：<span class="eventLevel">{{eventDetails.eventLevel}}</span></div>
             </div>
             <div class="detailsItem">
@@ -20,11 +23,17 @@
           <div class="detail_titel">{{$t('Index.Device.DeviceInfo')}}</div>
           <div class="detailsContent">
             <div class="detailsItem">
-              <div>{{$t('Index.Device.Types')}}：<span>{{equipmentDetails.deviceName}}</span></div>
+              <div>{{$t('Index.Device.Types')}}：
+                <span>{{equipmentDetails.deviceName}}</span>
+              </div>
               <div>{{$t('Index.Device.Numbering')}}：<span>{{equipmentDetails.deviceSN}}</span></div>
             </div>
             <div class="detailsItem">
-              <div>{{$t('Index.Device.status')}}：{{equipmentDetails.runStatusName}}</div>
+              <div>{{$t('Index.Device.status')}}：
+                <span v-if="equipmentDetails.runStatus==1" style="color:green">{{equipmentDetails.runStatusName}}</span>
+                <span v-else-if="equipmentDetails.runStatus==67" style="color:red">{{equipmentDetails.runStatusName}}</span>
+                <span v-else>{{equipmentDetails.runStatusName}}</span>
+              </div>
               <div style="color:#365CF5;cursor:pointer;">
                 <div class="footer_flex clearfix">
                   <div>
@@ -157,15 +166,16 @@ export default {
     HistoryWater,
   },
   methods: {
-    drawersFn(eventId) {
-      console.log("eventId",eventId)
+    drawersFn(eventId, lang) {
+      this.lang = lang
       this.showEvenDetails = 1
       this.drawers = true
       let this_ = this
       this.$http
-        .get('http://srv.shine-iot.com:8060/event/devo/' + eventId+'?lang='+this.lang)
+        .get('http://srv.shine-iot.com:8060/event/devo/' + eventId + '?lang=' + this.lang)
         .then(function (response) {
-          console.log(response);
+          console.log('放回结果czcz')
+          console.log(response)
           let eventData = response.data.data
           let eventDetails = {
             eventId: eventData.eventId,
@@ -176,9 +186,11 @@ export default {
           }
           let equipmentDetails = {
             deviceId: eventData.deviceId,
+            eventType: eventData.eventType,
             deviceName: eventData.dcTypeName,
             deviceSN: eventData.deviceSN,
             runStatusName: eventData.runStatusName,
+            runStatus: eventData.runStatus,
             batteryName: eventData.batteryName,
             entryTime: this_.formatDate(eventData.entryTime),
             signalModuleSN: eventData.signalModuleSN,
@@ -212,8 +224,7 @@ export default {
       this.$refs.historyWater.openHistory(item.deviceName)
     },
     SeeDeviceDetail(deviceId) {
-      this.drawers = false
-      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId, this.lang)
     },
     viewQrCode() {},
     formatDate(d) {
@@ -259,13 +270,17 @@ export default {
     eventTerm() {
       let this_ = this
       //事件处理方式
-      this.$http.get('http://srv.shine-iot.com:8060/event/method').then(function (response) {
-        this_.eventHandlingArr = response.data.data
-      })
+      this.$http
+        .get('http://srv.shine-iot.com:8060/event/method?lang=' + this.lang)
+        .then(function (response) {
+          this_.eventHandlingArr = response.data.data
+        })
       //事件定性
-      this.$http.get('http://srv.shine-iot.com:8060/event/defined').then(function (response) {
-        this_.eventqualitative = response.data.data
-      })
+      this.$http
+        .get('http://srv.shine-iot.com:8060/event/defined?lang=' + this.lang)
+        .then(function (response) {
+          this_.eventqualitative = response.data.data
+        })
     },
     eventHandle(
       deviceId,
@@ -343,7 +358,6 @@ export default {
     font-family: PingFang SC;
     font-weight: 400;
     margin-left: 40px;
-    margin-top: 39px;
     color: rgba(255, 255, 255, 1);
   }
 
@@ -448,7 +462,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin-left: 40px;
-    margin-top: 60px;
+    margin-top: 20px;
     width: 720px;
     height: 160px;
     background: rgba(255, 255, 255, 0.06);

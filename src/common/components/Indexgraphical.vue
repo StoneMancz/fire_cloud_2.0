@@ -4,27 +4,11 @@
       <div class="polylineSelect">
         <div class="echartsTilte">{{$t('Index.stateTrend')}}</div>
         <div class="echartsChild">
-          <el-select
-            v-model="echartEquipmentType"
-            placeholder="设备类型"
-            style="width:120px"
-            @change="equipmentTypeChange"
-          >
+          <el-select v-model="echartEquipmentType" placeholder="设备类型" style="width:120px" @change="equipmentTypeChange">
             <el-option :label="$t('Index.all')" value></el-option>
-            <el-option
-              v-for="item in equipmentTypeData"
-              :key="item.type"
-              :label="item.name"
-              :value="item.type"
-            ></el-option>
+            <el-option v-for="item in equipmentTypeData" :key="item.type" :label="item.name" :value="item.type"></el-option>
           </el-select>
-          <el-date-picker
-            v-model="trendValue1"
-            @change="pickerChange"
-            @blur="pickerChange"
-            style="background: #000D42;margin-left:10px;width:150px"
-            type="datetimerange"
-          ></el-date-picker>
+          <el-date-picker v-model="trendValue1" @change="pickerChange" @blur="pickerChange" style="background: #000D42;margin-left:10px;width:150px" type="datetimerange"></el-date-picker>
         </div>
       </div>
       <div id="myChart" :style="{width: '100%', height: '100%'}"></div>
@@ -35,12 +19,7 @@
         <div style="margin-left:200px;" class="echartsChild">
           <el-select v-model="ecahrtsValue2" placeholder="设备类型" @change="equipmentTypeChange2">
             <el-option :label="$t('Index.all')" value></el-option>
-            <el-option
-              v-for="item in equipmentTypeData"
-              :key="item.type"
-              :label="item.name"
-              :value="item.type"
-            ></el-option>
+            <el-option v-for="item in equipmentTypeData" :key="item.type" :label="item.name" :value="item.type"></el-option>
           </el-select>
         </div>
       </div>
@@ -54,259 +33,244 @@
 </template>
 
 <script>
-import qs from "qs";
-import {
-  deviceStatus,
-  DeviceType,
-  LevCodeName,
-} from "../../components/rule/typeName";
+import qs from 'qs'
+import { deviceStatus, DeviceType, LevCodeName } from '../../components/rule/typeName'
 export default {
   data() {
     return {
-      echartEquipmentType: "", // 第一图例设备类型
-      ecahrtsValue2: "", //第二图例设备类型
-      deviceType: "", //设备类型
+      echartEquipmentType: '', // 第一图例设备类型
+      ecahrtsValue2: '', //第二图例设备类型
+      deviceType: '', //设备类型
       equipmentTypeData: [],
-      areaID: "",
-      lang: localStorage.getItem("Language"),
+      areaID: '',
+      lang: localStorage.getItem('Language'),
       trendValue1: [],
-      alarmTrendUrl: "",
-      devicesNumberUrl: "",
-      deviceStatusUrl: "",
-    };
+      alarmTrendUrl: '',
+      devicesNumberUrl: '',
+      deviceStatusUrl: '',
+    }
   },
   methods: {
     equipmentTypeChange() {
-      this.$store.commit("setechartEquipmentType", this.echartEquipmentType);
+      this.$store.commit('setechartEquipmentType', this.echartEquipmentType)
       this.alarmTrend(
         this.alarmTrendUrl,
         this.areaID,
         this.echartEquipmentType,
         this.startTime,
         this.endTime
-      );
+      )
     },
     equipmentTypeChange2() {
-      this.deviceStatusFn(
-        this.deviceStatusUrl,
-        this.lang,
-        this.areaID,
-        this.ecahrtsValue2
-      );
+      this.deviceStatusFn(this.deviceStatusUrl, this.lang, this.areaID, this.ecahrtsValue2)
     },
     pickerChange() {
       if (!this.trendValue1) {
-        this.alarmTrend(
-          this.alarmTrendUrl,
-          this.areaID,
-          this.echartEquipmentType,
-          "",
-          ""
-        );
+        this.alarmTrend(this.alarmTrendUrl, this.areaID, this.echartEquipmentType, '', '')
       } else {
-        this.startTime = this.trendValue1[0].getTime();
-        this.endTime = this.trendValue1[1].getTime();
+        this.startTime = this.trendValue1[0].getTime()
+        this.endTime = this.trendValue1[1].getTime()
         this.alarmTrend(
           this.alarmTrendUrl,
           this.areaID,
           this.echartEquipmentType,
           this.startTime,
           this.endTime
-        );
+        )
       }
     },
     //设备状态分布图
     deviceStatusFn(url, lang, areaId, deviceType) {
-      this.deviceStatusUrl = url;
-      this.lang = lang;
-      this.areaID = areaId;
-      this.deviceType = deviceType;
-      let this_ = this;
+      this.deviceStatusUrl = url
+      this.lang = lang
+      this.areaID = areaId
+      this.deviceType = deviceType
+      let this_ = this
       var currentData = qs.stringify({
         lang: lang,
         areaId: this.areaID,
         deviceType: this.deviceType,
-      });
+      })
       this.$http.post(url, currentData).then(function (response) {
-        let responseData = response.data;
+        let responseData = response.data
         let deviceStatusData = responseData.data.map(function (item, i) {
           let obj = {
             value: item.num,
             name: item.name,
             type: item.type,
-          };
-          return obj;
-        });
-        let deviceStatusColor = deviceStatusData.map((item) => item.type);
-        let deviceStatusName = deviceStatusData.map((item) => item.name);
+          }
+          return obj
+        })
+        let deviceStatusColor = deviceStatusData.map((item) => item.type)
+        let deviceStatusName = deviceStatusData.map((item) => item.name)
         let colorArr = deviceStatusColor.map((item1) => {
           if (Number(item1) == 3) {
-            return "#FF0000";
+            return '#FF0000'
           } else if (Number(item1) == 83) {
-            return "#C71585";
+            return '#C71585'
           } else if (Number(item1) == 82) {
-            return "#800080";
+            return '#800080'
           } else if (Number(item1) == 8) {
-            return "#FFA500";
+            return '#FFA500'
           } else if (Number(item1) == 9) {
-            return "#ffff00";
+            return '#ffff00'
           } else if (Number(item1) === 2) {
-            return "#808080";
+            return '#808080'
           } else if (Number(item1) === 1) {
-            return "#008000";
+            return '#008000'
           }
-        });
-        this_.EchartsImg2(deviceStatusName, deviceStatusData, colorArr);
-      });
+        })
+        this_.EchartsImg2(deviceStatusName, deviceStatusData, colorArr)
+      })
     },
     //查询设备类型
     equipmentType(url, lang, areaID) {
-      let this_ = this;
-      this_.areaID = areaID;
-      this_.lang = lang;
-      var currentData = { areaId: this_.areaID, lang: this_.lang };
+      let this_ = this
+      this_.areaID = areaID
+      this_.lang = lang
+      var currentData = { areaId: this_.areaID, lang: this_.lang }
       this.$http.get(url, { params: currentData }).then(function (response) {
-        this_.equipmentTypeData = response.data.data;
-      });
+        this_.equipmentTypeData = response.data.data
+      })
     },
     alarmTrend(url, areaID, deviceType, startTime, endTime) {
-      this.alarmTrendUrl = url;
-      this.areaID = areaID;
-      let this_ = this;
+      this.alarmTrendUrl = url
+      this.areaID = areaID
+      let this_ = this
       var currentData = qs.stringify({
         areaId: areaID,
         deviceType: deviceType,
         startTime: startTime,
         endTime: endTime,
-      });
+      })
       this.$http.post(url, currentData).then(function (response) {
         let chartData = response.data.data.map((item) => {
-          item.msgDate = this_.formatDate(item.msgDate);
-          return item;
-        });
-        let alarmCntTime = chartData.map((item) => item.msgDate);
-        let alarmCntNum = chartData.map((item) => item.msgCnt);
-        this_.EchartsImg(alarmCntTime, alarmCntNum);
-      });
+          item.msgDate = this_.formatDate(item.msgDate)
+          return item
+        })
+        let alarmCntTime = chartData.map((item) => item.msgDate)
+        let alarmCntNum = chartData.map((item) => item.msgCnt)
+        this_.EchartsImg(alarmCntTime, alarmCntNum)
+      })
     },
     //将时间戳转换成日期
     formatDate(d) {
-      var now = new Date(d);
-      var year = now.getFullYear();
-      var month = now.getMonth() + 1;
-      var date = now.getDate();
-      var hour = now.getHours();
-      var minute = now.getMinutes();
-      var second = now.getSeconds();
+      var now = new Date(d)
+      var year = now.getFullYear()
+      var month = now.getMonth() + 1
+      var date = now.getDate()
+      var hour = now.getHours()
+      var minute = now.getMinutes()
+      var second = now.getSeconds()
       if (second < 10) {
-        second = "0" + second;
+        second = '0' + second
       }
 
       if (minute < 10) {
-        minute = "0" + minute;
+        minute = '0' + minute
       }
 
       if (hour < 10) {
-        hour = "0" + hour;
+        hour = '0' + hour
       }
 
       if (date < 10) {
-        date = "0" + date;
+        date = '0' + date
       }
 
       if (month < 10) {
-        month = "0" + month;
+        month = '0' + month
       }
-      return month + "-" + date;
+      return month + '-' + date
     },
     //设备数量分布图
     devicesNumber(url, areaId, lang) {
-      this.devicesNumberUrl = url;
-      this.areaID = areaId;
-      this.lang = lang;
-      let this_ = this;
-      var currentData = qs.stringify({ areaId: areaId, lang: lang });
+      this.devicesNumberUrl = url
+      this.areaID = areaId
+      this.lang = lang
+      let this_ = this
+      var currentData = qs.stringify({ areaId: areaId, lang: lang })
       this.$http.post(url, currentData).then(function (response) {
-        let chartData = response.data.data;
-        let deviceTypeCntName = chartData.map((item) => item.dcTypeName);
-        let deviceTypeCntNum = chartData.map((item) => item.deviceCnt);
+        let chartData = response.data.data
+        let deviceTypeCntName = chartData.map((item) => item.dcTypeName)
+        let deviceTypeCntNum = chartData.map((item) => item.deviceCnt)
         let deviceTypeColor = chartData.map((item) => {
           if (item.deviceTypeCode == 1) {
-            return "#ffa07a";
+            return '#ffa07a'
           } else if (item.deviceTypeCode == 8) {
-            return "#008080";
+            return '#008080'
           } else if (item.deviceTypeCode == 12) {
-            return "#a0522d";
+            return '#a0522d'
           } else if (item.deviceTypeCode == 3) {
-            return "#ee82ee";
+            return '#ee82ee'
           } else if (item.deviceTypeCode == 6) {
-            return "#fafad2";
+            return '#fafad2'
           } else if (item.deviceTypeCode == 4) {
-            return "#b0c4de";
+            return '#b0c4de'
           } else if (item.deviceTypeCode == 7) {
-            return "#008080";
+            return '#008080'
           } else if (item.deviceTypeCode == 16) {
-            return "#1e90ff";
+            return '#1e90ff'
           } else if (item.deviceTypeCode == 17) {
-            return "#87cefa";
+            return '#87cefa'
           } else if (item.deviceTypeCode == 14) {
-            return "#7b68ee";
+            return '#7b68ee'
           } else if (item.deviceTypeCode == 31) {
-            return "#e0ffff";
+            return '#e0ffff'
           } else if (item.deviceTypeCode == 30) {
-            return "#ffb6c1";
+            return '#ffb6c1'
           }
-        });
-        this_.EchartsImg3(deviceTypeCntName, deviceTypeCntNum, deviceTypeColor);
-      });
+        })
+        this_.EchartsImg3(deviceTypeCntName, deviceTypeCntNum, deviceTypeColor)
+      })
     },
     EchartsImg(deviceAlarmCntTime, deviceAlarmCntNum) {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChart"));
+      let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 绘制图表
       myChart.setOption({
         title: {
           textStyle: {
-            color: "#fff",
+            color: '#fff',
             fontSize: 18,
           },
         },
-        color: ["red"],
+        color: ['red'],
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
         },
         grid: {
-          left: "10px",
-          right: "10px",
-          top: "30px",
-          bottom: "35px",
+          left: '10px',
+          right: '10px',
+          top: '30px',
+          bottom: '35px',
           containLabel: true,
         },
         xAxis: {
-          type: "category",
+          type: 'category',
           data: deviceAlarmCntTime,
           axisLabel: {
             show: true,
             opacity: 0.2,
             textStyle: {
-              color: "#fff",
+              color: '#fff',
             },
           },
         },
         yAxis: {
-          type: "value",
-          name: "数量/次",
+          type: 'value',
+          name: this.$t('Index.Quantity'),
           nameTextStyle: {
-            color: "#666666",
+            color: '#666666',
             size: 12,
           },
-          color: "#fff",
+          color: '#fff',
           axisLabel: {
             formatter: function (v) {
-              return parseInt(v);
+              return parseInt(v)
             },
             textStyle: {
-              color: "#fff",
+              color: '#fff',
               opacity: 0.2,
             },
           },
@@ -314,28 +278,28 @@ export default {
         series: [
           {
             data: deviceAlarmCntNum,
-            type: "line",
+            type: 'line',
           },
         ],
-      });
+      })
     },
     EchartsImg2(deviceStatusName, responseData, colorArr) {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChart2"));
+      let myChart = this.$echarts.init(document.getElementById('myChart2'))
       // 绘制图表
       myChart.setOption({
         tooltip: {
-          trigger: "item",
+          trigger: 'item',
           itemGap: 5,
-          formatter: "{b}: {c} ({d}%)",
+          formatter: '{b}: {c} ({d}%)',
         },
         legend: {
-          orient: "vertical",
+          orient: 'vertical',
           left: 10,
           top: -4,
           textStyle: {
             //图例文字的样式
-            color: "#fff",
+            color: '#fff',
             fontSize: 14,
           },
           data: deviceStatusName,
@@ -344,18 +308,18 @@ export default {
         color: colorArr,
         series: [
           {
-            type: "pie",
-            radius: ["50%", "70%"],
+            type: 'pie',
+            radius: ['50%', '70%'],
             avoidLabelOverlap: false,
             label: {
               show: false,
-              position: "center",
+              position: 'center',
             },
             emphasis: {
               label: {
                 show: true,
-                fontSize: "20",
-                fontWeight: "bold",
+                fontSize: '20',
+                fontWeight: 'bold',
               },
             },
             labelLine: {
@@ -364,31 +328,31 @@ export default {
             data: responseData,
           },
         ],
-      });
+      })
     },
     EchartsImg3(deviceTypeCntName, deviceTypeCntNum, deviceTypeColor) {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChart3"));
+      let myChart = this.$echarts.init(document.getElementById('myChart3'))
       // 绘制图表
       myChart.setOption({
-        color: ["#365cf5"],
+        color: ['#365cf5'],
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
           axisPointer: {
             // 坐标轴指示器，坐标轴触发有效
-            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+            type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
           },
         },
         grid: {
-          top: "30px",
-          left: "5%",
-          right: "4%",
-          bottom: "-10",
+          top: '30px',
+          left: '5%',
+          right: '4%',
+          bottom: '-10',
           containLabel: true,
         },
         xAxis: [
           {
-            type: "category",
+            type: 'category',
             data: deviceTypeCntName,
             axisTick: {
               alignWithLabel: true,
@@ -398,44 +362,44 @@ export default {
               interval: 0,
               rotate: 15,
               textStyle: {
-                color: "#fff",
-                fontSize: "12",
+                color: '#fff',
+                fontSize: '12',
               },
             },
           },
         ],
         yAxis: {
-          type: "value",
-          name: "台/个",
+          type: 'value',
+          name: this.$t('Index.Quantity'),
           nameTextStyle: {
-            color: "#fff",
+            color: '#fff',
           },
           axisLabel: {
             formatter: function (v) {
-              return parseInt(v);
+              return parseInt(v)
             },
             textStyle: {
-              color: "#fff",
+              color: '#fff',
             },
           },
         },
         series: [
           {
-            name: "",
-            type: "bar",
-            barWidth: "60%",
+            name: '',
+            type: 'bar',
+            barWidth: '60%',
             data: deviceTypeCntNum,
             itemStyle: {
               color: function (paras) {
-                return deviceTypeColor[paras.dataIndex];
+                return deviceTypeColor[paras.dataIndex]
               },
             },
           },
         ],
-      });
+      })
     },
   },
-};
+}
 </script>
 <style lang="stylus" scoped>
 .Polyline {

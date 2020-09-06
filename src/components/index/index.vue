@@ -11,8 +11,7 @@
           <div class="rightCentent" v-show="show2">
             <RightCommon ref="rightChild"></RightCommon>
           </div>
-          <img  v-show="!show2" src="../../static/img/left.png" @click="openRightCommon"
-          style="position: absolute;right: 0;top: 350px;width: 30px;height: 120px;cursor: pointer;">
+          <img v-show="!show2" src="../../static/img/left.png" @click="openRightCommon" style="position: absolute;right: 0;top: 350px;width: 30px;height: 120px;cursor: pointer;">
         </div>
       </div>
     </div>
@@ -105,9 +104,9 @@ export default {
     //英文地图
     changeEnMap(lang) {
       if (lang == 'zh-CN') {
-        this.$refs.mapChild.initMap()
+        this.$refs.mapChild.initMap(lang)
       } else {
-        this.$refs.mapChild.initEnMap()
+        this.$refs.mapChild.initEnMap(lang)
       }
     },
     //获取右侧数据
@@ -139,9 +138,9 @@ export default {
     closeRightComponents() {
       this.show2 = false
     },
-    openRightCommon(){
+    openRightCommon() {
       this.show2 = true
-    }
+    },
   },
 }
 </script>

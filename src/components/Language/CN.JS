@@ -66,6 +66,8 @@ module.exports = {
         submit: '提交',
         cancel: '取消',
         Basic: '基本信息',
+        Quantity: '数量/次',
+        A: '台/个',
         placeholder: '请输入内容',
         event: {
             eventDetails: "事件详情",
@@ -123,7 +125,7 @@ module.exports = {
         EquipmentName: '全部',
         EquipmentNumber: '设备编码',
         status: '全部',
-        State:'状态',
+        State: '状态',
         Area: '区域',
         Address: '地址',
         Details: '详情',
@@ -142,12 +144,12 @@ module.exports = {
         LoopStatus: "状态",
         operating: "操作",
         history: '历史记录',
-        Record:{
-            startTime:"开始日期",
-            endTime:"结束日期",
-            lastWeek:"最近一周",
-            lastMonth:"最近一个月",
-            lastThreeMonths:"最近三个月"
+        Record: {
+            startTime: "开始日期",
+            endTime: "结束日期",
+            lastWeek: "最近一周",
+            lastMonth: "最近一个月",
+            lastThreeMonths: "最近三个月"
         }
     },
     Water: {

@@ -37,10 +37,10 @@
                 <div>{{item.installNumber}}</div>
                 <div>{{item.dcShortName}}</div>
                 <div>{{item.deviceSN}}</div>
-                <div style="color:rgba(0,143,19,1);" v-if="item.runStatusName=='正常' || item.runStatusName=='Normal'">{{item.runStatusName}}</div>
-                <div style="color:red;" v-else-if="item.runStatusName=='报警' || item.runStatusName=='Alarming'">{{item.runStatusName}}</div>
-                <div v-else-if="item.runStatusName=='离线'" style="color:#41414B;">{{item.runStatusName}}</div>
-                <div v-else-if="item.runStatusName=='低电量'" style="color:#F7D501;">{{item.runStatusName}}</div>
+                <div style="color:rgba(0,143,19,1);" v-if="item.runStatus=='1'">{{item.runStatusName}}</div>
+                <div style="color:red;" v-else-if="item.runStatus=='3'">{{item.runStatusName}}</div>
+                <div v-else-if="item.runStatus=='2'" style="color:#41414B;">{{item.runStatusName}}</div>
+                <div v-else-if="item.runStatus=='8'" style="color:#F7D501;">{{item.runStatusName}}</div>
                 <div v-else>{{item.runStatusName}}</div>
                 <div>{{item.areaName}}</div>
                 <div>{{item.deviceAddr}}</div>
@@ -113,6 +113,8 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/fdev/mnt/devs', currentData)
         .then(function (response) {
+          console.log('实时监控')
+          console.log(response)
           this_.installInfoList = response.data.data.records
           this_.total = response.data.data.total
         })

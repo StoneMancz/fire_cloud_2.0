@@ -21,7 +21,7 @@ export default new Router({
         meta: { requiresAuth: false }
     },
     {
-        // 首页
+        // 登陆
         path: '/login',
         name: 'login',
         component: login,

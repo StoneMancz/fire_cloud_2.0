@@ -1,5 +1,5 @@
 <template>
-  <el-drawer custom-class="eventDetailss" :visible.sync="deviceDrawers" :with-header="false" size="41%" >
+  <el-drawer custom-class="eventDetailss" :visible.sync="deviceDrawers" size="41%">
     <div class="titleBk">{{$t('Index.Details')}}</div>
     <div class="detailsBk">
       <div class="detail_titel">{{$t('Index.Basic')}}</div>
@@ -9,7 +9,7 @@
           <div>{{$t('Index.DeviceID')}}：<span>{{deviceInfo.deviceSN}}</span></div>
         </div>
         <div class="detailsItem">
-          <div>运行状态：<span>{{deviceInfo.runStatusName}}</span></div>
+          <div>{{$t('Index.Status')}}：<span>{{deviceInfo.runStatusName}}</span></div>
           <div style="color:#365CF5;cursor:pointer;">
             <div class="footer_flex clearfix">
               <div>
@@ -93,11 +93,22 @@
         </div>
       </div>
     </div>
+
+    <div class="detailsBk" v-show="deviceInfo.deviceTypeCode==17 || deviceInfo.deviceTypeCode==16" style="margin-top:10px;">
+      <div class="detail_titel" style="margin-top:10px">{{$t('Index.More')}}</div>
+      <div class="detailsContent">
+        <div class="detailsItem">
+          <div class="otherDetail" @click="historyWaterfnss(deviceInfo)">{{$t('ElectricalMonitoring.history')}}</div>
+        </div>
+      </div>
+    </div>
+    <HistoryWater ref="historyWater"></HistoryWater>
   </el-drawer>
 </template>
 
 <script>
 import { getTimeToString } from '../../components/rule/getTime'
+import HistoryWater from '../../components/water/components/HistoryWater'
 import QRCode from 'qrcodejs2'
 export default {
   data() {
@@ -110,13 +121,19 @@ export default {
       lang: localStorage.getItem('Language'),
     }
   },
+  components: {
+    HistoryWater,
+  },
   methods: {
-    openEquipmentDetails(deviceId) {
+    openEquipmentDetails(deviceId, lang) {
+      this.lang = lang
       this.deviceDrawers = true
       let this_ = this
       this.$http
-        .get('http://srv.shine-iot.com:8060/device/base/detail/' + deviceId+'?lang='+this.lang)
+        .get('http://srv.shine-iot.com:8060/device/base/detail/' + deviceId + '?lang=' + this.lang)
         .then(function (response) {
+          console.log('设备详情')
+          console.log(response)
           let deviceDetailsData = response.data.data
           let deviceInfo = {
             deviceTypeCode: deviceDetailsData.deviceTypeCode,
@@ -129,6 +146,8 @@ export default {
             signalModuleSN: deviceDetailsData.signalModuleSN,
             dcTypeName: deviceDetailsData.dcTypeName,
             providerName: deviceDetailsData.providerName,
+            deviceId: deviceDetailsData.deviceId,
+            dcTypeName: deviceDetailsData.dcTypeName,
           }
           let installation = {
             orgName: deviceDetailsData.orgName,
@@ -168,6 +187,13 @@ export default {
           this_.deviceInfo = deviceInfo
         })
     },
+    historyWaterfnss(item) {
+      console.log('请求用水')
+      console.log(item)
+      this.drawers = false
+      this.$refs.historyWater.histval(item.deviceId, '', '')
+      this.$refs.historyWater.openHistory(item.dcTypeName)
+    },
     qrcode(text) {
       let that = this
       document.getElementById('qrcode2').innerHTML = ''
@@ -190,7 +216,6 @@ export default {
     font-family: PingFang SC;
     font-weight: 400;
     margin-left: 40px;
-    margin-top: 39px;
     color: rgba(255, 255, 255, 1);
   }
 
