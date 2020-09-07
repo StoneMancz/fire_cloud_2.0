@@ -86,11 +86,20 @@ export default {
       this.areaID = areaId
       this.deviceType = deviceType
       let this_ = this
-      var currentData = qs.stringify({
-        lang: lang,
-        areaId: this.areaID,
-        deviceType: this.deviceType,
-      })
+      if(this.$route.path == '/ElectricalMonitoring'){
+        var currentData = qs.stringify({
+          lang: lang,
+          areaId: this.areaID,
+          loopType: this.deviceType,
+        })
+      }else{
+        var currentData = qs.stringify({
+          lang: lang,
+          areaId: this.areaID,
+          deviceType: this.deviceType,
+        })
+      }
+      
       this.$http.post(url, currentData).then(function (response) {
         let responseData = response.data
         let deviceStatusData = responseData.data.map(function (item, i) {
@@ -120,8 +129,6 @@ export default {
             return '#008000'
           }
         })
-        console.log("deviceStatusName",deviceStatusName);
-        console.log("deviceStatusData",deviceStatusData);
         this_.EchartsImg2(deviceStatusName, deviceStatusData, colorArr)
       })
     },
@@ -139,12 +146,21 @@ export default {
       this.alarmTrendUrl = url
       this.areaID = areaID
       let this_ = this
-      var currentData = qs.stringify({
-        areaId: areaID,
-        deviceType: deviceType,
-        startTime: startTime,
-        endTime: endTime,
-      })
+      if(this.$route.path == '/ElectricalMonitoring'){
+        var currentData = qs.stringify({
+          areaId: areaID,
+          loopType: deviceType,
+          startTime: startTime,
+          endTime: endTime,
+        })
+      }else{
+        var currentData = qs.stringify({
+          areaId: areaID,
+          deviceType: deviceType,
+          startTime: startTime,
+          endTime: endTime,
+        })
+      }
       this.$http.post(url, currentData).then(function (response) {
         let chartData = response.data.data.map((item) => {
           item.msgDate = this_.formatDate(item.msgDate)

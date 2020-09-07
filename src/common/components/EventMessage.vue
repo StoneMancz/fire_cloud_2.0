@@ -2,24 +2,45 @@
   <div>
     <div class="select" style="margin-top:10px">
       <div style="width:120px">
-        <el-select v-model="eventLevelValue" placeholder="事件等级" @change="eventTypeChange" style="width:120px">
+        <el-select
+          v-model="eventLevelValue"
+          placeholder="事件等级"
+          @change="eventTypeChange"
+          style="width:120px"
+        >
           <el-option :label="$t('Index.all')" value></el-option>
-          <el-option v-for="item in eventLevelValueData" :key="item.type" :label="item.name" :value="item.type"></el-option>
+          <el-option
+            v-for="item in eventLevelValueData"
+            :key="item.type"
+            :label="item.name"
+            :value="item.type"
+          ></el-option>
         </el-select>
       </div>
       <div style="margin-left:20px;width:120px">
-        <el-select v-model="eventDevcieValue3" placeholder="设备类型" style @change="equipmentTypeChange3">
+        <el-select
+          v-model="eventDevcieValue3"
+          placeholder="设备类型"
+          style
+          @change="equipmentTypeChange3"
+        >
           <el-option :label="$t('Index.all')" value></el-option>
-          <el-option v-for="item in equipmentTypeData" :key="item.type" :label="item.name" :value="item.type"></el-option>
+          <el-option
+            v-for="item in equipmentTypeData"
+            :key="item.type"
+            :label="item.name"
+            :value="item.type"
+          ></el-option>
         </el-select>
       </div>
       <div style="width:120px;margin-left:20px;">
-        <el-date-picker v-model="eventTimes" 
-        type="datetimerange"
-        @change="pickerEventChange" 
-        @blur="pickerEventChange" 
-        style="width:150px;float:left;background: #000D42;">
-        </el-date-picker>
+        <el-date-picker
+          v-model="eventTimes"
+          type="datetimerange"
+          @change="pickerEventChange"
+          @blur="pickerEventChange"
+          style="width:150px;float:left;background: #000D42;"
+        ></el-date-picker>
       </div>
     </div>
     <div class="eventList">
@@ -29,45 +50,68 @@
         <span>{{$t('Index.equipmentName')}}</span>
         <span style=" flex: 2;">{{$t('Index.address')}}</span>
       </div>
-      <div class="tebleColumn" v-for="(item,index) in eventAreaEvtsList" @click="eventDetails(item.eventId)" :key="index">
-        <div v-if="$route.path === '/ElectricalMonitoring' && item.eventName=='正常'" style="color:green;">{{item.eventName}}</div>
-        <div v-else-if="$route.path === '/ElectricalMonitoring' && item.eventType!='正常'">{{item.eventName}}</div>
+      <div
+        class="tebleColumn"
+        v-for="(item,index) in eventAreaEvtsList"
+        @click="eventDetails(item.eventId)"
+        :key="index"
+      >
+        <div
+          v-if="$route.path === '/ElectricalMonitoring' && item.eventName=='正常'"
+          style="color:green;"
+        >{{item.eventName}}</div>
+        <div
+          v-else-if="$route.path === '/ElectricalMonitoring' && item.eventType!='正常'"
+        >{{item.eventName}}</div>
         <div v-else>{{item.eventName}}</div>
         <div style=" flex: 2;">{{item.eventTime}}</div>
         <div>{{item.deviceName}}</div>
         <el-tooltip :content="item.deviceDetailedAddr" placement="bottom" effect="light">
-          <div style=" flex: 2;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;cursor: pointer;">{{item.deviceAddr}}</div>
+          <div
+            style=" flex: 2;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;cursor: pointer;"
+          >{{item.deviceAddr}}</div>
         </el-tooltip>
       </div>
-      <el-pagination class="pagination2" :current-page.sync="currentPage" layout="prev, pager, next" :total="total" style="text-align: center;" @current-change="handleCurrentChange"></el-pagination>
+      <el-pagination
+        class="pagination2"
+        :current-page.sync="currentPage"
+        layout="prev, pager, next"
+        :total="total"
+        style="text-align: center;"
+        @current-change="handleCurrentChange"
+      ></el-pagination>
     </div>
     <DetailsCommon ref="child"></DetailsCommon>
   </div>
 </template>
 
 <script>
-import qs from 'qs'
-import { deviceStatus, DeviceType, LevCodeName } from '../../components/rule/typeName'
-import DetailsCommon from '../../../src/common/components/DetailsCommon'
-import { getTimeToString } from '../../components/rule/getTime'
+import qs from "qs";
+import {
+  deviceStatus,
+  DeviceType,
+  LevCodeName,
+} from "../../components/rule/typeName";
+import DetailsCommon from "../../../src/common/components/DetailsCommon";
+import { getTimeToString } from "../../components/rule/getTime";
 export default {
   components: {
     DetailsCommon,
   },
   data() {
     return {
-      eventLevelValue: '',
+      eventLevelValue: "",
       currentPage: 1,
-      areaId: '',
-      lang: localStorage.getItem('Language'),
+      areaId: "",
+      lang: localStorage.getItem("Language"),
       total: 0, // 事件列表length
       equipmentTypeData: [],
       eventLevelValueData: [],
-      eventDevcieValue3: '',
-      eventTimes: '',
+      eventDevcieValue3: "",
+      eventTimes: "",
       eventAreaEvtsList: [], //事件列表
-      eventAreaEvtsUrl: '',
-    }
+      eventAreaEvtsUrl: "",
+    };
   },
   mounted() {},
   methods: {
@@ -79,10 +123,10 @@ export default {
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
-          '',
-          '',
+          "",
+          "",
           this.currentPage
-        )
+        );
       } else {
         this.eventAreaEvts(
           this.eventAreaEvtsUrl,
@@ -93,27 +137,27 @@ export default {
           this.eventTimes[0].getTime(),
           this.eventTimes[1].getTime(),
           this.currentPage
-        )
+        );
       }
     },
     equipmentType(url, lang, areaID) {
-      let this_ = this
-      this.areaId = areaID
-      var currentData = { areaId: this_.areaId, lang: lang }
+      let this_ = this;
+      this.areaId = areaID;
+      var currentData = { areaId: this_.areaId, lang: lang };
       this.$http.get(url, { params: currentData }).then(function (response) {
-        this_.equipmentTypeData = response.data.data
-      })
+        this_.equipmentTypeData = response.data.data;
+      });
     },
     eventLevelFn(lang) {
-      let this_ = this
+      let this_ = this;
       this.$http
-        .get('http://srv.shine-iot.com:8060/event/level?lang=' + lang)
+        .get("http://srv.shine-iot.com:8060/event/level?lang=" + lang)
         .then(function (response) {
-          this_.eventLevelValueData = response.data.data
-        })
+          this_.eventLevelValueData = response.data.data;
+        });
     },
     handleCurrentChange(val) {
-      this.currentPage = val
+      this.currentPage = val;
       if (!this.eventTimes) {
         this.eventAreaEvts(
           this.eventAreaEvtsUrl,
@@ -121,10 +165,10 @@ export default {
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
-          '',
-          '',
+          "",
+          "",
           this.currentPage
-        )
+        );
       } else {
         this.eventAreaEvts(
           this.eventAreaEvtsUrl,
@@ -135,11 +179,11 @@ export default {
           this.eventTimes[0].getTime(),
           this.eventTimes[1].getTime(),
           this.currentPage
-        )
+        );
       }
     },
     eventDetails(eventId) {
-      this.$refs.child.drawersFn(eventId, this.lang)
+      this.$refs.child.drawersFn(eventId, this.lang);
     },
     pickerEventChange() {
       if (!this.eventTimes) {
@@ -149,10 +193,10 @@ export default {
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
-          '',
-          '',
+          "",
+          "",
           this.currentPage
-        )
+        );
       } else {
         this.eventAreaEvts(
           this.eventAreaEvtsUrl,
@@ -163,7 +207,7 @@ export default {
           this.eventTimes[0].getTime(),
           this.eventTimes[1].getTime(),
           this.currentPage
-        )
+        );
       }
     },
     equipmentTypeChange3() {
@@ -174,10 +218,10 @@ export default {
           this.areaID,
           this.eventDevcieValue3,
           this.eventLevelValue,
-          '',
-          '',
+          "",
+          "",
           this.currentPage
-        )
+        );
       } else {
         this.eventAreaEvts(
           this.eventAreaEvtsUrl,
@@ -188,27 +232,47 @@ export default {
           this.eventTimes[0].getTime(),
           this.eventTimes[1].getTime(),
           this.currentPage
-        )
+        );
       }
     },
-    eventAreaEvts(url, lang, areaId, deviceType, eventLevel, startTime, endTime, pageNo) {
-      let this_ = this
-      this.eventAreaEvtsUrl = url
-      this.lang = lang
-      this.eventDevcieValue3 = deviceType
-      var currentData = qs.stringify({
-        lang: lang,
-        areaId: areaId,
-        deviceType: deviceType,
-        eventLevel: eventLevel,
-        startTime: startTime,
-        endTime: endTime,
-        pageNo: pageNo,
-      })
+    eventAreaEvts(
+      url,
+      lang,
+      areaId,
+      deviceType,
+      eventLevel,
+      startTime,
+      endTime,
+      pageNo
+    ) {
+      let this_ = this;
+      this.eventAreaEvtsUrl = url;
+      this.lang = lang;
+      this.eventDevcieValue3 = deviceType;
+      if (this.$route.path == "/ElectricalMonitoring") {
+        var currentData = qs.stringify({
+          lang: lang,
+          areaId: areaId,
+          loopType: deviceType,
+          eventLevel: eventLevel,
+          startTime: startTime,
+          endTime: endTime,
+          pageNo: pageNo,
+        });
+      } else {
+        var currentData = qs.stringify({
+          lang: lang,
+          areaId: areaId,
+          deviceType: deviceType,
+          eventLevel: eventLevel,
+          startTime: startTime,
+          endTime: endTime,
+          pageNo: pageNo,
+        });
+      }
+
       this.$http.post(url, currentData).then(function (response) {
-        console.log("事件列表");
-        console.log(response);
-        let eventList = response.data.data.records
+        let eventList = response.data.data.records;
         let eventListNew = eventList.map((item) => {
           let obj = {
             eventId: item.eventId,
@@ -217,17 +281,20 @@ export default {
             deviceName: item.dcTypeName,
             deviceAddr: item.deviceAddr,
             deviceDetailedAddr:
-              item.areaLocCity + item.areaLocDist + item.areaName + item.deviceAddr,
-          }
-          return obj
-        })
+              item.areaLocCity +
+              item.areaLocDist +
+              item.areaName +
+              item.deviceAddr,
+          };
+          return obj;
+        });
 
-        this_.total = response.data.data.total
-        this_.eventAreaEvtsList = eventListNew
-      })
+        this_.total = response.data.data.total;
+        this_.eventAreaEvtsList = eventListNew;
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="stylus">
