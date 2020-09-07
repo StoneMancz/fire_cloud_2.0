@@ -180,6 +180,7 @@ module.exports = {
         ControllerList: 'ControllerList',
         Details: 'Details',
         Loop: {
+            loopDetails:'loopDetails',
             circuit: "circuit",
             types: 'types',
             Point: "point",

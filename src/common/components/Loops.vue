@@ -3,7 +3,7 @@
     <div id="bg" v-if="isShowBg"></div>
     <div class="LoopData" v-if="isShowBg">
       <div class="messageTitle">
-        <span>回路详情</span>
+        <span>{{$t('Controller.Loop.loopDetails')}}</span>
         <img src="../../../src/static/img/delete.png" @click="closeLoopDetail">
       </div>
       <div class="loopList">

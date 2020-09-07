@@ -32,7 +32,8 @@
               <div class="tebleColumn" v-for="(item,index) in installInfoList" :key="index">
                 <div>{{item.deviceSN}}</div>
                 <div>{{item.macImei}}</div>
-                <div>{{item.runStatusName}}</div>
+                <div style="color:green;" v-if="item.runStatus==1">{{item.runStatusName}}</div>
+                <div v-else>{{item.runStatusName}}</div>
                 <div>{{item.areaName}}</div>
                 <div>{{item.deviceAddr}}</div>
                 <div @click="nodeDetails(item.deviceId)" style="color: #70d4fe;">{{$t('Newsletter.Details')}}</div>
@@ -94,11 +95,13 @@ export default {
         deviceType: this.equipmentValue,
         runStatus: this.deviceStatus,
         deviceSN: this.installNumber,
-        lang: this.lang,
+        lang: localStorage.getItem('Language'),
       })
       this.$http
         .post('http://srv.shine-iot.com:8060/gwdtu/devs', currentData)
         .then(function (response) {
+          console.log("通讯装置列表");
+          console.log(response);
           this_.installInfoList = response.data.data
         })
     },
@@ -139,7 +142,7 @@ export default {
     //查询设备的状态列表
     deiceStusList() {
       let this_ = this
-      this.$http.get('http://srv.shine-iot.com:8060/gwdtu/stus').then(function (response) {
+      this.$http.get('http://srv.shine-iot.com:8060/gwdtu/stus?lang='+localStorage.getItem('Language')).then(function (response) {
         this_.deviceStatusList = response.data.data
       })
     },

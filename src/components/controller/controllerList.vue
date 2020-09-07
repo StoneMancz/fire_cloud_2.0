@@ -276,6 +276,7 @@ export default {
 
         .table {
           width: 100%;
+          height: 680px;
           margin: 20px auto;
           text-align: center;
           background: #00061f;

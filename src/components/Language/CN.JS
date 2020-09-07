@@ -179,6 +179,7 @@ module.exports = {
         Details: '详情',
         ControllerList: '控制器列表',
         Loop: {
+            loopDetails:'回路详情',
             circuit: "回路号",
             types: '回路类型',
             Point: "节点号",
