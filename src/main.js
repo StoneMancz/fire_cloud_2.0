@@ -3,6 +3,8 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import en from '../node_modules/element-ui/lib/locale/lang/en';
+import zhCN from '../node_modules/element-ui/lib/locale/lang/zh-CN';
 import VCharts from 'v-charts'
 import echarts from 'echarts'
 import './utils/flexible.js'
@@ -13,11 +15,10 @@ import store from './store';
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
-Vue.use(ElementUI);
 Vue.use(VCharts);
 Vue.use(VueI18n)
 Vue.use(VueAMap);
-
+Vue.use(ElementUI,{en});
 VueAMap.initAMapApiLoader({
     key: 'd131f815357afc30295997020bd15940',
     plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
@@ -89,8 +90,14 @@ const i18n = new VueI18n({
     },
     silentTranslationWarn: true,
 })
-
 export default i18n
+
+// if(i18n.locale=='en-US'){
+//     Vue.use(ElementUI,{en});
+// }else{
+//     Vue.use(ElementUI,{zhCN});
+// }
+
 
 new Vue({
     el: '#app',

@@ -180,12 +180,11 @@ export default {
         '',
         '',
         '',
-        1
-      )
+        1)
       //查询事件等级
       this.$refs.events.eventLevelFn(lang)
       //设备类型
-      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/elect/channel/tycodes', lang,areaID)
+      this.$refs.events.equipmentType('http://srv.shine-iot.com:8060/elect/channel/tycodes',lang,areaID)
     },
     //报警控制器的初始化图例
     initControllEchar(lang, areaID) {

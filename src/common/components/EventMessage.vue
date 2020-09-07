@@ -14,7 +14,12 @@
         </el-select>
       </div>
       <div style="width:120px;margin-left:20px;">
-        <el-date-picker v-model="eventTimes" @change="pickerEventChange" @blur="pickerEventChange" style="width:150px;float:left;background: #000D42;" type="datetimerange"></el-date-picker>
+        <el-date-picker v-model="eventTimes" 
+        type="datetimerange"
+        @change="pickerEventChange" 
+        @blur="pickerEventChange" 
+        style="width:150px;float:left;background: #000D42;">
+        </el-date-picker>
       </div>
     </div>
     <div class="eventList">
@@ -26,7 +31,7 @@
       </div>
       <div class="tebleColumn" v-for="(item,index) in eventAreaEvtsList" @click="eventDetails(item.eventId)" :key="index">
         <div v-if="$route.path === '/ElectricalMonitoring' && item.eventName=='正常'" style="color:green;">{{item.eventName}}</div>
-        <div v-else-if="$route.path === '/ElectricalMonitoring' && item.eventName!='正常'" style="color:yellow;">{{item.eventName}}</div>
+        <div v-else-if="$route.path === '/ElectricalMonitoring' && item.eventType!='正常'">{{item.eventName}}</div>
         <div v-else>{{item.eventName}}</div>
         <div style=" flex: 2;">{{item.eventTime}}</div>
         <div>{{item.deviceName}}</div>
@@ -201,6 +206,8 @@ export default {
         pageNo: pageNo,
       })
       this.$http.post(url, currentData).then(function (response) {
+        console.log("事件列表");
+        console.log(response);
         let eventList = response.data.data.records
         let eventListNew = eventList.map((item) => {
           let obj = {

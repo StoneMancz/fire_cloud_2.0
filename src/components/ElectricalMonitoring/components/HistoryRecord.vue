@@ -7,7 +7,8 @@
         <img src="../../../static/img/delete.png" @click="closeHistory">
       </div>
       <div class="filterTime">
-        <el-date-picker v-model="historyValue" style="margin-left: 30px;z-index:99999999;width:220px;height:50px;" @change="historyChange" @blur="historyChange" type="datetimerange" :start-placeholder="$t('ElectricalMonitoring.Record.startTime')" :end-placeholder="$t('ElectricalMonitoring.Record.endTime')">
+        <el-date-picker v-model="historyValue" style="margin-left: 30px;z-index:99999999;width:220px;height:50px;"
+        @change="historyChange" @blur="historyChange" type="datetimerange" :start-placeholder="$t('ElectricalMonitoring.Record.startTime')" :end-placeholder="$t('ElectricalMonitoring.Record.endTime')">
         </el-date-picker>
         <div class="timeItem" @click="aWeek">{{$t('ElectricalMonitoring.Record.lastWeek')}}</div>
         <div class="timeItem" @click="aMonth">{{$t('ElectricalMonitoring.Record.lastMonth')}}</div>
@@ -87,9 +88,13 @@ export default {
       return month + '-' + date
     },
     historyChange() {
-      this.startTime = this.historyValue[0].getTime()
-      this.endTime = this.historyValue[1].getTime()
-      this.histval(this.electId, this.startTime, this.endTime)
+      if(!this.historyValue){
+        this.histval(this.electId,'','')
+      }else{
+        this.startTime = this.historyValue[0].getTime()
+        this.endTime = this.historyValue[1].getTime()
+        this.histval(this.electId, this.startTime, this.endTime)
+      }
     },
     aWeek() {
       // 获取上一周的开始和结束时间

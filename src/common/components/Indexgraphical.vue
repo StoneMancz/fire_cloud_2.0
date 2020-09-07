@@ -120,6 +120,8 @@ export default {
             return '#008000'
           }
         })
+        console.log("deviceStatusName",deviceStatusName);
+        console.log("deviceStatusData",deviceStatusData);
         this_.EchartsImg2(deviceStatusName, deviceStatusData, colorArr)
       })
     },
