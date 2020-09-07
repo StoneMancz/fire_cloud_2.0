@@ -84,11 +84,11 @@
       </div>
     </div>
 
-    <div class="detailsBk" v-if="deviceInfo.deviceTypeCode==30">
+    <div class="detailsBk" v-show="deviceInfo.deviceTypeCode==30">
       <div class="detail_titel">{{$t('Index.More')}}</div>
       <div class="detailsContent">
         <div class="detailsItem">
-          <div>{{$t('Index.channelDetails')}}</div>
+          <div @click="channelDetails(deviceInfo)" class="otherDetail">{{$t('Index.channelDetails')}}</div>
           <div>{{$t('Index.service')}}</div>
         </div>
       </div>
@@ -103,6 +103,7 @@
       </div>
     </div>
     <HistoryWater ref="historyWater"></HistoryWater>
+    <Gangway ref="gangways"></Gangway>
   </el-drawer>
 </template>
 
@@ -110,6 +111,7 @@
 import { getTimeToString } from '../../components/rule/getTime'
 import HistoryWater from '../../components/water/components/HistoryWater'
 import QRCode from 'qrcodejs2'
+import Gangway from '../../components/ElectricalMonitoring/components/Gangway'
 export default {
   data() {
     return {
@@ -123,6 +125,7 @@ export default {
   },
   components: {
     HistoryWater,
+    Gangway
   },
   methods: {
     openEquipmentDetails(deviceId, lang) {
@@ -189,6 +192,9 @@ export default {
       this.drawers = false
       this.$refs.historyWater.histval(item.deviceId, '', '')
       this.$refs.historyWater.openHistory(item.dcTypeName)
+    },
+    channelDetails(item){
+      this.$refs.gangways.initData(item.deviceId,localStorage.getItem('Language'),1)
     },
     qrcode(text) {
       let that = this

@@ -14,10 +14,10 @@
                 </el-select>
               </div>
               <div>
-                <el-select v-model="installNumber" placeholder="MAC/IMEI" style @change="installNumberChange">
+                <!-- <el-select v-model="installNumber" placeholder="MAC/IMEI" style @change="installNumberChange">
                   <el-option :label="$t('Newsletter.All')" value></el-option>
                   <el-option v-for="item in installNumberList" :key="item.type" :label="item.name" :value="item.type"></el-option>
-                </el-select>
+                </el-select> -->
               </div>
             </div>
             <div class="installInfo">
@@ -100,8 +100,6 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/gwdtu/devs', currentData)
         .then(function (response) {
-          console.log("通讯装置列表");
-          console.log(response);
           this_.installInfoList = response.data.data
         })
     },

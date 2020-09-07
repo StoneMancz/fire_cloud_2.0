@@ -151,6 +151,16 @@ module.exports = {
             lastWeek: "lastWeek",
             lastMonth: "lastMonth",
             lastThreeMonths: "lastThreeMonths"
+        },
+        gangway:{
+            Details:"通道信息",
+            addressCode:"地址码",
+            gangwayTypes:"通道类型",
+            gangwayNumber:"通道号",
+            status:"状态",
+            value:"监测值",
+            upperLimit:"上限值",
+            lowerLimit:"下限值"
         }
     },
     Water: {
