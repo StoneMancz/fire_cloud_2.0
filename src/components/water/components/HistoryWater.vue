@@ -43,6 +43,8 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/dev/msg/levpes/histval', currentData)
         .then(function (response) {
+          console.log("用水历史记录");
+          console.log(response);
           let pressMsg = response.data.data.pressMsg
           let timeArry = pressMsg.map((item) => {
             return this_.formatDate(item.msgDate)

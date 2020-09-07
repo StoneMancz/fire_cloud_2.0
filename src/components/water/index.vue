@@ -34,7 +34,7 @@
                 <WaterCharts v-if="item1.deviceTypeCode==16" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></WaterCharts>
                 <HydraulicFn v-if="item1.deviceTypeCode==17" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></HydraulicFn>
                 <Thermometer v-if="item1.deviceTypeCode==2" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></Thermometer>
-                <Switchs v-if="item1.deviceTypeCode==7" v-bind:deviceId="item1.deviceId"></Switchs>
+                <Switchs v-if="item1.deviceTypeCode==7" v-bind:deviceId="item1.deviceId" v-bind:device="item1"></Switchs>
                 <div class="Graphics" v-if="item1.deviceTypeCode==2" style="margin-top: -25px;">
                   <div>{{$t('Water.name')}}：{{item1.dcTypeName}}</div>
                   <div>{{$t('Water.coding')}}：{{item1.deviceSN}}</div>

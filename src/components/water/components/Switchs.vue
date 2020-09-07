@@ -1,6 +1,7 @@
 <template>
   <div class="closeImg">
-    <img src="../../../static/img/close.png" @click="SeeDeviceDetail">
+    <img src="../../../static/img/close.png" @click="SeeDeviceDetail" v-if="device.deftStatusName!=device.runStatusName">
+    <img src="../../../static/img/open.png" @click="SeeDeviceDetail" v-if="device.deftStatusName==device.runStatusName">
     <el-radio-group v-model="radio1" style="margin-top:10px">
       <el-radio-button label="关" ></el-radio-button>
       <el-radio-button label="开" disabled></el-radio-button>
@@ -9,14 +10,14 @@
   </div>
 </template>
 <script>
-import DeviceDetailsCom from '../../../common/components/DeviceDetails'
+import DeviceDetailsCom from '../../../common/components/DeviceDetails';
 export default {
   data() {
     return {
       radio1: '关',
     }
   },
-  props: ['deviceId'],
+  props: ['deviceId','device'],
   methods:{
     SeeDeviceDetail() {
       this.$refs.childEquipmentDetails.openEquipmentDetails(this.deviceId)
