@@ -78,8 +78,8 @@
       <div class="detail_titel">{{$t('Index.otherInformation.otherInformation')}}</div>
       <div class="detailsContent">
         <div class="detailsItem">
-          <div>{{$t('Index.otherInformation.currentState')}}：<span>{{switchData.deftStatusName}}</span></div>
-          <div>{{$t('Index.otherInformation.defaultState')}}：<span>{{switchData.runStatusName}}</span></div>
+          <div>{{$t('Index.otherInformation.currentState')}}：<span>{{switchData.runStatusName}}</span></div>
+          <div>{{$t('Index.otherInformation.defaultState')}}：<span>{{switchData.deftStatusName}}</span></div>
         </div>
       </div>
     </div>
@@ -130,10 +130,8 @@ export default {
       this.deviceDrawers = true
       let this_ = this
       this.$http
-        .get('http://srv.shine-iot.com:8060/device/base/detail/' + deviceId + '?lang=' + this.lang)
+        .get('http://srv.shine-iot.com:8060/device/base/detail/' + deviceId + '?lang=' + localStorage.getItem('Language'))
         .then(function (response) {
-          console.log('设备详情')
-          console.log(response)
           let deviceDetailsData = response.data.data
           let deviceInfo = {
             deviceTypeCode: deviceDetailsData.deviceTypeCode,
@@ -188,8 +186,6 @@ export default {
         })
     },
     historyWaterfnss(item) {
-      console.log('请求用水')
-      console.log(item)
       this.drawers = false
       this.$refs.historyWater.histval(item.deviceId, '', '')
       this.$refs.historyWater.openHistory(item.dcTypeName)

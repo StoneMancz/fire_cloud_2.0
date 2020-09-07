@@ -28,7 +28,7 @@
                 <div class="watertitle">
                   <span>{{item1.runStatusName}}</span>
                   <span v-if="item1.deviceTypeCode==16 || item1.deviceTypeCode==17">{{item1.buildInfoModels[0].curVal}}{{item1.buildInfoModels[0].rangUnitName}}</span>
-                  <span v-if="item1.deviceTypeCode==7">{{item1.runStatusName}}</span>
+                  <span v-if="item1.deviceTypeCode==7">{{item1.deftStatusName}}</span>
                   <span v-if="item1.deviceTypeCode==2">{{item1.buildInfoModels[0].curVal}}{{item1.buildInfoModels[0].rangUnitName}}</span>
                 </div>
                 <WaterCharts v-if="item1.deviceTypeCode==16" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></WaterCharts>
@@ -169,6 +169,8 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/facilities/devs', currentData)
         .then(function (response) {
+          console.log("用水数据");
+          console.log(response);
           this_.waterList = response.data.data
         })
     },

@@ -62,7 +62,7 @@
                     </div>
                   </div>
                 </div>
-                <el-pagination class="pagination2" :current-page.sync="pageNoContr" layout="prev, pager, next" :total="totalContr" style="text-align: center;bottom:-15%" @current-change="contrCurrentChange"></el-pagination>
+                <el-pagination class="pagination2" :current-page.sync="pageNoContr" layout="prev, pager, next" :total="totalContr" style="text-align: center;" @current-change="contrCurrentChange"></el-pagination>
               </el-tab-pane>
             </el-tabs>
           </div>
@@ -245,7 +245,6 @@ export default {
       height: 100%;
       width: 100%;
       color: #fff;
-      height: 100%;
       display: flex;
 
       .leftTable {
