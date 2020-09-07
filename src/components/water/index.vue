@@ -33,19 +33,19 @@
                 </div>
                 <WaterCharts v-if="item1.deviceTypeCode==16" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></WaterCharts>
                 <HydraulicFn v-if="item1.deviceTypeCode==17" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></HydraulicFn>
-                <Thermometer v-if="item1.deviceTypeCode==2"  v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></Thermometer>
+                <Thermometer v-if="item1.deviceTypeCode==2" v-bind:deviceId="item1.deviceId" v-bind:item="item1.buildInfoModels"></Thermometer>
                 <Switchs v-if="item1.deviceTypeCode==7" v-bind:deviceId="item1.deviceId"></Switchs>
                 <div class="Graphics" v-if="item1.deviceTypeCode==2" style="margin-top: -25px;">
-                  <div>{{$t('Water.name')}}:{{item1.dcTypeName}}</div>
-                  <div>{{$t('Water.coding')}}:{{item1.deviceSN}}</div>
-                  <div>{{$t('Water.area')}}:{{item1.areaName}}</div>
-                  <div>{{$t('Water.address')}}:{{item1.deviceAddr}}</div>
+                  <div>{{$t('Water.name')}}：{{item1.dcTypeName}}</div>
+                  <div>{{$t('Water.coding')}}：{{item1.deviceSN}}</div>
+                  <div>{{$t('Water.area')}}：{{item1.areaName}}</div>
+                  <div>{{$t('Water.address')}}：{{item1.deviceAddr}}</div>
                 </div>
                 <div class="Graphics" v-else>
-                  <div>{{$t('Water.name')}}:{{item1.dcTypeName}}</div>
-                  <div>{{$t('Water.coding')}}:{{item1.deviceSN}}</div>
-                  <div>{{$t('Water.area')}}:{{item1.areaName}}</div>
-                  <div>{{$t('Water.address')}}:{{item1.deviceAddr}}</div>
+                  <div>{{$t('Water.name')}}：{{item1.dcTypeName}}</div>
+                  <div>{{$t('Water.coding')}}：{{item1.deviceSN}}</div>
+                  <div>{{$t('Water.area')}}：{{item1.areaName}}</div>
+                  <div>{{$t('Water.address')}}：{{item1.deviceAddr}}</div>
                 </div>
               </div>
             </div>
@@ -175,7 +175,7 @@ export default {
     SeeDeviceDetail(deviceId) {
       console.log(deviceId)
       this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
-    }
+    },
   },
 }
 </script>
@@ -235,7 +235,8 @@ export default {
         .waterConten {
           margin-right: 30px;
           margin-top: 0px;
-          width:100%;
+          width: 100%;
+
           .showWaterTanks {
             margin-right: 20px;
             margin-top: 20px;
@@ -265,7 +266,7 @@ export default {
             .Graphics {
               display: flex;
               flex-direction: column;
-              margin-left: 20px;
+              margin-left: 10px;
 
               div {
                 font-size: 12px;
