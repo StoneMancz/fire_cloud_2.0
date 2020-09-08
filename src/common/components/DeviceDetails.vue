@@ -5,7 +5,7 @@
       <div class="detail_titel">{{$t('Index.Basic')}}</div>
       <div class="detailsContent">
         <div class="detailsItem">
-          <div>{{$t('Index.equipmentName')}}：<span>{{deviceInfo.dcTypeName}}</span></div>
+          <div>{{$t('Index.equipmentName')}}：{{deviceInfo.dcTypeName}}</div>
           <div>{{$t('Index.DeviceID')}}：<span>{{deviceInfo.deviceSN}}</span></div>
         </div>
         <div class="detailsItem">
@@ -259,12 +259,13 @@ export default {
         font-family: PingFang SC;
         font-weight: 400;
         margin-top: 20px;
+        width 100%;
         color: rgba(229, 229, 229, 1);
-        margin-right: 89px;
 
         div {
-          width: 300px;
-
+          display:flex;
+          width: 380px;
+          
           .eventLevel {
             margin-left: 19px;
             font-size: 16px;

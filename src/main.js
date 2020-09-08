@@ -3,8 +3,6 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import en from '../node_modules/element-ui/lib/locale/lang/en';
-import zhCN from '../node_modules/element-ui/lib/locale/lang/zh-CN';
 import VCharts from 'v-charts'
 import echarts from 'echarts'
 import './utils/flexible.js'
@@ -12,13 +10,14 @@ import VueAMap from 'vue-amap';
 import VueI18n from 'vue-i18n'
 import axios from "axios";
 import store from './store';
+import enLocale from 'element-ui/lib/locale/lang/en'
+import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.use(VCharts);
 Vue.use(VueI18n)
 Vue.use(VueAMap);
-Vue.use(ElementUI,{en});
 VueAMap.initAMapApiLoader({
     key: 'd131f815357afc30295997020bd15940',
     plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
@@ -85,20 +84,19 @@ axios.interceptors.response.use(function (response) { // ①10010 token过期（
 const i18n = new VueI18n({
     locale: localStorage.getItem('Language') || 'zh', //从localStorage里获取用户中英文选择，没有则默认中文
     messages: {
-        'zh': require('./components/Language/CN.JS'), // 中文语言包
-        'en': require('./components/Language/EN.JS')
+        'zh': Object.assign(require('./components/Language/CN.JS'),zhLocale), // 中文语言包
+        'en': Object.assign(require('./components/Language/EN.JS'),enLocale)
     },
     silentTranslationWarn: true,
 })
+
+//重点！！在注册Element时设置i18n的处理方法（这里有个小坑）
+Vue.use(ElementUI,{
+    i18n:(key,value) =>i18n.t(key,value)
+});
+
+
 export default i18n
-
-// if(i18n.locale=='en-US'){
-//     Vue.use(ElementUI,{en});
-// }else{
-//     Vue.use(ElementUI,{zhCN});
-// }
-
-
 new Vue({
     el: '#app',
     router,

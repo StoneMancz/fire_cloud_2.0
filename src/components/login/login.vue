@@ -137,7 +137,7 @@ import qs from 'qs'
 export default {
   data() {
     return {
-      value: localStorage.getItem('Language') || 'CN',
+      value: localStorage.getItem('Language'),
       password: '',
       username: '',
       options: [

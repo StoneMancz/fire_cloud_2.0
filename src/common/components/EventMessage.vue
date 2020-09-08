@@ -6,8 +6,7 @@
           v-model="eventLevelValue"
           placeholder="事件等级"
           @change="eventTypeChange"
-          style="width:120px"
-        >
+          style="width:120px">
           <el-option :label="$t('Index.all')" value></el-option>
           <el-option
             v-for="item in eventLevelValueData"
@@ -22,8 +21,7 @@
           v-model="eventDevcieValue3"
           placeholder="设备类型"
           style
-          @change="equipmentTypeChange3"
-        >
+          @change="equipmentTypeChange3">
           <el-option :label="$t('Index.all')" value></el-option>
           <el-option
             v-for="item in equipmentTypeData"
@@ -39,8 +37,8 @@
           type="datetimerange"
           @change="pickerEventChange"
           @blur="pickerEventChange"
-          style="width:150px;float:left;background: #000D42;"
-        ></el-date-picker>
+          style="width:150px;float:left;background: #000D42;">
+        </el-date-picker>
       </div>
     </div>
     <div class="eventList">
@@ -54,8 +52,7 @@
         class="tebleColumn"
         v-for="(item,index) in eventAreaEvtsList"
         @click="eventDetails(item.eventId)"
-        :key="index"
-      >
+        :key="index">
         <div
           v-if="$route.path === '/ElectricalMonitoring' && item.eventName=='正常'"
           style="color:green;"
