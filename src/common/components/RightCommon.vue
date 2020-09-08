@@ -8,9 +8,9 @@
       <img src="../../../src/static/img/rightDelete.png" @click="rightDelete">
     </div>
     <div class="graphical" v-show="1==tabIndex">
-      <Indexgraphical ref="graphical"></Indexgraphical>
+      <Indexgraphical ref="graphical" @updataTime="updataTime"></Indexgraphical>
     </div>
-    <EventMessage ref="events" v-show="2==tabIndex"></EventMessage>
+    <EventMessage ref="events" v-show="2==tabIndex" @updataTime="updataTime"></EventMessage>
   </div>
 </template>
 <script>
@@ -32,6 +32,8 @@ export default {
       trendValue1: [],
       lang: localStorage.getItem('Language'),
       areaID: '',
+      startTime:'',
+      entTime:''
     }
   },
   mounted() {
@@ -59,8 +61,8 @@ export default {
         'http://srv.shine-iot.com:8060/device/alarm/cnt',
         this.areaID,
         this.echartEquipmentType,
-        '',
-        ''
+        this.startTime,
+        this.entTime
       )
       //查询设备数量分布图
       this.$refs.graphical.devicesNumber(
@@ -84,8 +86,8 @@ export default {
         areaID,
         '',
         '',
-        '',
-        '',
+        this.startTime,
+        this.entTime,
         1
       )
       //查询事件等级
@@ -104,9 +106,9 @@ export default {
       this.$refs.graphical.alarmTrend(
         'http://srv.shine-iot.com:8060/fdev/mnt/alarm/cnt',
         this.areaID,
-        '',
-        '',
-        ''
+        this.echartEquipmentType,
+        this.startTime,
+        this.entTime
       )
       //查询设备数量分布图
       this.$refs.graphical.devicesNumber(
@@ -130,8 +132,8 @@ export default {
         areaID,
         '',
         '',
-        '',
-        '',
+        this.startTime,
+        this.entTime,
         1
       )
       //查询事件等级
@@ -147,9 +149,9 @@ export default {
       this.$refs.graphical.alarmTrend(
         'http://srv.shine-iot.com:8060/elect/alarm/cnt',
         this.areaID,
-        '',
-        '',
-        ''
+        this.echartEquipmentType,
+        this.startTime,
+        this.entTime
       )
       //查询设备数量分布图
       this.$refs.graphical.devicesNumber(
@@ -178,8 +180,8 @@ export default {
         areaID,
         '',
         '',
-        '',
-        '',
+        this.startTime,
+        this.entTime,
         1)
       //查询事件等级
       this.$refs.events.eventLevelFn(lang)
@@ -194,9 +196,9 @@ export default {
       this.$refs.graphical.alarmTrend(
         'http://srv.shine-iot.com:8060/fctrl/alarm/cnt',
         this.areaID,
-        '',
-        '',
-        ''
+        this.echartEquipmentType,
+        this.startTime,
+        this.entTime
       )
       //查询设备数量分布图
       this.$refs.graphical.devicesNumber(
@@ -221,8 +223,8 @@ export default {
         areaID,
         14,
         '',
-        '',
-        '',
+        this.startTime,
+        this.entTime,
         1
       )
       //查询事件等级
@@ -237,9 +239,9 @@ export default {
       this.$refs.graphical.alarmTrend(
         'http://srv.shine-iot.com:8060/gwdtu/offline/cnt',
         this.areaID,
-        '',
-        '',
-        ''
+        this.echartEquipmentType,
+        this.startTime,
+        this.entTime
       )
       //查询设备数量分布图
       this.$refs.graphical.devicesNumber(
@@ -264,8 +266,8 @@ export default {
         areaID,
         '',
         '',
-        '',
-        '',
+        this.startTime,
+        this.entTime,
         1
       )
       //查询事件等级
@@ -281,9 +283,9 @@ export default {
       this.$refs.graphical.alarmTrend(
         'http://srv.shine-iot.com:8060/facilities/alarm/cnt',
         this.areaID,
-        '',
-        '',
-        ''
+        this.echartEquipmentType,
+        this.startTime,
+        this.entTime
       )
       //查询设备数量分布图
       this.$refs.graphical.devicesNumber(
@@ -308,8 +310,8 @@ export default {
         areaID,
         '',
         '',
-        '',
-        '',
+        this.startTime,
+        this.entTime,
         1
       )
       //查询事件等级
@@ -337,6 +339,10 @@ export default {
         // }
       }
     },
+    updataTime(arr){
+      this.startTime=arr[0];
+      this.entTime=arr[1];
+    }
   },
 }
 </script>

@@ -7,11 +7,12 @@
         <img src="../../../static/img/delete.png" @click="closeHistory">
       </div>
       <div class="filterTime">
-        <el-date-picker v-model="historyValue" style="margin-left: 30px;z-index:99999999;width:220px;height:50px;" @change="historyChange" type="datetimerange" start-placeholder="开始日期" end-placeholder="结束日期">
+        <el-date-picker v-model="historyValue" style="margin-left: 30px;z-index:99999999;width:220px;height:50px;"
+         @change="historyChange" type="datetimerange" :start-placeholder="$t('ElectricalMonitoring.Record.startTime')" :end-placeholder="$t('ElectricalMonitoring.Record.endTime')">
         </el-date-picker>
-        <div class="timeItem" @click="aWeek">最近一周</div>
-        <div class="timeItem" @click="aMonth">最近一个月</div>
-        <div class="timeItem" @click="threeMonth">最近三个月</div>
+        <div class="timeItem" @click="aWeek">{{$t('ElectricalMonitoring.Record.lastWeek')}}</div>
+        <div class="timeItem" @click="aMonth">{{$t('ElectricalMonitoring.Record.lastMonth')}}</div>
+        <div class="timeItem" @click="threeMonth">{{$t('ElectricalMonitoring.Record.lastThreeMonths')}}</div>
       </div>
       <div class="historyEchar" id="history"></div>
     </div>
@@ -43,8 +44,6 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/dev/msg/levpes/histval', currentData)
         .then(function (response) {
-          console.log("用水历史记录");
-          console.log(response);
           let pressMsg = response.data.data.pressMsg
           let timeArry = pressMsg.map((item) => {
             return this_.formatDate(item.msgDate)
@@ -52,10 +51,7 @@ export default {
           let checkValArry = pressMsg.map((item) => {
             return item.checkVal
           })
-          // let unitName = response.data.data.buildInfoModel.rangUnitName
-          //  let lowerVal = response.data.data.buildInfoModel.lowerVal
-          //  let upperVal = response.data.data.buildInfoModel.upperVal
-          this_.historyEchar(timeArry, checkValArry, '', '', '')
+          this_.historyEchar(timeArry, checkValArry, '', '', response.data.data.buildInfoModel.rangUnitName)
         })
     },
     //将时间戳转换成日期

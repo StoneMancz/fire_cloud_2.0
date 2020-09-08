@@ -11,7 +11,7 @@
         <div class="detailsItem">
           <div>{{$t('Index.Status')}}：<span>{{deviceInfo.runStatusName}}</span></div>
           <div style="color:#365CF5;cursor:pointer;">
-            <div class="footer_flex clearfix">
+            <div class="footer_flex clearfix" style="margin-left: 30px;">
               <div>
                 {{$t('Index.Device.QRCode')}}
                 <div class="flex-footera" id="qrcode2" style=""></div>

@@ -66,8 +66,10 @@ export default {
     },
     pickerChange() {
       if (!this.trendValue1) {
+        this.$emit('updataTime', ["",""])
         this.alarmTrend(this.alarmTrendUrl, this.areaID, this.echartEquipmentType, '', '')
       } else {
+        this.$emit('updataTime', [this.trendValue1[0].getTime(),this.trendValue1[1].getTime()])
         this.startTime = this.trendValue1[0].getTime()
         this.endTime = this.trendValue1[1].getTime()
         this.alarmTrend(

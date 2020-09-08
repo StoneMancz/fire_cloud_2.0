@@ -14,10 +14,10 @@
                 </el-select>
               </div>
               <div>
-                <!-- <el-select v-model="installNumber" placeholder="MAC/IMEI" style @change="installNumberChange">
-                  <el-option :label="$t('Newsletter.All')" value></el-option>
-                  <el-option v-for="item in installNumberList" :key="item.type" :label="item.name" :value="item.type"></el-option>
-                </el-select> -->
+                <input class="installNumbers" :placeholder="$t('FireMonitoring.mac')" v-model="dtuSN" @change="deviceStatusChange">
+              </div>
+              <div>
+                  <input class="installNumbers" :placeholder="$t('FireMonitoring.Hint')" v-model="installNumber" @change="deviceStatusChange">
               </div>
             </div>
             <div class="installInfo">
@@ -74,6 +74,7 @@ export default {
       deviceStatusList: [],
       equipmentTyleList: [],
       installNumber: '',
+      dtuSN:''
     }
   },
   components: {
@@ -96,6 +97,7 @@ export default {
         runStatus: this.deviceStatus,
         deviceSN: this.installNumber,
         lang: localStorage.getItem('Language'),
+        dtuSN:this.dtuSN
       })
       this.$http
         .post('http://srv.shine-iot.com:8060/gwdtu/devs', currentData)
@@ -189,6 +191,13 @@ export default {
           div {
             width: 220px;
             margin-right: 20px;
+             .installNumbers {
+              width: 210px;
+              color: white;
+              height: 40px;
+              background: rgba(0, 13, 65, 1);
+              border-radius: 4px;
+            }
           }
         }
 

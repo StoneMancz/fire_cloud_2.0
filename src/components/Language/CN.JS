@@ -129,7 +129,8 @@ module.exports = {
         Area: '区域',
         Address: '地址',
         Details: '详情',
-        Hint: "请输入设备编码"
+        Hint: "请输入设备编码",
+        mac:'请输入MAC'
     },
     ElectricalMonitoring: {
         addrNum: '地址码',

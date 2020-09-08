@@ -22,7 +22,8 @@
           placeholder="设备类型"
           style
           @change="equipmentTypeChange3">
-          <el-option :label="$t('Index.all')" value></el-option>
+
+          <el-option :label="$t('Index.all')" value v-if="$route.path!='/controllerList'"></el-option>
           <el-option
             v-for="item in equipmentTypeData"
             :key="item.type"
@@ -99,7 +100,7 @@ export default {
     return {
       eventLevelValue: "",
       currentPage: 1,
-      areaId: "",
+      areaID:"",
       lang: localStorage.getItem("Language"),
       total: 0, // 事件列表length
       equipmentTypeData: [],
@@ -139,8 +140,8 @@ export default {
     },
     equipmentType(url, lang, areaID) {
       let this_ = this;
-      this.areaId = areaID;
-      var currentData = { areaId: this_.areaId, lang: lang };
+      this.areaID = areaID;
+      var currentData = { areaId: this_.areaID, lang: lang };
       this.$http.get(url, { params: currentData }).then(function (response) {
         this_.equipmentTypeData = response.data.data;
       });
@@ -184,6 +185,8 @@ export default {
     },
     pickerEventChange() {
       if (!this.eventTimes) {
+        // 用来触发父组件定义的@change-type
+        this.$emit('updataTime', ["",""])
         this.eventAreaEvts(
           this.eventAreaEvtsUrl,
           this.lang,
@@ -195,6 +198,8 @@ export default {
           this.currentPage
         );
       } else {
+        // 用来触发父组件定义的@change-type
+        this.$emit('updataTime', [this.eventTimes[0].getTime(),this.eventTimes[1].getTime()])
         this.eventAreaEvts(
           this.eventAreaEvtsUrl,
           this.lang,
@@ -244,12 +249,13 @@ export default {
     ) {
       let this_ = this;
       this.eventAreaEvtsUrl = url;
+      this.areaID = areaId;
       this.lang = lang;
       this.eventDevcieValue3 = deviceType;
       if (this.$route.path == "/ElectricalMonitoring") {
         var currentData = qs.stringify({
           lang: lang,
-          areaId: areaId,
+          areaId: this.areaID,
           loopType: deviceType,
           eventLevel: eventLevel,
           startTime: startTime,
@@ -259,7 +265,7 @@ export default {
       } else {
         var currentData = qs.stringify({
           lang: lang,
-          areaId: areaId,
+          areaId: this.areaID,
           deviceType: deviceType,
           eventLevel: eventLevel,
           startTime: startTime,
@@ -267,7 +273,10 @@ export default {
           pageNo: pageNo,
         });
       }
-
+      console.log("区域id");
+      console.log(areaId);
+      console.log("请求数据")
+      console.log(currentData);
       this.$http.post(url, currentData).then(function (response) {
         let eventList = response.data.data.records;
         let eventListNew = eventList.map((item) => {

@@ -459,12 +459,12 @@ export default {
       //加载中文地图
       setTimeout(() => {
         this.initMap(this.lang)
-      }, 1000)
+      }, 1500)
     } else {
       //加载英文地图
       setTimeout(() => {
         this.initEnMap(this.lang)
-      }, 1000)
+      }, 1500)
     }
 
     this.kcntFunction('', 'zh-CN')

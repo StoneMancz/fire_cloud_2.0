@@ -39,7 +39,7 @@
                     </div>
                   </div>
                 </div>
-                <el-pagination class="pagination2" :current-page.sync="abnormalPageNo" layout="prev, pager, next" :total="abnormalTotal" style="text-align: center;bottom:-5%" @current-change="abnormalCurrentChange"></el-pagination>
+                <el-pagination class="pagination2" :current-page.sync="abnormalPageNo" layout="prev, pager, next" :total="abnormalTotal" style="text-align: center;" @current-change="abnormalCurrentChange"></el-pagination>
               </el-tab-pane>
               <el-tab-pane :label="$t('Controller.ControllerList')" name="second">
                 <div class="table">
@@ -276,7 +276,7 @@ export default {
 
         .table {
           width: 100%;
-          height: 680px;
+          height: 600px;
           margin: 20px auto;
           text-align: center;
           background: #00061f;

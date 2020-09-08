@@ -48,6 +48,7 @@
                   <div>{{$t('Water.address')}}：{{item1.deviceAddr}}</div>
                 </div>
               </div>
+              <el-pagination class="pagination2" :current-page.sync="currentPage" layout="prev, pager, next" :total="total" style="text-align: center;" @current-change="handleCurrentChange"></el-pagination>
             </div>
           </div>
           <div class="rightCentent" v-show="show2">
@@ -169,9 +170,9 @@ export default {
       this.$http
         .post('http://srv.shine-iot.com:8060/facilities/devs', currentData)
         .then(function (response) {
-          console.log("用水数据");
-          console.log(response);
-          this_.waterList = response.data.data
+          this_.waterList = response.data.data.records
+          this_.total=response.data.data.total
+          this_.currentPage=response.data.data.current
         })
     },
     SeeDeviceDetail(deviceId) {
