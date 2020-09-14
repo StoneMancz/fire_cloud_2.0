@@ -172,7 +172,7 @@ export default {
       this.drawers = true
       let this_ = this
       this.$http
-        .get('http://srv.shine-iot.com:8060/event/devo/' + eventId + '?lang=' + this.lang)
+        .get('http://srv.shine-iot.com:8060/event/devo/' + eventId + '?lang=' + localStorage.getItem('Language'))
         .then(function (response) {
           console.log('放回结果czcz')
           console.log(response)
@@ -224,7 +224,7 @@ export default {
       this.$refs.historyWater.openHistory(item.deviceName)
     },
     SeeDeviceDetail(deviceId) {
-      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId, this.lang)
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId, localStorage.getItem('Language'))
     },
     viewQrCode() {},
     formatDate(d) {
@@ -271,13 +271,13 @@ export default {
       let this_ = this
       //事件处理方式
       this.$http
-        .get('http://srv.shine-iot.com:8060/event/method?lang=' + this.lang)
+        .get('http://srv.shine-iot.com:8060/event/method?lang=' + localStorage.getItem('Language'))
         .then(function (response) {
           this_.eventHandlingArr = response.data.data
         })
       //事件定性
       this.$http
-        .get('http://srv.shine-iot.com:8060/event/defined?lang=' + this.lang)
+        .get('http://srv.shine-iot.com:8060/event/defined?lang=' + localStorage.getItem('Language'))
         .then(function (response) {
           this_.eventqualitative = response.data.data
         })

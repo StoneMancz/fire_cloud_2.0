@@ -30,7 +30,7 @@
                     <div>{{item.loopNo}}</div>
                     <div>{{item.nodeNo}}</div>
                     <div style="flex: 2;">{{item.nodeTypeName}}</div>
-                    <div style="flex: 2;color:green">{{item.nodeStatName}}</div>
+                    <div style="flex: 2;">{{item.nodeStatName}}</div>
                     <div>{{item.area}}</div>
                     <div style="flex: 2;">{{item.deviceAddr}}</div>
                     <div style="flex: 2;">{{item.msgTime}}</div>
@@ -74,6 +74,12 @@
     </div>
     <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
     <Loops ref="LoopChild"></Loops>
+    <img
+      v-show="!show2"
+      src="../../static/img/left.png"
+      @click="openRightCommon"
+      style="position: absolute;right: 0;top: 350px;width: 30px;height: 120px;cursor: pointer;"
+    />
   </renderless-component-example>
 </template>
 <script>
@@ -138,6 +144,12 @@ export default {
     },
     contrCurrentChange() {
       this.controllerList(this.areaId, this.pageNoContr, this.lang)
+    },
+    closeRightComponents() {
+      this.show2 = false;
+    },
+    openRightCommon() {
+      this.show2 = true;
     },
     nodeTimesChange() {
       if (!this.nodeTimes) {

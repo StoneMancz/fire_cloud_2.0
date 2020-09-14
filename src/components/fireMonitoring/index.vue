@@ -56,6 +56,7 @@
       </div>
     </div>
     <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
+    <img v-show="!show2" src="../../static/img/left.png" @click="openRightCommon" style="position: absolute;right: 0;top: 350px;width: 30px;height: 120px;cursor: pointer;">
   </renderless-component-example>
 </template>
 <script>
@@ -118,6 +119,12 @@ export default {
           this_.installInfoList = response.data.data.records
           this_.total = response.data.data.total
         })
+    },
+    closeRightComponents() {
+      this.show2 = false
+    },
+    openRightCommon() {
+      this.show2 = true
     },
     seeDeviceDetail(deviceId) {
       this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)

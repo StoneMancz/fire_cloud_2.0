@@ -9,12 +9,26 @@
           <div class="ElectricaData">
             <div class="filterData">
               <div>
-                <input class="installNumbers" :placeholder="$t('ElectricalMonitoring.coding')" v-model="deviceSN" @change="changeElectData">
+                <input
+                  class="installNumbers"
+                  :placeholder="$t('ElectricalMonitoring.coding')"
+                  v-model="deviceSN"
+                  @change="changeElectData"
+                />
               </div>
               <div>
-                <el-select v-model="loopStatus" :placeholder="$t('FireMonitoring.State')" @change="changeElectData">
+                <el-select
+                  v-model="loopStatus"
+                  :placeholder="$t('FireMonitoring.State')"
+                  @change="changeElectData"
+                >
                   <el-option :label="$t('FireMonitoring.status')" value></el-option>
-                  <el-option v-for="item in status" :key="item.type" :label="item.name" :value="item.type"></el-option>
+                  <el-option
+                    v-for="item in status"
+                    :key="item.type"
+                    :label="item.name"
+                    :value="item.type"
+                  ></el-option>
                 </el-select>
               </div>
             </div>
@@ -35,13 +49,15 @@
                   </div>
                   <div style="width:153px;display: flex;justify-content: space-between;">
                     <span>{{$t('ElectricalMonitoring.area')}}：{{item.areaName}}</span>
-                    <span class="button" @click="seeDeviceDetail(item.deviceId)">{{$t('FireMonitoring.Details')}}</span>
+                    <span
+                      class="button"
+                      @click="seeDeviceDetail(item.deviceId)"
+                    >{{$t('FireMonitoring.Details')}}</span>
                   </div>
-
                 </div>
                 <div class="deviceStatus">
                   <div>
-                    <span>{{$t('ElectricalMonitoring.address')}}：{{item.deviceAddr}} </span>
+                    <span>{{$t('ElectricalMonitoring.address')}}：{{item.deviceAddr}}</span>
                   </div>
                   <div class="button">{{$t('ElectricalMonitoring.Reset')}}</div>
                 </div>
@@ -63,12 +79,21 @@
                     <div>{{item1.checkVal}}{{item1.unitName}}</div>
                     <div v-if="item1.loopStatus==1" style="color:green">{{item1.statusName}}</div>
                     <div v-if="item1.loopStatus!=1" style="color:yellow">{{item1.statusName}}</div>
-                    <div @click="openHistory(item1.electId,item1.typeName)" class="historyCss">{{$t('ElectricalMonitoring.history')}}</div>
+                    <div
+                      @click="openHistory(item1.electId,item1.typeName)"
+                      class="historyCss"
+                    >{{$t('ElectricalMonitoring.history')}}</div>
                   </div>
                 </div>
               </div>
             </div>
-            <el-pagination class="pagination2" :current-page.sync="currentPage" layout="prev, pager, next" :total="total" style="text-align: center;"></el-pagination>
+            <el-pagination
+              class="pagination2"
+              :current-page.sync="currentPage"
+              layout="prev, pager, next"
+              :total="total"
+              style="text-align: center;"
+            ></el-pagination>
           </div>
           <div class="rightCentent" v-show="show2">
             <RightCommon ref="rightChild"></RightCommon>
@@ -78,28 +103,34 @@
     </div>
     <HistoryRecord ref="history"></HistoryRecord>
     <DeviceDetailsCom ref="childEquipmentDetails"></DeviceDetailsCom>
+    <img
+      v-show="!show2"
+      src="../../static/img/left.png"
+      @click="openRightCommon"
+      style="position: absolute;right: 0;top: 350px;width: 30px;height: 120px;cursor: pointer;"
+    />
   </renderless-component-example>
 </template>
 <script>
-import qs from 'qs'
-import Headers from '../../common/components/Header'
-import LeftCommon from '../../common/components/LeftCommon'
-import RightCommon from '../../common/components/RightCommon'
-import HistoryRecord from './components/HistoryRecord'
-import DeviceDetailsCom from '../../common/components/DeviceDetails'
+import qs from "qs";
+import Headers from "../../common/components/Header";
+import LeftCommon from "../../common/components/LeftCommon";
+import RightCommon from "../../common/components/RightCommon";
+import HistoryRecord from "./components/HistoryRecord";
+import DeviceDetailsCom from "../../common/components/DeviceDetails";
 export default {
   data() {
     return {
       show2: true,
       pageNo: 1,
-      areaId: '',
+      areaId: "",
       total: 0, // 事件列表length
-      deviceSN: '',
-      loopStatus: '',
-      lang: localStorage.getItem('Language'),
+      deviceSN: "",
+      loopStatus: "",
+      lang: localStorage.getItem("Language"),
       status: [],
       recordsData: [],
-    }
+    };
   },
   components: {
     Headers,
@@ -109,61 +140,93 @@ export default {
     DeviceDetailsCom,
   },
   mounted() {
-    this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
-    this.statusList()
+    this.initElecticaData(
+      this.pageNo,
+      this.areaId,
+      this.deviceSN,
+      this.loopStatus,
+      this.lang
+    );
+    this.statusList();
   },
   methods: {
     initElecticaData(pageNo, areaId, deviceSN, loopStatus, lang) {
-      let this_ = this
+      let this_ = this;
       var currentData = qs.stringify({
         pageNo: pageNo,
         areaId: areaId,
         deviceSN: deviceSN,
         loopStatus: loopStatus,
         lang: lang,
-      })
+      });
       this.$http
-        .post('http://srv.shine-iot.com:8060/elect/devs', currentData)
+        .post("http://srv.shine-iot.com:8060/elect/devs", currentData)
         .then(function (response) {
-          this_.recordsData = response.data.data.records
-          this_.total = response.data.data.total
-          this_.pageNo = response.data.data.current
-        })
+          this_.recordsData = response.data.data.records;
+          this_.total = response.data.data.total;
+          this_.pageNo = response.data.data.current;
+        });
     },
     seeDeviceDetail(deviceId) {
-      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId)
+      this.$refs.childEquipmentDetails.openEquipmentDetails(deviceId);
+    },
+    closeRightComponents() {
+      this.show2 = false;
+    },
+    openRightCommon() {
+      this.show2 = true;
     },
     changeElectData() {
-      this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
+      this.initElecticaData(
+        this.pageNo,
+        this.areaId,
+        this.deviceSN,
+        this.loopStatus,
+        this.lang
+      );
     },
     //查询当前状态列表接口
     statusList() {
-      let this_ = this
-      var currentData = { lang: this_.lang }
+      let this_ = this;
+      var currentData = { lang: this_.lang };
       this.$http
-        .get('http://srv.shine-iot.com:8060/elect/channel/stus', { params: currentData })
-        .then(function (response) {
-          this_.status = response.data.data
+        .get("http://srv.shine-iot.com:8060/elect/channel/stus", {
+          params: currentData,
         })
+        .then(function (response) {
+          this_.status = response.data.data;
+        });
     },
     fatherClickFn(data) {
-      this.areaId = data.id
+      this.areaId = data.id;
       //显示右侧数据
-      this.$refs.rightChild.initElectEchar(this.lang, data.id)
-      this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
+      this.$refs.rightChild.initElectEchar(this.lang, data.id);
+      this.initElecticaData(
+        this.pageNo,
+        this.areaId,
+        this.deviceSN,
+        this.loopStatus,
+        this.lang
+      );
     },
     openHistory(electId, typeName) {
-      this.$refs.history.histval(electId, '', '')
-      this.$refs.history.openHistory(typeName)
+      this.$refs.history.histval(electId, "", "");
+      this.$refs.history.openHistory(typeName);
     },
     switchLanguage(lang) {
-      this.lang = lang
-      this.initElecticaData(this.pageNo, this.areaId, this.deviceSN, this.loopStatus, this.lang)
-      this.$refs.rightChild.initElectEchar(this.lang, this.areaId)
-      this.statusList()
+      this.lang = lang;
+      this.initElecticaData(
+        this.pageNo,
+        this.areaId,
+        this.deviceSN,
+        this.loopStatus,
+        this.lang
+      );
+      this.$refs.rightChild.initElectEchar(this.lang, this.areaId);
+      this.statusList();
     },
   },
-}
+};
 </script>
 <style lang="stylus" scoped>
 .centent {
