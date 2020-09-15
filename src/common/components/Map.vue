@@ -455,15 +455,15 @@ export default {
     },
   },
   mounted() {
-    if (this.lang == 'zh-CN') {
+    if (localStorage.getItem('Language') == 'zh-CN' || localStorage.getItem('Language') == null) {
       //加载中文地图
       setTimeout(() => {
-        this.initMap(this.lang)
+        this.initMap(localStorage.getItem('Language'))
       }, 1500)
     } else {
       //加载英文地图
       setTimeout(() => {
-        this.initEnMap(this.lang)
+        this.initEnMap(localStorage.getItem('Language'))
       }, 1500)
     }
 
