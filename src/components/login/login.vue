@@ -194,7 +194,13 @@ export default {
     },
     changeLanguage() {
       this.$i18n.locale == 'zh' ? (this.$i18n.locale = 'en') : (this.$i18n.locale = 'zh') //设置中英文模式
-      localStorage.setItem('Language', this.$i18n.locale) //将用户设置存储到localStorage以便用户下次打开时使用此设置
+      //将用户设置存储到localStorage以便用户下次打开时使用此设置
+      if(this.$i18n.locale == 'zh'){
+        localStorage.setItem('Language','zh-CN')
+      }else{
+        localStorage.setItem('Language','en-US')
+      }
+      
     },
   },
   watch: {

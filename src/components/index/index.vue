@@ -103,10 +103,10 @@ export default {
     },
     //英文地图
     changeEnMap(lang) {
-      if (lang == 'zh-CN') {
-        this.$refs.mapChild.initMap(lang)
+      if (localStorage.getItem('Language') == 'zh-CN') {
+        this.$refs.mapChild.initMap(localStorage.getItem('Language'))
       } else {
-        this.$refs.mapChild.initEnMap(lang)
+        this.$refs.mapChild.initEnMap(localStorage.getItem('Language'))
       }
     },
     //获取右侧数据
