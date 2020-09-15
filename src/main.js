@@ -84,17 +84,46 @@ axios.interceptors.response.use(function (response) { // ①10010 token过期（
 const i18n = new VueI18n({
     locale: localStorage.getItem('Language') || 'zh', //从localStorage里获取用户中英文选择，没有则默认中文
     messages: {
-        'zh': Object.assign(require('./components/Language/CN.JS'),zhLocale), // 中文语言包
-        'en': Object.assign(require('./components/Language/EN.JS'),enLocale)
+        'zh': Object.assign(require('./components/Language/CN.JS'), zhLocale), // 中文语言包
+        'en': Object.assign(require('./components/Language/EN.JS'), enLocale)
     },
     silentTranslationWarn: true,
 })
 
 //重点！！在注册Element时设置i18n的处理方法（这里有个小坑）
-Vue.use(ElementUI,{
-    i18n:(key,value) =>i18n.t(key,value)
+Vue.use(ElementUI, {
+    i18n: (key, value) => i18n.t(key, value)
 });
+//长时间未操作放回登录页面
+let lastTime = new Date().getTime()
+let currentTime = new Date().getTime()
+let timeOut =120 * 60 * 1000 //设置超时时间: 30分钟
 
+window.onload = function () {
+    window.document.onmousedown = function () {
+        localStorage.setItem("lastTime", new Date().getTime())
+    }
+};
+
+function checkTimeout() {
+    console.log("执行执行czcz");
+    currentTime = new Date().getTime()     //更新当前时间
+    lastTime = localStorage.getItem("lastTime");
+    
+    if (currentTime - lastTime > timeOut) { //判断是否超时
+        console.log("超时超时");
+        // 清除storage的数据(登陆信息和token)
+        store.commit("settoken", '')
+        localStorage.setItem('accessToken', '')
+        // 跳到登陆页
+        if (router.path == '/login') return // 当前已经是登陆页时不做跳转
+        router.replace({
+            path: '/login' // 到登录页重新获取token
+        })
+    }
+}
+/* 定时器 间隔30秒检测是否长时间未操作页面 */
+window.setInterval(checkTimeout, 3000);
 
 export default i18n
 new Vue({

@@ -94,7 +94,6 @@ export default {
       }
 
       ws.onmessage = (msg) => {
-        console.log(msg)
         let msgobj = JSON.parse(msg.data)
         var music = document.getElementById('vd') //获取ID
         if (msgobj.msgType == 1) {
